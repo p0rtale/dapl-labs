@@ -1,6 +1,6 @@
 #pragma once
 
-#include <StackMachine/AsmCompiler/Lexer.h>
+#include <stack_machine/asm_compiler/Lexer.h>
 
 namespace stack_machine {
 

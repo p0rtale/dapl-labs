@@ -1,9 +1,9 @@
 #pragma once
 
-#include <StackMachine/Machine/Memory.h>
-#include <StackMachine/Machine/Registers.h>
-#include <StackMachine/Machine/Instruction.h>
-#include <StackMachine/Machine/InstructionExecutor.h>
+#include <stack_machine/machine/Memory.h>
+#include <stack_machine/machine/Registers.h>
+#include <stack_machine/machine/Instruction.h>
+#include <stack_machine/machine/InstructionExecutor.h>
 
 namespace stack_machine {
 

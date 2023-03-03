@@ -1,7 +1,7 @@
 #pragma once
 
-#include <StackMachine/Machine/MemoryContainer.h>
-#include <StackMachine/Machine/Instruction.h>
+#include <stack_machine/machine/MemoryContainer.h>
+#include <stack_machine/machine/Instruction.h>
 
 #include <vector>
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <StackMachine/Machine/MemoryContainer.h>
+#include <stack_machine/machine/MemoryContainer.h>
 
 #include <vector>
 

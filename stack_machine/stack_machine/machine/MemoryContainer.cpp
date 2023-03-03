@@ -1,4 +1,4 @@
-#include <StackMachine/Machine/MemoryContainer.h>
+#include <stack_machine/machine/MemoryContainer.h>
 
 namespace stack_machine {
 
