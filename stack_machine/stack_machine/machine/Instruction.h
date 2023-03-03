@@ -5,7 +5,7 @@
 namespace stack_machine {
 
 enum class Instruction {
-    kBlank = 0,
+    kBlank = -1000,
 
     kAdd = -1,
     kSub = -2,
