@@ -1,17 +1,15 @@
 #pragma once
 
-#include <stack_machine/asm_compiler/Lexer.h>
+#include <stack_machine/machine/Instruction.h>
 #include <stack_machine/asm_compiler/Parser.h>
-#include <stack_machine/asm_compiler/Instruction.h>
 
 #include <unordered_map>
 #include <vector>
 #include <string>
-#include <iostream>
 
 namespace asm_compiler {
 
-std::unordered_map<std::string, stack_machine::Instruction> instructionNameMap = {
+static std::unordered_map<std::string, stack_machine::Instruction> instructionNameMap = {
     {"ADD", stack_machine::Instruction::kAdd},
     {"SUB", stack_machine::Instruction::kSub},
     {"DIV", stack_machine::Instruction::kDiv},
@@ -58,52 +56,13 @@ std::unordered_map<std::string, stack_machine::Instruction> instructionNameMap =
 
 class Compiler {
 public:
-    Compiler(std::vector<std::string> filenames): m_filenames(filenames) {}
+    Compiler(std::vector<std::string> filenames);
 
-    bool compile() {
-        for (const auto& filename: m_filenames) {
-            std::ifstream input(filename);
-            auto lexer = Lexer{input};
-            bool ok = m_parser.parse(lexer);
-            if (!ok) {
-                return false;
-            }
-        }
+    bool compile();
 
-        auto& instructions = m_parser.getInstructions();
-        auto& constants = m_parser.getConstants();
+    std::vector<std::string>& getMachineCode();
 
-        m_machineCode.clear();
-        for (const auto& instruction: instructions) {
-            if (instruction.type == InstructionType::kNumber) {
-                m_machineCode.push_back(instruction.value);
-            } else if (instruction.type == InstructionType::kAsperand) {
-                m_machineCode.push_back(std::to_string(m_machineCode.size()));
-            } else if (instruction.type == InstructionType::kName) {
-                if (constants.contains(instruction.value)) {
-                    m_machineCode.push_back(constants[instruction.value]);
-                } else if (instructionNameMap.contains(instruction.value)) {
-                    m_machineCode.push_back(std::to_string(static_cast<int>(instructionNameMap[instruction.value])));
-                } else {
-                    std::cerr << "Error: unknown constant name: " << instruction.value << std::endl;
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    std::vector<std::string>& getMachineCode() {
-        return m_machineCode;
-    }
-
-    void saveMachineCode(std::string filename) {
-        std::ofstream output(filename);
-        for (auto word: m_machineCode) {
-            output << word << "\n";
-        }
-    }
+    void saveMachineCode(std::string filename);
 
 private:
     std::vector<std::string> m_filenames;

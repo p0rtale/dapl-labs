@@ -2,10 +2,13 @@
 
 #include <stack_machine/asm_compiler/Lexer.h>
 
+#include <limits>
+
+
 namespace stack_machine {
 
 enum class Instruction {
-    kBlank = -1000,
+    kBlank = std::numeric_limits<int>::min(),
 
     kAdd = -1,
     kSub = -2,
