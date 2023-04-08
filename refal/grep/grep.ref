@@ -1,0 +1,44 @@
+$EXTERN ArgList, Map, LoadFile;
+
+GrepStdin_impl {
+    (e.Pattern) 0 = /* empty */;
+    (e.Pattern) e.Text, e.Text : e.Before e.Pattern e.After = <Prout e.Text> <GrepStdin_impl (e.Pattern) <Card>>;
+    (e.Pattern) e.Text = <GrepStdin_impl (e.Pattern) <Card>>
+}
+
+GrepStdin {
+    (e.Pattern) = <GrepStdin_impl (e.Pattern) <Card>>;
+}
+
+$ENTRY GrepLine_map {
+    () (e.Pattern) (e.Line), e.Line : e.Before e.Pattern e.After = <Prout e.Line>;
+    (e.FileName) (e.Pattern) (e.Line), e.Line : e.Before e.Pattern e.After = <Prout e.FileName ':' e.Line>;
+    e.Other = /* empty */;
+}
+
+GrepFile {
+    (e.FileName) (e.Pattern) (e.Lines) = <Map (GrepLine_map (e.FileName) (e.Pattern)) e.Lines>;
+}
+
+$ENTRY GrepFile_map {
+    (e.Pattern) (e.FileName) = <GrepFile (e.FileName) (e.Pattern) (<LoadFile e.FileName>)>;
+}
+
+GrepFiles {
+    (e.Pattern) /* empty */ = /* empty */;
+    (e.Pattern) e.FileNames = <Map (GrepFile_map (e.Pattern)) e.FileNames>
+}
+
+Grep {
+    (e.Pattern) = <GrepStdin (e.Pattern)>;
+    (e.Pattern) (e.FileName) = <GrepFile () (e.Pattern) (<LoadFile e.FileName>)>;
+    (e.Pattern) e.FileNames = <GrepFiles (e.Pattern) e.FileNames>;
+}
+
+Main {
+    (e.SourceName) e.Rest = <Grep e.Rest>
+}
+
+$ENTRY Go {
+    = <Main <ArgList>>;
+}
