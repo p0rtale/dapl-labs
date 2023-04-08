@@ -1,0 +1,53 @@
+$EXTERN ArgList, LoadExpr;
+
+SimplifyExpr {
+    s.VarOrNumber = s.VarOrNumber;
+
+    (t.Expr "+" 0) = <SimplifyExpr t.Expr>;
+    (0 "+" t.Expr) = <SimplifyExpr t.Expr>;
+
+    (t.Expr "-" 0) = <SimplifyExpr t.Expr>;
+    (0 "-" t.Expr) = "-" <SimplifyExpr t.Expr>;
+
+    (t.Expr "*" 0) = 0;
+    (0 "*" t.Expr) = 0;
+
+    (t.Expr "*" 1) = <SimplifyExpr t.Expr>;
+    (1 "*" t.Expr) = <SimplifyExpr t.Expr>;
+
+    (t.Expr "/" 1) = <SimplifyExpr t.Expr>;
+
+    (t.ExprLeft s.BinOp t.ExprRight) = (<SimplifyExpr t.ExprLeft> s.BinOp <SimplifyExpr t.ExprRight>);
+}
+
+Simplify {
+    e.Expr, <SimplifyExpr e.Expr> : {
+        e.Expr = e.Expr;
+        e.SimplifiedExpr = <Simplify e.SimplifiedExpr>;
+    }
+}
+
+DiffRec {
+    s.DiffVar s.DiffVar = 1;
+    s.VarOrNumber s.DiffVar = 0;
+
+    ("-" t.Expr) s.DiffVar = ("-" <Diff t.Expr s.DiffVar>);
+    (t.ExprLeft "+" t.ExprRight) s.DiffVar = (<Diff t.ExprLeft s.DiffVar> "+" <Diff t.ExprRight s.DiffVar>);
+    (t.ExprLeft "-" t.ExprRight) s.DiffVar = (<Diff t.ExprLeft s.DiffVar> "-" <Diff t.ExprRight s.DiffVar>);
+    (t.ExprLeft "*" t.ExprRight) s.DiffVar 
+        = ((<Diff t.ExprLeft s.DiffVar> "*" t.ExprRight) "+" (t.ExprLeft "*" <Diff t.ExprRight s.DiffVar>));
+    (t.ExprLeft "/" t.ExprRight) s.DiffVar 
+        = (((<Diff t.ExprLeft s.DiffVar> "*" t.ExprRight) "-" (t.ExprLeft "*" <Diff t.ExprRight s.DiffVar>)) "/" (t.ExprRight "*" t.ExprRight));
+}
+
+Diff {
+    e.Expr s.DiffVar = <Simplify <DiffRec e.Expr s.DiffVar>>
+}
+
+Main {
+    (e.SourceName) (e.FileName) = <Diff <LoadExpr e.FileName>>
+}
+
+$ENTRY Go {
+    = <Prout <Main <ArgList>>>
+}
