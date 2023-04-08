@@ -12,7 +12,7 @@ InstructionExecutor::InstructionExecutor(Instruction instruction, Memory& memory
 
 void InstructionExecutor::execute() {
     switch (m_instruction) {
-        case Instruction::kBlank:
+        case Instruction::kBlank: return;
         case Instruction::kAdd: return executeAdd();
         case Instruction::kSub: return executeSub();
         case Instruction::kDiv: return executeDiv();
