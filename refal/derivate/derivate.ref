@@ -7,7 +7,11 @@ SimplifyExpr {
     (0 "+" t.Expr) = <SimplifyExpr t.Expr>;
 
     (t.Expr "-" 0) = <SimplifyExpr t.Expr>;
-    (0 "-" t.Expr) = "-" <SimplifyExpr t.Expr>;
+    (0 "-" t.Expr) = ("-" <SimplifyExpr t.Expr>);
+    (t.Expr "-" t.Expr) = 0;
+
+    ("-" 0) = 0;
+    ("-" t.Expr) = ("-" <SimplifyExpr t.Expr>);
 
     (t.Expr "*" 0) = 0;
     (0 "*" t.Expr) = 0;
