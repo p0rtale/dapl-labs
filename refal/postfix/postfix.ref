@@ -1,0 +1,22 @@
+$EXTERN ArgList, LoadExpr;
+
+PostfixDecompileRec {
+    (e.Operands t.First t.Second) (s.Next e.Rest), "+" "-" "*" "/": e.Before s.Next e.After 
+        = <PostfixDecompileRec (e.Operands (t.First s.Next t.Second)) (e.Rest)>;
+
+    (e.Operands) (s.Next e.Rest) = <PostfixDecompileRec (e.Operands s.Next) (e.Rest)>;
+    
+    (e.Operand) () = e.Operand;
+}
+
+PostfixDecompile {
+    e.Expr = <PostfixDecompileRec () (e.Expr)>
+}
+
+Main {
+    (e.SourceName) (e.FileName) = <PostfixDecompile <LoadExpr e.FileName>>
+}
+
+$ENTRY Go {
+    = <Prout <Main <ArgList>>>
+}
