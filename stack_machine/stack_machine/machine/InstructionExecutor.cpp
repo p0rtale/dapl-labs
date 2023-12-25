@@ -1,6 +1,7 @@
 #include <stack_machine/machine/InstructionExecutor.h>
 
 #include <array>
+#include <cstdint>
 
 
 namespace stack_machine {
@@ -13,16 +14,31 @@ InstructionExecutor::InstructionExecutor(Instruction instruction, Memory& memory
 void InstructionExecutor::execute() {
     switch (m_instruction) {
         case Instruction::kBlank: return;
-        case Instruction::kAdd: std::cout << "ADD\n"; return executeAdd();
-        case Instruction::kSub: std::cout << "SUB\n"; return executeSub();
-        case Instruction::kDiv: std::cout << "DIV\n"; return executeDiv();
-        case Instruction::kMod: std::cout << "MOD\n"; return executeMod();
-        case Instruction::kMul: std::cout << "MUL\n"; return executeMul();
-        case Instruction::kNeg: std::cout << "NEG\n"; return executeNeg();
+        case Instruction::kAdd:  std::cout << "ADD\n";  return executeAdd();
+        case Instruction::kFAdd: std::cout << "FADD\n"; return executeFAdd();
+        case Instruction::kUAdd: std::cout << "UADD\n"; return executeUAdd();
+        case Instruction::kSub:  std::cout << "SUB\n";  return executeSub();
+        case Instruction::kFSub: std::cout << "FSUB\n"; return executeFSub();
+        case Instruction::kUSub: std::cout << "USUB\n"; return executeUSub();
+        case Instruction::kDiv:  std::cout << "DIV\n";  return executeDiv();
+        case Instruction::kFDiv: std::cout << "FDIV\n"; return executeFDiv();
+        case Instruction::kUDiv: std::cout << "UDIV\n"; return executeUDiv();
+        case Instruction::kMod:  std::cout << "MOD\n";  return executeMod();
+        case Instruction::kUMod: std::cout << "UMOD\n"; return executeUMod();
+        case Instruction::kMul:  std::cout << "MUL\n";  return executeMul();
+        case Instruction::kFMul: std::cout << "FMUL\n"; return executeFMul();
+        case Instruction::kUMul: std::cout << "UMUL\n"; return executeUMul();
+        case Instruction::kNeg:  std::cout << "NEG\n";  return executeNeg();
+        case Instruction::kFNeg: std::cout << "FNEG\n"; return executeFNeg();
 
         case Instruction::kBitAnd: return executeAnd();
         case Instruction::kBitOr:  return executeOr();
         case Instruction::kBitNot: return executeNot();
+
+        case Instruction::kS2F: return executeS2F();
+        case Instruction::kF2S: return executeF2S();
+        case Instruction::kU2F: return executeU2F();
+        case Instruction::kF2U: return executeF2U();
 
         case Instruction::kDup:  std::cout << "DUP\n"; return executeDup();
         case Instruction::kDrop: std::cout << "DROP\n"; return executeDrop();
@@ -73,10 +89,46 @@ void InstructionExecutor::executeAdd() {
     m_stack.push(first + second);
 }
 
+void InstructionExecutor::executeFAdd() {
+    Word second = m_stack.pop();
+    float secondF = reinterpret_cast<float&>(second);
+    Word first = m_stack.pop();
+    float firstF = reinterpret_cast<float&>(first);
+    float resultF = firstF + secondF;
+    m_stack.push(reinterpret_cast<Word&>(resultF));
+}
+
+void InstructionExecutor::executeUAdd() {
+    Word second = m_stack.pop();
+    uint32_t secondU = reinterpret_cast<uint32_t&>(second);
+    Word first = m_stack.pop();
+    uint32_t firstU = reinterpret_cast<uint32_t&>(first);
+    uint32_t resultU = firstU + secondU;
+    m_stack.push(reinterpret_cast<Word&>(resultU));
+}
+
 void InstructionExecutor::executeSub() {
     Word second = m_stack.pop();
     Word first = m_stack.pop();
     m_stack.push(first - second);
+}
+
+void InstructionExecutor::executeFSub() {
+    Word second = m_stack.pop();
+    float secondF = reinterpret_cast<float&>(second);
+    Word first = m_stack.pop();
+    float firstF = reinterpret_cast<float&>(first);
+    float resultF = firstF - secondF;
+    m_stack.push(reinterpret_cast<Word&>(resultF));
+}
+
+void InstructionExecutor::executeUSub() {
+    Word second = m_stack.pop();
+    uint32_t secondU = reinterpret_cast<uint32_t&>(second);
+    Word first = m_stack.pop();
+    uint32_t firstU = reinterpret_cast<uint32_t&>(first);
+    uint32_t resultU = firstU - secondU;
+    m_stack.push(reinterpret_cast<Word&>(resultU));
 }
 
 void InstructionExecutor::executeDiv() {
@@ -85,10 +137,37 @@ void InstructionExecutor::executeDiv() {
     m_stack.push(first / second);
 }
 
+void InstructionExecutor::executeFDiv() {
+    Word second = m_stack.pop();
+    float secondF = reinterpret_cast<float&>(second);
+    Word first = m_stack.pop();
+    float firstF = reinterpret_cast<float&>(first);
+    float resultF = firstF / secondF;
+    m_stack.push(reinterpret_cast<Word&>(resultF));
+}
+
+void InstructionExecutor::executeUDiv() {
+    Word second = m_stack.pop();
+    uint32_t secondU = reinterpret_cast<uint32_t&>(second);
+    Word first = m_stack.pop();
+    uint32_t firstU = reinterpret_cast<uint32_t&>(first);
+    uint32_t resultU = firstU / secondU;
+    m_stack.push(reinterpret_cast<Word&>(resultU));
+}
+
 void InstructionExecutor::executeMod() {
     Word second = m_stack.pop();
     Word first = m_stack.pop();
     m_stack.push(first % second);
+}
+
+void InstructionExecutor::executeUMod() {
+    Word second = m_stack.pop();
+    uint32_t secondU = reinterpret_cast<uint32_t&>(second);
+    Word first = m_stack.pop();
+    uint32_t firstU = reinterpret_cast<uint32_t&>(first);
+    uint32_t resultU = firstU % secondU;
+    m_stack.push(reinterpret_cast<Word&>(resultU));
 }
 
 void InstructionExecutor::executeMul() {
@@ -97,9 +176,34 @@ void InstructionExecutor::executeMul() {
     m_stack.push(first * second);
 }
 
+void InstructionExecutor::executeFMul() {
+    Word second = m_stack.pop();
+    float secondF = reinterpret_cast<float&>(second);
+    Word first = m_stack.pop();
+    float firstF = reinterpret_cast<float&>(first);
+    float resultF = firstF * secondF;
+    m_stack.push(reinterpret_cast<Word&>(resultF));
+}
+
+void InstructionExecutor::executeUMul() {
+    Word second = m_stack.pop();
+    uint32_t secondU = reinterpret_cast<uint32_t&>(second);
+    Word first = m_stack.pop();
+    uint32_t firstU = reinterpret_cast<uint32_t&>(first);
+    uint32_t resultU = firstU * secondU;
+    m_stack.push(reinterpret_cast<Word&>(resultU));
+}
+
 void InstructionExecutor::executeNeg() {
     Word word = m_stack.pop();
     m_stack.push(-word);
+}
+
+void InstructionExecutor::executeFNeg() {
+    Word word = m_stack.pop();
+    float wordF = reinterpret_cast<float&>(word);
+    float resultF = -wordF;
+    m_stack.push(reinterpret_cast<Word&>(resultF));
 }
 
 void InstructionExecutor::executeAnd() {
@@ -117,6 +221,36 @@ void InstructionExecutor::executeOr() {
 void InstructionExecutor::executeNot() {
     Word word = m_stack.pop();
     m_stack.push(~word);
+}
+
+void InstructionExecutor::executeS2F() {
+    Word wordS = m_stack.pop();
+    float tempF = static_cast<float>(wordS);
+    Word wordF = reinterpret_cast<Word&>(tempF);
+    m_stack.push(wordF);
+}
+
+void InstructionExecutor::executeF2S() {
+    Word wordF = m_stack.pop();
+    float tempF = reinterpret_cast<float&>(wordF);
+    Word wordS = static_cast<Word>(tempF);
+    m_stack.push(wordS);
+}
+
+void InstructionExecutor::executeU2F() {
+    Word wordU = m_stack.pop();
+    uint32_t tempU = reinterpret_cast<uint32_t&>(wordU);
+    float tempF = static_cast<float>(tempU);
+    Word wordF = reinterpret_cast<Word&>(tempF);
+    m_stack.push(wordF);
+}
+
+void InstructionExecutor::executeF2U() {
+    Word wordF = m_stack.pop();
+    float tempF = reinterpret_cast<float&>(wordF);
+    uint32_t tempU = static_cast<uint32_t>(tempF);
+    Word wordU = reinterpret_cast<Word&>(tempU);
+    m_stack.push(wordU);
 }
 
 void InstructionExecutor::executeDup() {
@@ -187,6 +321,38 @@ void InstructionExecutor::executeCmp() {
     if (first < second) {
         result = -1;
     } else if (first == second) {
+        result = 0;
+    }
+
+    m_stack.push(result);       
+}
+
+void InstructionExecutor::executeFCmp() {
+    Word second = m_stack.pop();
+    float secondF = reinterpret_cast<float&>(second);
+    Word first = m_stack.pop();
+    float firstF = reinterpret_cast<float&>(first);
+    
+    Word result = 1;
+    if (firstF < secondF) {
+        result = -1;
+    } else if (firstF == secondF) {  // |firstF - secondF| < eps ?
+        result = 0;
+    }
+
+    m_stack.push(result);       
+}
+
+void InstructionExecutor::executeUCmp() {
+    Word second = m_stack.pop();
+    float secondU = reinterpret_cast<uint32_t&>(second);
+    Word first = m_stack.pop();
+    float firstU = reinterpret_cast<uint32_t&>(first);
+    
+    Word result = 1;
+    if (firstU < secondU) {
+        result = -1;
+    } else if (firstU == secondU) {
         result = 0;
     }
 

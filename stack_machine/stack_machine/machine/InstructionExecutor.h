@@ -27,16 +27,21 @@ public:
     Word getHaltResult();
 
 private:
-    void executeAdd();
-    void executeSub();
-    void executeDiv();
-    void executeMod();
-    void executeMul();
-    void executeNeg();
+    void executeAdd(); void executeFAdd(); void executeUAdd();
+    void executeSub(); void executeFSub(); void executeUSub();
+    void executeDiv(); void executeFDiv(); void executeUDiv();
+    void executeMod(); void executeUMod();
+    void executeMul(); void executeFMul(); void executeUMul();
+    void executeNeg(); void executeFNeg();
 
     void executeAnd();
     void executeOr();
     void executeNot();
+
+    void executeS2F();
+    void executeF2S();
+    void executeU2F();
+    void executeF2U();
 
     void executeDup();
     void executeDrop();
@@ -49,7 +54,7 @@ private:
     void executeRead();
     void executeWrite();
 
-    void executeCmp();
+    void executeCmp(); void executeFCmp(); void executeUCmp();
     void executeJmp();
     void executeJlt();
     void executeJgt();
