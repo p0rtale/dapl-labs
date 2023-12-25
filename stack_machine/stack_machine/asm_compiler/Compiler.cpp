@@ -1,6 +1,6 @@
 #include <stack_machine/asm_compiler/Compiler.h>
-
 #include <stack_machine/asm_compiler/Lexer.h>
+#include <stack_machine/machine/MemoryContainer.h>
 
 namespace asm_compiler {
 
@@ -29,7 +29,11 @@ bool Compiler::compile() {
             if (constants.contains(instruction.value)) {
                 m_machineCode.push_back(constants[instruction.value]);
             } else if (instructionNameMap.contains(instruction.value)) {
-                m_machineCode.push_back(std::to_string(static_cast<int>(instructionNameMap[instruction.value])));
+                m_machineCode.push_back(
+                    std::to_string(
+                        static_cast<stack_machine::Word>(instructionNameMap[instruction.value])
+                    )
+                );
             } else {
                 std::cerr << "Error: unknown constant name: " << instruction.value << std::endl;
                 return false;

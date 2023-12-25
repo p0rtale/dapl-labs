@@ -10,16 +10,21 @@ namespace stack_machine {
 enum class Instruction {
     kBlank = std::numeric_limits<int>::min(),
 
-    kAdd = -1,
-    kSub = -2,
-    kDiv = -3,
-    kMod = -4,
-    kMul = -5,
-    kNeg = -6,
+    kAdd = -1, kFAdd = -41, kUAdd = -42,
+    kSub = -2, kFSub = -43, kUSub = -44,
+    kDiv = -3, kFDiv = -45, kUDiv = -46,
+    kMod = -4, kUMod = -47,
+    kMul = -5, kFMul = -48, kUMul = -49,
+    kNeg = -6, kFNeg = -50,
 
     kBitAnd = -7,
     kBitOr = -8,
     kBitNot = -9,
+
+    kS2F = -37,
+    kF2S = -38,
+    kU2F = -39,
+    kF2U = -40,
 
     kDup = -10,
     kDrop = -11,
@@ -32,7 +37,7 @@ enum class Instruction {
     kRead = -15,
     kWrite = -16,
 
-    kCmp = -17,
+    kCmp = -17, kFCmp = -51, kUCmp = -52,
     kJmp = -18,
     kJlt = -19,
     kJgt = -20,

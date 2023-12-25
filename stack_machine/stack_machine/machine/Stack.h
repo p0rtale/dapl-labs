@@ -28,7 +28,7 @@ public:
     }
 
     Word pop() {
-        return m_memory[m_sp++];
+        return m_memory.at(m_sp++);
     }
 
 private:

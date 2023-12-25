@@ -7,7 +7,7 @@
 int main(int argc, char* argv[]) {
     size_t filesNum = argc - 1;
     std::vector<std::string> files(argv + 1, argv + 1 + (filesNum));    
-    asm_compiler::Compiler compiler{files};
+    asm_compiler::Compiler compiler{/*filenames=*/files};
 
     bool ok = compiler.compile();
     if (!ok) {
@@ -16,12 +16,16 @@ int main(int argc, char* argv[]) {
 
     compiler.saveMachineCode("machine_code.txt");
 
-    stack_machine::StackMachine machine{100000, std::cin, std::cout};
+    stack_machine::StackMachine machine{
+        /*memorySize=*/100000,
+        /*input=*/std::cin,
+        /*output=*/std::cout
+    };
 
     std::ifstream fin("machine_code.txt");
-    machine.run(fin);
+    stack_machine::Word result = machine.run(fin);
 
-    std::cout << "\n";
+    std::cout << result << "\n";
 
     return EXIT_SUCCESS;
 }
