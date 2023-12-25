@@ -12,14 +12,13 @@ class StackMachine {
 public:
     StackMachine(size_t memorySize, std::istream& input, std::ostream& output);
 
-    void run(std::ifstream& file);
+    Word run(std::ifstream& file);
 
 private:
     void setupProgram(const MemoryContainer& programMemory);
     void setupRegisters();
 
-    void executeProgram();
-    void executeInstruction(Instruction instruction);
+    Word executeProgram();
 
 private:
     Memory m_memory;

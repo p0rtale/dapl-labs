@@ -24,6 +24,8 @@ public:
 
     void execute();
 
+    Word getHaltResult();
+
 private:
     void executeAdd();
     void executeSub();
@@ -57,6 +59,7 @@ private:
     void executeJne();
     void executeCall();
     void executeRetn();
+    void executeHalt();
 
     void executeGetSp();
     void executeSetSp();
@@ -71,6 +74,8 @@ private:
 
 private:
     Instruction m_instruction;
+
+    bool isHalted = false;
 
     Memory& m_memory;
     Stack& m_stack;

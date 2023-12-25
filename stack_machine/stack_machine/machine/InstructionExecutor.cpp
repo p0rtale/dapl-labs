@@ -13,51 +13,58 @@ InstructionExecutor::InstructionExecutor(Instruction instruction, Memory& memory
 void InstructionExecutor::execute() {
     switch (m_instruction) {
         case Instruction::kBlank: return;
-        case Instruction::kAdd: return executeAdd();
-        case Instruction::kSub: return executeSub();
-        case Instruction::kDiv: return executeDiv();
-        case Instruction::kMod: return executeMod();
-        case Instruction::kMul: return executeMul();
-        case Instruction::kNeg: return executeNeg();
+        case Instruction::kAdd: std::cout << "ADD\n"; return executeAdd();
+        case Instruction::kSub: std::cout << "SUB\n"; return executeSub();
+        case Instruction::kDiv: std::cout << "DIV\n"; return executeDiv();
+        case Instruction::kMod: std::cout << "MOD\n"; return executeMod();
+        case Instruction::kMul: std::cout << "MUL\n"; return executeMul();
+        case Instruction::kNeg: std::cout << "NEG\n"; return executeNeg();
 
         case Instruction::kBitAnd: return executeAnd();
         case Instruction::kBitOr:  return executeOr();
         case Instruction::kBitNot: return executeNot();
 
-        case Instruction::kDup:   return executeDup();
-        case Instruction::kDrop:  return executeDrop();
-        case Instruction::kSwap:  return executeSwap();
-        case Instruction::kRot:   return executeRot();
-        case Instruction::kOver:  return executeOver();
-        case Instruction::kDropn: return executeDropn();
-        case Instruction::kPushn: return executePushn();
+        case Instruction::kDup:  std::cout << "DUP\n"; return executeDup();
+        case Instruction::kDrop: std::cout << "DROP\n"; return executeDrop();
+        case Instruction::kSwap: std::cout << "SWAP\n"; return executeSwap();
+        case Instruction::kRot:  std::cout << "ROT\n"; return executeRot();
+        case Instruction::kOver: std::cout << "OVER\n"; return executeOver();
+        case Instruction::kDropn: std::cout << "DROPN\n"; return executeDropn();
+        case Instruction::kPushn: std::cout << "PUSHN\n"; return executePushn();
 
-        case Instruction::kRead:  return executeRead();
-        case Instruction::kWrite: return executeWrite();
+        case Instruction::kRead: std::cout << "READ\n";  return executeRead();
+        case Instruction::kWrite: std::cout << "WRITE\n"; return executeWrite();
 
-        case Instruction::kCmp:  return executeCmp();
-        case Instruction::kJmp:  return executeJmp();
-        case Instruction::kJlt:  return executeJlt();
-        case Instruction::kJgt:  return executeJgt();
-        case Instruction::kJeq:  return executeJeq();
-        case Instruction::kJle:  return executeJle();
-        case Instruction::kJge:  return executeJge();
-        case Instruction::kJne:  return executeJne();
-        case Instruction::kCall: return executeCall();
-        case Instruction::kRetn: return executeRetn();
-        case Instruction::kHalt: return;
+        case Instruction::kCmp:  std::cout << "CMP\n"; return executeCmp();
+        case Instruction::kJmp: std::cout << "JMP\n";  return executeJmp();
+        case Instruction::kJlt: std::cout << "JLT\n"; return executeJlt();
+        case Instruction::kJgt: std::cout << "JGT\n"; return executeJgt();
+        case Instruction::kJeq: std::cout << "JEQ\n"; return executeJeq();
+        case Instruction::kJle: std::cout << "JLE\n"; return executeJle();
+        case Instruction::kJge: std::cout << "JGE\n"; return executeJge();
+        case Instruction::kJne: std::cout << "JNE\n"; return executeJne();
+        case Instruction::kCall: std::cout << "CALL\n"; return executeCall();
+        case Instruction::kRetn: std::cout << "RETN\n"; return executeRetn();
+        case Instruction::kHalt: std::cout << "HALT\n"; return executeHalt();
 
-        case Instruction::kGetSp: return executeGetSp();
-        case Instruction::kSetSp: return executeSetSp();
-        case Instruction::kGetBp: return executeGetBp();
-        case Instruction::kSetBp: return executeSetBp();
-        case Instruction::kGetCp: return executeGetCp();
+        case Instruction::kGetSp: std::cout << "GETSP\n"; return executeGetSp();
+        case Instruction::kSetSp: std::cout << "SETSP\n"; return executeSetSp();
+        case Instruction::kGetBp: std::cout << "GETBP\n"; return executeGetBp();
+        case Instruction::kSetBp: std::cout << "SETBP\n"; return executeSetBp();
+        case Instruction::kGetCp: std::cout << "GETCP\n"; return executeGetCp();
 
-        case Instruction::kIn:  return executeIn();
-        case Instruction::kOut: return executeOut();
+        case Instruction::kIn: std::cout << "IN\n"; return executeIn();
+        case Instruction::kOut: std::cout << "OUT\n"; return executeOut();
 
         default: return executePush(static_cast<Word>(m_instruction));
     }
+}
+
+Word InstructionExecutor::getHaltResult() {
+    if (isHalted) {
+        return m_stack.pop();
+    }
+    return Word{0};
 }
 
 void InstructionExecutor::executeAdd() {
@@ -246,9 +253,16 @@ void InstructionExecutor::executeCall() {
 }
 
 void InstructionExecutor::executeRetn() {
+    Word number = m_stack.pop();
     Word address = m_stack.pop();
-    executeDropn();
     m_registers.m_cp = address;
+    for (; number > 0; --number) {
+        m_stack.pop();
+    }
+}
+
+void InstructionExecutor::executeHalt() {
+    isHalted = true;
 }
 
 void InstructionExecutor::executeGetSp() {

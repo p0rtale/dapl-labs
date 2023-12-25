@@ -7,10 +7,10 @@ namespace stack_machine {
 StackMachine::StackMachine(size_t memorySize, std::istream& input, std::ostream& output)
         : m_memory(memorySize, memorySize, m_registers), m_input(input), m_output(output) {}
 
-void StackMachine::run(std::ifstream& file) {
+Word StackMachine::run(std::ifstream& file) {
     setupProgram(MemoryContainer{file});
     setupRegisters();
-    executeProgram();
+    return executeProgram();
 }
 
 void StackMachine::setupProgram(const MemoryContainer& programMemory) {
@@ -25,18 +25,21 @@ void StackMachine::setupRegisters() {
     };
 }
 
-void StackMachine::executeProgram() {
+Word StackMachine::executeProgram() {
     auto& program = m_memory.program();
     Instruction instruction = Instruction::kBlank;
-    while (instruction != Instruction::kHalt) {
+    Word haltResult = Word{0};
+    bool isHalted = false;
+    while (!isHalted) {
         instruction = program.nextInstruction();
-        executeInstruction(instruction);
+        auto executor = InstructionExecutor{instruction, m_memory, m_registers, m_input, m_output};
+        executor.execute();
+        if (instruction == Instruction::kHalt) {
+            isHalted = true;
+            haltResult = executor.getHaltResult();
+        }
     }
-}
-
-void StackMachine::executeInstruction(Instruction instruction) {
-    auto executor = InstructionExecutor{instruction, m_memory, m_registers, m_input, m_output};
-    executor.execute();
+    return haltResult;
 }
 
 }  // namespace stack_machine
