@@ -1,0 +1,83 @@
+$EXTERN Map, SetLocal, CompileConstExpr, ClearLocal, CompileBody;
+
+ParamsOffset {
+    s.Offset /* empty */ = /* empty */;
+    s.OffsetBefore s.Param e.Rest
+        , <+ s.OffsetBefore 1> : s.OffsetAfter
+        = <SetLocal s.Param ('+' s.OffsetBefore)>
+          <ParamsOffset s.OffsetAfter e.Rest>;
+}
+
+InitLocalVar {
+    s.OffsetBefore (s.Name t.ConstExpr)
+        , <CompileConstExpr t.ConstExpr> : s.LocalVarSize
+        , <+ s.OffsetBefore s.LocalVarSize> : s.OffsetAfter
+        = <SetLocal s.Name ('-' s.OffsetAfter)>
+          s.OffsetAfter;
+}
+
+InitLocalVars {
+    s.Offset /* empty */ = s.Offset;
+    s.Offset t.LocalVar e.LocalVars = <InitLocalVars <InitLocalVar s.Offset t.LocalVar> e.LocalVars>;
+}
+
+PrologueImpl {
+    (e.Params) (e.LocalVars)
+        , <ParamsOffset 2 e.Params> : e.Something
+        , <InitLocalVars 0 e.LocalVars> : s.Offset
+        , e.LocalVars
+        : {
+            /* empty */ = (GETBP GETSP SETBP);
+            e.SomeLocalVars = (GETBP GETSP SETBP)
+                              (s.Offset PUSHN);
+        } 
+}
+
+Prologue {
+    (e.Params) (e.LocalVars)
+        = e.Params
+        : {
+            /* empty */ = (DUP);
+            e._ = /* empty */;
+          }
+        : e.DUPopt
+        = e.DUPopt <PrologueImpl (e.Params) (e.LocalVars)>;
+}
+
+ClearParams {
+    s.Param = <ClearLocal s.Param>
+}
+
+ClearLocalVars  {
+    (s.Name t.ConstExpr) = <ClearLocal s.Name>
+}
+
+ClearLocals {
+    (e.Params) (e.LocalVars) = <Map &ClearParams e.Params>
+                               <Map &ClearLocalVars e.LocalVars>
+}
+
+GenRetParams {
+    0 = (JMP);
+    1 = (JMP);
+    /* s.ParamsNum, 0 1 : e._ s.ParamsNum e._ = (JMP); */
+    s.ParamsNum = (<- s.ParamsNum 1> RETN);
+}
+
+Epilogue {
+    s.Name (e.Params) (e.LocalVars)
+        = <Lenw e.Params> : s.ParamsNum e._
+        = <ClearLocals (e.Params) (e.LocalVars)> : e._
+        = (':_' <Explode s.Name> '_return')
+          (GETBP SETSP SETBP)
+          <GenRetParams s.ParamsNum>;               
+}
+
+$ENTRY CompileFunction {
+    s.Name (e.Params) (e.LocalVars) e.Code
+        , <Lenw e.Params> : s.ParamsNum e.Rest
+        = (':_' <Explode s.Name>)
+          <Prologue (e.Params) (e.LocalVars)>
+          <CompileBody s.Name s.ParamsNum e.Code>
+          <Epilogue s.Name (e.Params) (e.LocalVars)>
+}

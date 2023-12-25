@@ -1,0 +1,24 @@
+$ENTRY GenTrampoline {
+    /* empty */ = ('_main CALL')
+                  ('HALT');
+}
+
+GenIn {
+    /* empty */ = (':_in') ('IN SWAP JMP');
+}
+
+GenOut {
+    /* empty */ = (':_out') ('SWAP OUT JMP');
+}
+
+GenGetBp {
+    /* empty */ = (':_getbp') ('GETBP SWAP JMP');
+}
+
+GenHalt {
+    /* empty */ = (':_halt') ('OVER HALT');
+}
+
+$ENTRY GenAuxFunctions {
+    /* empty */ = <GenIn> <GenOut> <GenGetBp> <GenHalt>;
+}

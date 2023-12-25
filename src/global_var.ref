@@ -1,0 +1,21 @@
+$EXTERN CompileConstExpr;
+
+FillMemory {
+    0 = /* empty */;
+    s.Size = 0 <FillMemory <- s.Size 1>>;
+    s.Size t.InitConstExpr e.Other = <CompileConstExpr t.InitConstExpr> <FillMemory <- s.Size 1> e.Other>;
+}
+
+FillMemoryAuto {
+    /* empty */ = /* empty */;
+    t.InitConstExpr e.Other = <CompileConstExpr t.InitConstExpr> <FillMemoryAuto e.Other>;
+}
+
+$ENTRY CompileGlobalVar {
+    s.Name t.ConstExpr = (':_' <Explode s.Name>) (<FillMemory <CompileConstExpr t.ConstExpr>>);
+
+    s.Name t.ConstExpr "=" e.InitConstExprs
+        = (':_' <Explode s.Name>) (<FillMemory <CompileConstExpr t.ConstExpr> e.InitConstExprs>);
+
+    s.Name "=" e.InitConstExprs = (':_' <Explode s.Name>) (<FillMemoryAuto e.InitConstExprs>);
+}

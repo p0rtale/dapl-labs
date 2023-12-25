@@ -1,0 +1,13 @@
+NextId {
+    e.Prefix
+        , <Dg NextIdCounter>
+        : {
+        /* empty */ = <Br NextIdCounter '=' 0> <NextId e.Prefix>;
+        s.N = <Explode e.Prefix> <Symb s.N>
+              <Br NextIdCounter '=' <+ s.N 1>>;
+    };
+}
+
+$ENTRY NewLabel {
+    s.Name = <Implode_Ext '_' <NextId s.Name>>
+}

@@ -1,0 +1,10 @@
+$EXTERN ArgList, LoadExpr, SaveFile, Compile;
+
+Main {
+    (e.SourceName) (e.LiplFileName) (e.AsmFileName)
+        = <SaveFile (e.AsmFileName) <Compile <Ord <LoadExpr e.LiplFileName>>>>
+}
+
+$ENTRY Go {
+    = <Main <ArgList>>;
+}

@@ -1,0 +1,96 @@
+$EXTERN Map, CompileExpr, CompileArgs, CompileLogicalExprEffective, NewLabel;
+
+CompileAssignment {
+    t.ExprLeft t.ExprRight = (<CompileExpr t.ExprLeft>) (<CompileExpr t.ExprRight>) (WRITE);
+}
+
+CompileCall {
+    t.Func e.Args = (<CompileArgs e.Args> <CompileExpr t.Func> CALL) (DROP);
+}
+
+CompileReturn {
+    s.Name 0 t.Expr = (2 GETBP ADD) (<CompileExpr t.Expr>) (WRITE) 
+                      ('_' <Explode s.Name> '_return') (JMP);
+
+    s.Name s.ParamsNum t.Expr = (<+ s.ParamsNum 1> GETBP ADD) (<CompileExpr t.Expr>) (WRITE)
+                                ('_' <Explode s.Name> '_return') (JMP);
+}
+
+CompileIf {
+    s.Name s.ParamsNum t.BoolExpr (e.CodeTrue) ()
+        , <NewLabel s.Name> : e.LabelExit
+        = (<CompileLogicalExprEffective t.BoolExpr (e.LabelExit)>)
+          <CompileBody s.Name s.ParamsNum e.CodeTrue>
+          (':' e.LabelExit);
+
+    s.Name s.ParamsNum t.BoolExpr (e.CodeTrue) (e.CodeFalse)
+        , <NewLabel s.Name> : e.LabelFalse, <NewLabel s.Name> : e.LabelExit
+        = (<CompileLogicalExprEffective t.BoolExpr (e.LabelFalse)>)
+          <CompileBody s.Name s.ParamsNum e.CodeTrue>
+          (e.LabelExit) (JMP)
+          (':' e.LabelFalse) <CompileBody s.Name s.ParamsNum e.CodeFalse> (':' e.LabelExit);
+}
+
+CompileWhile {
+    s.Name s.ParamsNum t.BoolExpr e.Code
+        , <NewLabel s.Name> : e.LabelLoop, <NewLabel s.Name> : e.LabelExit 
+        = (':' e.LabelLoop)
+          (<CompileLogicalExprEffective t.BoolExpr (e.LabelExit)>)
+          <CompileBody s.Name s.ParamsNum e.Code>
+          (e.LabelLoop) (JMP) 
+          (':' e.LabelExit);
+}
+
+CompileRepeat {
+    s.Name s.ParamsNum (e.Code) t.BoolExpr
+        , <NewLabel s.Name> : e.LabelLoop
+        = (':' e.LabelLoop) <CompileBody s.Name s.ParamsNum e.Code>
+          (<CompileLogicalExprEffective t.BoolExpr (e.LabelLoop)>);
+}
+
+OptStatement {
+    0 = /* empty */;
+    t.Statement = t.Statement;
+}
+
+CompileFor {
+    s.Name s.ParamsNum t.Init t.BoolExpr t.Step e.Code 
+        = <CompileBody s.Name s.ParamsNum
+          <OptStatement t.Init>
+          (while t.BoolExpr
+              e.Code
+              <OptStatement t.Step>
+          )
+          >
+}
+
+CompileInit {
+    t.ObjectPtr s.ClassName = <CompileAssignment t.ObjectPtr <Implode_Ext <Explode s.ClassName> '_vtbl__'>>;
+}
+
+CompileStatement {
+    s.1 s.2 (t.ExprLeft "=" t.ExprRight) = <CompileAssignment t.ExprLeft t.ExprRight>;
+
+    s.1 s.2 (call t.Func e.Args) = <CompileCall t.Func e.Args>;
+
+    s.Name s.ParamsNum (return t.Expr) = <CompileReturn s.Name s.ParamsNum t.Expr>;
+
+    s.Name s.ParamsNum (if t.BoolExpr e.CodeTrue else e.CodeFalse)
+        = <CompileIf s.Name s.ParamsNum t.BoolExpr (e.CodeTrue) (e.CodeFalse)>;
+
+    s.Name s.ParamsNum (if t.BoolExpr e.Code) = <CompileIf s.Name s.ParamsNum t.BoolExpr (e.Code) ()>;
+
+    s.Name s.ParamsNum (while t.BoolExpr e.Code) = <CompileWhile s.Name s.ParamsNum t.BoolExpr e.Code>;
+
+    s.Name s.ParamsNum (for (t.Init t.BoolExpr t.Step) e.Code)
+        = <CompileFor s.Name s.ParamsNum t.Init t.BoolExpr t.Step e.Code>;
+
+    s.Name s.ParamsNum (repeat e.Code until t.BoolExpr) = <CompileRepeat s.Name s.ParamsNum (e.Code) t.BoolExpr>;
+
+    s.1 s.2 (init t.ObjectPtr s.ClassName) = <CompileInit t.ObjectPtr s.ClassName>
+}
+
+$ENTRY CompileBody {
+    s.Name s.ParamsNum e.Statements
+      = <Map (&CompileStatement s.Name s.ParamsNum) e.Statements>;
+}
