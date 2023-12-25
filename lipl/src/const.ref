@@ -1,0 +1,27 @@
+$EXTERN SetConst, GetConst;
+
+$ENTRY CompileConstExpr {
+    s.Number, <Type s.Number> : 'N' e.1 = s.Number;
+
+    s.Name, <GetConst s.Name> : {
+        Found (e.Number) = e.Number;
+        NotFound = '_' s.Name;
+    };
+
+    ("-" t.Expr) = <- 0 <CompileConstExpr t.Expr>>;
+
+    (t.ExprLeft "+" t.ExprRight) 
+        = <+ <CompileConstExpr t.ExprLeft> <CompileConstExpr t.ExprRight>>;
+    (t.ExprLeft "-" t.ExprRight) 
+        = <- <CompileConstExpr t.ExprLeft> <CompileConstExpr t.ExprRight>>;
+    (t.ExprLeft "*" t.ExprRight) 
+        = <* <CompileConstExpr t.ExprLeft> <CompileConstExpr t.ExprRight>>;
+    (t.ExprLeft "/" t.ExprRight) 
+        = </ <CompileConstExpr t.ExprLeft> <CompileConstExpr t.ExprRight>>;
+    (t.ExprLeft "%" t.ExprRight) 
+        = <% <CompileConstExpr t.ExprLeft> <CompileConstExpr t.ExprRight>>;
+}
+
+$ENTRY CompileConst {
+    s.Name t.ConstExpr = <SetConst s.Name (<CompileConstExpr t.ConstExpr>)>;
+}

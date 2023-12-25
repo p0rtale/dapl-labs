@@ -1,0 +1,17 @@
+(function gcd (x y)
+    (var (rem 1))
+
+    (if ((L y) "==" 0) (return (L x)))
+
+    (repeat
+        (rem "=" ((L x) "%" (L y)))
+        (x "=" (L y))
+        (y "=" (L rem))
+    until ((L y) "==" 0))
+
+    (return (L x))
+)
+
+(function main ()
+    (return (call gcd 12 18))
+)

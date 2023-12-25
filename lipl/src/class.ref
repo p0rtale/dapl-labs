@@ -1,0 +1,254 @@
+$EXTERN CompileDefinition;
+
+AddClassMethodsInfo {
+    s.Name e.MethodsInfo = <Br class s.Name '=' (e.MethodsInfo)>
+}
+
+GetClassMethodsInfo {
+    s.Name, <Cp class s.Name> : {
+        /* empty */ = NotFound;
+        (e.MethodsInfo) = Found (e.MethodsInfo);
+    };
+}
+
+SetInheritanceDepth {
+    s.Name s.Depth = <Br inheritance_depth s.Name '=' (s.Depth)>
+}
+
+GetInheritanceDepth {
+    s.Name, <Cp inheritance_depth s.Name> : {
+        /* empty */ = NotFound;
+        (s.Depth) = Found (s.Depth);
+    };
+}
+
+AddClassPrehistory {
+    s.Name e.Prehistory = <Br class_prehistory s.Name '=' (e.Prehistory)>
+}
+
+GetClassPrehistory {
+    s.Name, <Cp class_prehistory s.Name> : {
+        /* empty */ = NotFound;
+        (e.Prehistory) = Found (e.Prehistory);
+    };
+}
+
+$ENTRY IsInstanceOf {
+    t.ObjectPtr s.ClassName
+        , <GetInheritanceDepth s.ClassName> : Found (s.Depth)
+        = (L ((L t.ObjectPtr) "+" s.Depth)) "==" <Implode_Ext <Explode s.ClassName> '_vtbl__'>;
+}
+
+CompileFields {
+    s.Name () e.Fields 
+        = <CompileDefinition
+          (struct s.Name
+              ("-" 1)
+              e.Fields
+          )
+          >;
+
+    s.Name (s.Base) e.Fields 
+        = <CompileDefinition
+          (struct s.Name
+              ("-" s.Base)
+              e.Fields
+          )
+          >;
+}
+
+GetVtableDefinitionMethods {
+    /* empty */ = /* empty */;
+    s.MethodName e.MethodsNames = (s.MethodName 1) <GetVtableDefinitionMethods e.MethodsNames>;
+}
+
+CompileMethodFunctions {
+    s.Name = /* empty */;
+
+    s.Name t.Method e.Methods
+        , t.Method : (method s.MethodName (this e.Params) e.Body)
+        = <CompileDefinition
+          (function <Implode_Ext <Explode s.Name> '__' <Explode s.MethodName>> (this e.Params)
+              e.Body
+          )
+          >
+          <CompileMethodFunctions s.Name e.Methods>;
+}
+
+CompileVtableDefinition {
+    s.Name () e.NewMethods
+        = <CompileDefinition
+          (struct <Implode_Ext <Explode s.Name> '_class__'>
+              ("-" 8)
+              <GetVtableDefinitionMethods e.NewMethods>
+          )
+          >;
+
+    s.Name (s.Base) e.NewMethods
+        = <CompileDefinition
+          (struct <Implode_Ext <Explode s.Name> '_class__'>
+              ("-" <Implode_Ext <Explode s.Base> '_class__'>)
+              <GetVtableDefinitionMethods e.NewMethods>
+          )
+          >;
+}
+
+GetVtableMethods {
+    s.Name /* empty */ = /* empty */;
+
+    s.Name t.MethodInfo e.MethodsInfo
+        , t.MethodInfo : (s.ClassName s.MethodName)
+        = <Implode_Ext <Explode s.ClassName> '__' <Explode s.MethodName>>
+          <GetVtableMethods s.Name e.MethodsInfo>;
+}
+
+FillNewMethodsInfo {
+    s.ClassName () = /* empty */;
+
+    s.ClassName (s.NewMethodName e.NewMethodsNames)
+        = (s.ClassName s.NewMethodName) <FillNewMethodsInfo s.ClassName (e.NewMethodsNames)>;
+}
+
+HaveMethodName {
+    s.MethodName () = NotFound;
+
+    s.MethodName (s.OverriddenMethod e.OverriddenMethods)
+        , s.MethodName
+        : {
+            s.OverriddenMethod = Found;
+            e._ = <HaveMethodName s.MethodName (e.OverriddenMethods)>;
+        };
+}
+
+FillBaseMethodsInfo {
+    s.ClassName () (e.OverriddenMethods) = /* empty */;
+
+    s.ClassName (t.BaseMethodInfo e.BaseMethodsInfo) (e.OverriddenMethods)
+        , t.BaseMethodInfo : (s.BaseName s.MethodName)
+        , <HaveMethodName s.MethodName (e.OverriddenMethods)>
+        : {
+            Found = (s.ClassName s.MethodName) <FillBaseMethodsInfo s.ClassName (e.BaseMethodsInfo) (e.OverriddenMethods)>;
+            NotFound = (s.BaseName s.MethodName) <FillBaseMethodsInfo s.ClassName (e.BaseMethodsInfo) (e.OverriddenMethods)>;
+        };
+}
+
+FillMethodsInfoImpl {
+    s.ClassName (e.BaseMethodsInfo) (e.OverriddenMethods) (e.NewMethods)
+        = <FillBaseMethodsInfo s.ClassName (e.BaseMethodsInfo) (e.OverriddenMethods)>
+          <FillNewMethodsInfo s.ClassName (e.NewMethods)>;
+}
+
+FillMethodsInfo {
+    s.ClassName () (e.OverriddenMethods) (e.NewMethods)
+        , <FillMethodsInfoImpl s.ClassName () (e.OverriddenMethods) (e.NewMethods)> : e.MethodsInfo
+        = <AddClassMethodsInfo s.ClassName e.MethodsInfo>;
+
+    s.ClassName (s.Base) (e.OverriddenMethods) (e.NewMethods)
+        , <GetClassMethodsInfo s.Base> : Found (e.BaseMethodsInfo)
+        , <FillMethodsInfoImpl s.ClassName (e.BaseMethodsInfo) (e.OverriddenMethods) (e.NewMethods)> : e.MethodsInfo
+        = <AddClassMethodsInfo s.ClassName e.MethodsInfo>;
+}
+
+Padding {
+    0 = /* empty */;
+    s.Number = 0 <Padding <- s.Number 1>>;
+}
+
+GetVtablePtrs {
+    /* empty */ = /* empty */;
+    s.Name e.Names = <Implode_Ext <Explode s.Name> '_vtbl__'> <GetVtablePtrs e.Names>;
+}
+
+GetBaseVtablePtrs {
+    s.Name ()
+        , <AddClassPrehistory s.Name s.Name> : e._
+        = <GetVtablePtrs s.Name>;
+
+    s.Name (s.Base)
+        , <GetClassPrehistory s.Base> : Found (e.Prehistory)
+        , <AddClassPrehistory s.Name e.Prehistory s.Name> : e._
+        = <GetVtablePtrs e.Prehistory s.Name>;
+}
+
+CompileVtableInstance {
+    s.Name (e.Base) (e.OverriddenMethods) (e.NewMethods)
+        , <GetInheritanceDepth s.Name> : Found (s.Depth)
+        , <FillMethodsInfo s.Name (e.Base) (e.OverriddenMethods) (e.NewMethods)> : e._
+        , <GetClassMethodsInfo s.Name> : Found (e.MethodsInfo)
+        = <CompileDefinition
+          (var <Implode_Ext <Explode s.Name> '_vtbl__'>  <Implode_Ext <Explode s.Name> '_class__'> "="
+              <GetBaseVtablePtrs s.Name (e.Base)>
+              <Padding <- 8 <+ s.Depth 1>>>
+              <GetVtableMethods s.Name e.MethodsInfo>
+          )
+          >;
+}
+
+CompileVtable {
+    s.Name (e.Base) (e.OverriddenMethods) (e.NewMethods)
+        = <CompileVtableDefinition s.Name (e.Base) e.NewMethods>
+          <CompileVtableInstance s.Name (e.Base) (e.OverriddenMethods) (e.NewMethods)>;
+}
+
+HaveMethodInfo {
+    s.Method () = NotFound;
+
+    s.Method (t.MethodInfo e.MethodsInfo)
+        , t.MethodInfo : (s.ClassName s.MethodName)
+        , s.MethodName
+        : {
+            s.Method = Found;
+            e._ = <HaveMethodInfo s.Method (e.MethodsInfo)>;
+        };
+}
+
+SplitMethodsImpl {
+    () (e.Methods) () () = () (e.Methods);
+
+    (s.Base) () (e.OverriddenMethods) (e.NewMethods) = (e.OverriddenMethods) (e.NewMethods);
+
+    (s.Base) (s.Method e.Methods) (e.OverriddenMethods) (e.NewMethods)
+        , <GetClassMethodsInfo s.Base> : Found (e.MethodsInfo)
+        , <HaveMethodInfo s.Method (e.MethodsInfo)> : {
+            Found = <SplitMethodsImpl (s.Base) (e.Methods) (e.OverriddenMethods s.Method) (e.NewMethods)>;
+            NotFound = <SplitMethodsImpl (s.Base) (e.Methods) (e.OverriddenMethods) (e.NewMethods s.Method)>;
+        };
+}
+
+SplitMethods {
+    (e.Base) e.Methods = <SplitMethodsImpl (e.Base) (e.Methods) () ()>;
+}
+
+GetMethodsNames {
+    /* empty */ = /* empty */;
+
+    t.Method e.Methods
+        , t.Method : (method s.Name e._)
+        = s.Name <GetMethodsNames e.Methods>;
+}
+
+UpdateInheritanceDepth {
+    s.Name () = <SetInheritanceDepth s.Name 0>;
+
+    s.Name (s.Base)
+        , <GetInheritanceDepth s.Base> : Found (s.Depth)
+        = <SetInheritanceDepth s.Name <+ s.Depth 1>>;
+}
+
+$ENTRY CompileClass {
+    s.Name (e.Base) (fields e.Fields) e.Methods
+        , <UpdateInheritanceDepth s.Name (e.Base)> : e._
+        , <GetMethodsNames e.Methods> : e.MethodsNames
+        , <SplitMethods (e.Base) e.MethodsNames> : (e.OverriddenMethods) (e.NewMethods)
+        = <CompileFields s.Name (e.Base) e.Fields>
+          <CompileMethodFunctions s.Name e.Methods>
+          <CompileVtable s.Name (e.Base) (e.OverriddenMethods) (e.NewMethods)>;
+
+    s.Name (e.Base) e.Methods
+        , <UpdateInheritanceDepth s.Name (e.Base)> : e._
+        , <GetMethodsNames e.Methods> : e.MethodsNames
+        , <SplitMethods (e.Base) e.MethodsNames> : (e.OverriddenMethods) (e.NewMethods)
+        = <CompileFields s.Name (e.Base) /* empty */>
+          <CompileMethodFunctions s.Name e.Methods>
+          <CompileVtable s.Name (e.Base) (e.OverriddenMethods) (e.NewMethods)>;
+}

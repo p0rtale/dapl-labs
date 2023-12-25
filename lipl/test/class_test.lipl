@@ -1,0 +1,52 @@
+(class TheBestClass ()
+    (fields 
+        (x 1)
+        (y 1)
+    )
+
+    (method dosmth (this a)
+        (return (((L ((L this) "+" y)) "-" (L ((L this) "+" x))) "*" (L a)))
+    )
+
+    (method gcd (this x y)
+        (return (L y)) 
+    )
+)
+
+(class CoolClass (TheBestClass)
+    (method coolmethod (this) (return 41))
+
+    (method gcd (this x y)
+        (return 100500)
+    )
+)
+
+(class Derived (CoolClass)
+    (method dosmth (this a)
+        (return (101 "-" (L a)))
+    )
+)
+
+(function main ()
+    (var (object Derived) (cool CoolClass) (base TheBestClass))
+    ((object "+" x) "=" 10)
+    ((object "+" y) "=" 42)
+    (init object Derived)
+
+    (init cool CoolClass)
+    (base "=" (L cool))
+
+    (if (instanceof base Derived)
+        (call out 'A')
+    )
+
+    (if (instanceof base CoolClass) 
+        (call out 'B')
+    )
+
+    (if (instanceof object TheBestClass) 
+        (call out 'C')
+    )
+
+    (return ((mcall object dosmth 100) "+" (mcall object gcd 3 4)))
+)

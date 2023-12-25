@@ -1,0 +1,13 @@
+(function gcd (x y)
+    (var (rem 1))
+    (while ((L y) "<>" 0)
+        (rem "=" ((L x) "%" (L y)))
+        (x "=" (L y))
+        (y "=" (L rem))
+    )
+    (return (L x))
+)
+
+(function main ()
+    (return (call gcd 12 18))
+)

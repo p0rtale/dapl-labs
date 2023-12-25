@@ -1,0 +1,57 @@
+$EXTERN CompileExpr, NewLabel, IsInstanceOf;
+
+ConvertToNHNF {
+    TRUE = FALSE;
+    FALSE = TRUE; 
+
+    (not t.BoolExpr) = t.BoolExpr;
+
+    (t.BoolExprLeft and t.BoolExprRight) 
+        = (<ConvertToNHNF t.BoolExprLeft> or <ConvertToNHNF t.BoolExprRight>);
+    
+    (t.BoolExprLeft or t.BoolExprRight) 
+        = (<ConvertToNHNF t.BoolExprLeft> and <ConvertToNHNF t.BoolExprRight>);
+
+    (t.ExprLeft s.RelOp t.ExprRight)
+        , (">=" "<") ("<=" ">") ("<>" "==") (">" "<=") ("<" ">=") ("==" "<>")
+        : e.Before (s.RelOp s.Command) e.After
+        = (t.ExprLeft s.Command t.ExprRight)
+}
+
+$ENTRY CompileLogicalExprEffective {
+    t.BoolExpr (e.Label)
+        , t.BoolExpr
+        : {
+            TRUE = /* empty */;
+            FALSE = e.Label JMP;
+
+            (instanceof t.ObjectPtr s.ClassName)
+                = <CompileLogicalExprEffective (<IsInstanceOf t.ObjectPtr s.ClassName>) (e.Label)>;
+
+            (not t.BoolExpr)
+                , <ConvertToNHNF t.BoolExpr> : t.NhnfBoolExpr
+                = <CompileLogicalExprEffective t.NhnfBoolExpr (e.Label)>;
+
+            (t.BoolExprLeft and t.BoolExprRight)
+                = <CompileLogicalExprEffective t.BoolExprLeft (e.Label)>
+                  <CompileLogicalExprEffective t.BoolExprRight (e.Label)>;
+
+            (t.BoolExprLeft or t.BoolExprRight)
+                , <NewLabel "or"> : e.LabelOr
+                = <CompileLogicalExprEffective (not t.BoolExprLeft) (e.LabelOr)>
+                  <CompileLogicalExprEffective t.BoolExprRight (e.Label)>
+                  ':' e.LabelOr;
+
+            (t.ExprLeft s.RelOp t.ExprRight)
+                , (">=" JLT) ("<=" JGT) ("<>" JEQ) (">" JLE) ("<" JGE) ("==" JNE)
+                : e.Before (s.RelOp s.Command) e.After
+                , t.ExprRight
+                : {
+                    0 = <CompileExpr t.ExprLeft>
+                        e.Label s.Command;
+                    e.NonZero = <CompileExpr t.ExprLeft>
+                                <CompileExpr t.ExprRight>
+                                CMP e.Label s.Command;
+                };
+        };
+}

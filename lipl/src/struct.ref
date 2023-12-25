@@ -1,0 +1,21 @@
+$EXTERN SetConst, CompileConstExpr;
+
+CompileField {
+    s.Offset ("-" t.ConstExpr), <+ <CompileConstExpr t.ConstExpr> s.Offset> : s.FieldOffset 
+        = s.FieldOffset;
+    s.Offset (s.Name t.ConstExpr), <+ <CompileConstExpr t.ConstExpr> s.Offset> : s.FieldOffset 
+        = <SetConst s.Name (s.Offset)> s.FieldOffset;
+}
+
+CompileFieldsImpl {
+    s.Offset /* empty */ = s.Offset;
+    s.Offset t.Field e.Other = <CompileFieldsImpl <CompileField s.Offset t.Field> e.Other>;
+}
+
+CompileFields {
+    e.Fields = <CompileFieldsImpl 0 e.Fields>;
+}
+
+$ENTRY CompileStruct {
+    s.Name e.Fields = <SetConst s.Name (<CompileFields e.Fields>)>;
+}

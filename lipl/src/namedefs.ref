@@ -1,0 +1,25 @@
+$ENTRY SetConst {
+    s.Name (e.Number) = <Br const s.Name '=' (e.Number)>
+}
+
+$ENTRY GetConst {
+    s.Name, <Cp const s.Name> : {
+        /* empty */ = NotFound;
+        (e.Number) = Found (e.Number);
+    };
+}
+
+$ENTRY SetLocal {
+    s.Name (e.Number) = <Br local s.Name '=' (e.Number)>
+}
+
+$ENTRY GetLocal {
+    s.Name, <Cp local s.Name> : {
+        /* empty */ = NotFound;
+        (e.Number) = Found (e.Number);
+    };
+}
+
+$ENTRY ClearLocal {
+    s.Name = <Dg local s.Name>
+}

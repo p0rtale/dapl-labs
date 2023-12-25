@@ -1,0 +1,18 @@
+(struct Point
+    (Point_x 1)
+    (Point_y 1)
+)
+
+(struct Line
+    (Line_start Point)
+    (Line_end Point)
+)
+
+(var Counter 1)
+(var Items 5 "=" 1 2 3 4 5)
+(var rising Line "=" 0 0 10 10)
+
+(const size "=" 4)
+(var result_array size)
+
+(var primes "=" 2 3 5 7 11 13 17 19 23 29 31)

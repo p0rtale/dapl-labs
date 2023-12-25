@@ -1,0 +1,18 @@
+$EXTERN CompileConstExpr, Reduce, SetConst;
+
+MaxConstExprImpl {
+    s.Max t.ConstExpr
+      , <CompileConstExpr t.ConstExpr> : s.Current
+      , <Compare s.Current s.Max> : {
+        '+' = s.Current;
+        s.Other = s.Max;
+    };
+}
+
+MaxConstExpr {
+    e.ConstExprs = <Reduce &MaxConstExprImpl 0 e.ConstExprs>;
+}
+
+$ENTRY CompileUnion {
+    s.Name e.ConstExprs = <SetConst s.Name (<MaxConstExpr e.ConstExprs>)>;
+}

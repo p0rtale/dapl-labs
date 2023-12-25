@@ -1,0 +1,46 @@
+$EXTERN NewLabel, CompileLogicalExprEffective, GetConst, GetLocal;
+
+$ENTRY CompileArgs {
+    /* empty */ = /* empty */;
+    e.ArgsBefore t.Arg = <CompileExpr t.Arg> <CompileArgs e.ArgsBefore>;
+}
+
+CompileTernaryCond {
+    t.Cond t.OnTrue t.OnFalse
+        , <NewLabel "cond"> : e.LabelFalse, <NewLabel "cond"> : e.LabelExit
+        = <CompileLogicalExprEffective t.Cond (e.LabelFalse)>
+          <CompileExpr t.OnTrue>
+          e.LabelExit JMP
+          ':' e.LabelFalse JMP
+          <CompileExpr t.OnFalse>
+          ':' e.LabelExit;
+}
+
+$ENTRY CompileExpr {
+    s.Number, <Type s.Number> : 'N' e.1 = s.Number;
+
+    (t.Cond "?" t.OnTrue ":" t.OnFalse) = <CompileTernaryCond t.Cond t.OnTrue t.OnFalse>;
+
+    s.Name, <GetConst s.Name> : Found (e.Number) = e.Number;
+    
+    s.Name, <GetLocal s.Name> : Found (s.Sign s.Offset)
+          , ('+' ADD) ('-' SUB) : e.Before (s.Sign s.Operation) e.After
+          = GETBP s.Offset s.Operation;
+
+    s.Name = '_' s.Name;
+
+    (L t.Expr) = <CompileExpr t.Expr> READ;
+
+    ("-" t.Expr) = <CompileExpr t.Expr> NEG;
+
+    (t.ExprLeft s.BinOp t.ExprRight)
+        , ("+" ADD) ("-" SUB) ("*" MUL) ("/" DIV) ("%" MOD)
+        /*  ("|" BITOR) ("&" BITAND) ("~" BITNOT)  */
+        : e.Before (s.BinOp s.Command) e.After
+        = <CompileExpr t.ExprLeft> <CompileExpr t.ExprRight> s.Command;
+
+    (call t.Func e.Args) = <CompileArgs e.Args> <CompileExpr t.Func> CALL;
+
+    (mcall t.ObjectPtr s.Method e.Args)
+        = <CompileArgs e.Args> <CompileExpr t.ObjectPtr> DUP READ <CompileExpr s.Method> ADD READ CALL;
+}
