@@ -32,12 +32,28 @@ $ENTRY CompileExpr {
     (L t.Expr) = <CompileExpr t.Expr> READ;
 
     ("-" t.Expr) = <CompileExpr t.Expr> NEG;
+    (F "-" t.Expr) = <CompileExpr t.Expr> FNEG;
 
     (t.ExprLeft s.BinOp t.ExprRight)
         , ("+" ADD) ("-" SUB) ("*" MUL) ("/" DIV) ("%" MOD)
-        /*  ("|" BITOR) ("&" BITAND) ("~" BITNOT)  */
+          ("|" BITOR) ("&" BITAND) ("~" BITNOT)
         : e.Before (s.BinOp s.Command) e.After
         = <CompileExpr t.ExprLeft> <CompileExpr t.ExprRight> s.Command;
+
+    (U t.ExprLeft s.BinOp t.ExprRight)
+        , ("+" UADD) ("-" USUB) ("*" UMUL) ("/" UDIV) ("%" UMOD)
+        : e.Before (s.BinOp s.Command) e.After
+        = <CompileExpr t.ExprLeft> <CompileExpr t.ExprRight> s.Command;
+
+    (F t.ExprLeft s.BinOp t.ExprRight)
+        , ("+" FADD) ("-" FSUB) ("*" FMUL) ("/" FDIV)
+        : e.Before (s.BinOp s.Command) e.After
+        = <CompileExpr t.ExprLeft> <CompileExpr t.ExprRight> s.Command;
+
+    (F-from-S t.Expr) = <CompileExpr t.Expr> S2F;
+    (S-from-F t.Expr) = <CompileExpr t.Expr> F2S;
+    (F-from-U t.Expr) = <CompileExpr t.Expr> U2F;
+    (U-from-F t.Expr) = <CompileExpr t.Expr> F2U;
 
     (call t.Func e.Args) = <CompileArgs e.Args> <CompileExpr t.Func> CALL;
 
