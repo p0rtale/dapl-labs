@@ -43,6 +43,9 @@ $ENTRY CompileLogicalExprEffective {
                   ':' e.LabelOr;
 
             (t.ExprLeft s.RelOp t.ExprRight)
+                = <CompileLogicalExprEffective (S t.ExprLeft s.RelOp t.ExprRight) (e.Label)>;
+
+            (s.Type t.ExprLeft s.RelOp t.ExprRight)
                 , (">=" JLT) ("<=" JGT) ("<>" JEQ) (">" JLE) ("<" JGE) ("==" JNE)
                 : e.Before (s.RelOp s.Command) e.After
                 , t.ExprRight
@@ -51,7 +54,7 @@ $ENTRY CompileLogicalExprEffective {
                         e.Label s.Command;
                     e.NonZero = <CompileExpr t.ExprLeft>
                                 <CompileExpr t.ExprRight>
-                                CMP e.Label s.Command;
+                                <Implode_Ext <Explode s.Type> 'CMP'> e.Label s.Command;
                 };
         };
 }

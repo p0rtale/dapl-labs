@@ -16,8 +16,38 @@ CompileTernaryCond {
           ':' e.LabelExit;
 }
 
+IsDigits {
+    /* empty */ = True;
+
+    s.Symbol e.Rest
+        , <Type s.Symbol> : 'D' e.1
+        = <IsDigits e.Rest>;
+
+    e.Other = False;
+}
+
+IsRealNumber {
+    s.Sign e.Rest
+        , '+-' : e.1 s.Sign e.2
+        = <IsRealNumber e.Rest>;
+    
+    e.FirstPart 'e' s.Sign e.IntDeg
+        , '+-' : e.1 s.Sign e.2
+        , <IsDigits e.IntDeg> : True
+        = <IsRealNumber e.FirstPart>;
+
+    e.IntPart '.' e.FracPart
+        , <IsDigits e.IntPart> : True
+        , <IsDigits e.FracPart> : True 
+        = True;
+    
+    e.Other = False;
+}
+
 $ENTRY CompileExpr {
     s.Number, <Type s.Number> : 'N' e.1 = s.Number;
+
+    s.Number, <IsRealNumber <Explode s.Number>> : True = s.Number;
 
     (t.Cond "?" t.OnTrue ":" t.OnFalse) = <CompileTernaryCond t.Cond t.OnTrue t.OnFalse>;
 
