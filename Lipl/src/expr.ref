@@ -64,6 +64,22 @@ $ENTRY CompileExpr {
     ("-" t.Expr) = <CompileExpr t.Expr> NEG;
     (F "-" t.Expr) = <CompileExpr t.Expr> FNEG;
 
+    (s.PreCrementOp t.Expr)
+        , ("++" ADD) ("--" SUB) : e.Before (s.PreCrementOp s.Operation) e.After
+         = <CompileExpr t.Expr> DUP READ 1 s.Operation DUP ROT SWAP WRITE;
+    /* 
+        &x --> &x &x --> &x x --> &x x 1 ADD -->
+        &x x+1 --> &x x+1 x+1 --> x+1 x+1 &x --> x+1 &x x+1 --> x+1
+    */
+
+    (t.Expr s.PostCrementOp)
+        , ("++" ADD) ("--" SUB) : e.Before (s.PostCrementOp s.Operation) e.After
+        = <CompileExpr t.Expr> DUP READ DUP 1 s.Operation ROT SWAP WRITE;
+    /* 
+        &x --> &x &x --> &x x --> &x x x 1 ADD -->
+        &x x x+1 --> x x+1 &x --> x &x x+1 --> x
+    */
+
     (t.ExprLeft s.BinOp t.ExprRight)
         , ("+" ADD) ("-" SUB) ("*" MUL) ("/" DIV) ("%" MOD)
           ("|" BITOR) ("&" BITAND) ("~" BITNOT)
