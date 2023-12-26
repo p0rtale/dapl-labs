@@ -80,6 +80,12 @@ $ENTRY CompileExpr {
         &x x x+1 --> x x+1 &x --> x &x x+1 --> x
     */
 
+    (t.ExprLeft "=" t.ExprRight)
+        = <CompileExpr t.ExprRight> <CompileExpr t.ExprLeft> OVER WRITE;
+    /*
+        y &x --> y &x y --> y  [x := y]
+    */
+
     (t.ExprLeft s.BinOp t.ExprRight)
         , ("+" ADD) ("-" SUB) ("*" MUL) ("/" DIV) ("%" MOD)
           ("|" BITOR) ("&" BITAND) ("~" BITNOT)
