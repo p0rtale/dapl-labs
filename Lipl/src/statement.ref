@@ -4,6 +4,16 @@ CompileAssignment {
     t.ExprLeft t.ExprRight = (<CompileExpr t.ExprLeft>) (<CompileExpr t.ExprRight>) (WRITE);
 }
 
+CompileBinOpAssignment {
+    t.ExprLeft s.BinOp t.ExprRight
+    , ("+" ADD) ("-" SUB) ("*" MUL) ("/" DIV) ("%" MOD)
+      ("|" BITOR) ("&" BITAND) ("~" BITNOT)
+    : e.Before (s.BinOp s.Command) e.After
+        = (<CompileExpr t.ExprLeft>)
+          (DUP READ) (<CompileExpr t.ExprRight>) (s.Command)
+          (WRITE);
+}
+
 CompileCall {
     t.Func e.Args = (<CompileArgs e.Args> <CompileExpr t.Func> CALL) (DROP);
 }
@@ -70,6 +80,8 @@ CompileInit {
 
 CompileStatement {
     s.1 s.2 (t.ExprLeft "=" t.ExprRight) = <CompileAssignment t.ExprLeft t.ExprRight>;
+
+    s.1 s.2 (t.ExprLeft s.BinOp "=" t.ExprRight) = <CompileBinOpAssignment t.ExprLeft s.BinOp t.ExprRight>;
 
     s.1 s.2 (call t.Func e.Args) = <CompileCall t.Func e.Args>;
 
