@@ -20,7 +20,8 @@ public:
 private:
     std::istream& nextSymbol(char& symbol);
 
-    bool isNumber(std::string numberStr);
+    bool isIntNumber(std::string numberStr);
+    bool isFloatNumber(std::string numberStr);
 
     char skipLine();
 

@@ -1,4 +1,5 @@
 #include <StackMachine/AsmCompiler/Lexer.hpp>
+#include <StackMachine/Machine/MemoryContainer.hpp>
 
 namespace asm_compiler {
 
@@ -30,7 +31,11 @@ bool Lexer::scan() {
                 while (nextSymbol(symbol) && !std::isspace(symbol)) {
                     numberStr.push_back(symbol);
                 }
-                if (!isNumber(numberStr)) {
+                if (isIntNumber(numberStr)) {
+                } else if (isFloatNumber(numberStr)) {
+                    float numberFloat = std::atof(numberStr.c_str());
+                    numberStr = std::to_string(reinterpret_cast<stack_machine::Word&>(numberFloat));
+                } else {
                     size_t errPosition = m_scanPosition - numberStr.length() - 1;
                     std::cerr << "Error: invalid number at position " << errPosition << std::endl;
                     return false;
@@ -68,10 +73,20 @@ std::istream& Lexer::nextSymbol(char& symbol) {
     return m_input.get(symbol);
 }
 
-bool Lexer::isNumber(std::string numberStr) {
+bool Lexer::isIntNumber(std::string numberStr) {
     const char* numberCStr = numberStr.c_str();
     char* end;
     std::strtol(numberCStr, &end, 10);
+    if (*numberCStr == '\0' || *end != '\0') {
+        return false;
+    }
+    return true;
+}
+
+bool Lexer::isFloatNumber(std::string numberStr) {
+    const char* numberCStr = numberStr.c_str();
+    char* end;
+    std::strtof(numberCStr, &end);
     if (*numberCStr == '\0' || *end != '\0') {
         return false;
     }
