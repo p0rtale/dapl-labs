@@ -1,4 +1,4 @@
-$EXTERN Map, CompileExpr, CompileArgs, CompileLogicalExprEffective, NewLabel;
+$EXTERN Map, CompileExpr, CompileArgs, CompileLogicalExprEffective, NewLabel, Dec;
 
 CompileAssignment {
     t.ExprLeft t.ExprRight = (<CompileExpr t.ExprLeft>) (<CompileExpr t.ExprRight>) (WRITE);
@@ -42,6 +42,52 @@ CompileIf {
           (e.LabelExit) (JMP)
           (':' e.LabelFalse)
           <CompileBody s.Name s.ParamsNum t.ExtLabelLoop t.ExtLabelExit e.CodeFalse>
+          (':' e.LabelExit);
+}
+
+GenerateBranchLabelsImpl {
+    s.Name 0 = /* empty */;
+
+    s.Name s.Count
+        , <NewLabel s.Name> : e.Label
+        = (e.Label) <GenerateBranchLabelsImpl s.Name <Dec s.Count>>;
+}
+
+GenerateBranchLabels {
+    s.Name e.Branches
+        , <Lenw e.Branches> : s.Count e._
+        = s.Count <GenerateBranchLabelsImpl s.Name s.Count>;
+}
+
+CompileSwitchBranches {
+    s.Name s.ParamsNum (e.LabelExit) () ()
+        = /* empty */;
+
+    s.Name s.ParamsNum (e.LabelExit) (t.Branch e.Branches) ((e.BranchLabel) e.Labels)
+        , t.Branch : (e.Code)
+        = (':' e.BranchLabel)
+          <CompileBody s.Name s.ParamsNum /*t.1=*/0 (e.LabelExit) e.Code>
+          <CompileSwitchBranches s.Name s.ParamsNum (e.LabelExit) (e.Branches) (e.Labels)>;
+}
+
+CompileSwitch {
+    s.Name s.ParamsNum t.Expr e.Branches t.DefaultBranch
+        , t.DefaultBranch : (e.DefaultCode)
+        , <NewLabel s.Name> : e.LabelDefault
+        , <NewLabel s.Name> : e.LabelDefaultWithoutDrop
+        , <NewLabel s.Name> : e.LabelJumpTable
+        , <NewLabel s.Name> : e.LabelExit
+        , <GenerateBranchLabels s.Name e.Branches> : s.Count e.BranchLabels
+        = (<CompileExpr t.Expr>)
+          (DUP) (e.LabelDefault) (JLT)
+          (DUP s.Count CMP) (e.LabelDefault) (JGE)
+          (e.LabelJumpTable) (ADD READ JMP)
+          (':' e.LabelJumpTable) e.BranchLabels
+          <CompileSwitchBranches s.Name s.ParamsNum (e.LabelExit) (e.Branches) (e.BranchLabels)>
+          (e.LabelDefaultWithoutDrop) (JMP)
+          (':' e.LabelDefault)
+          (DROP) (':' e.LabelDefaultWithoutDrop)
+          <CompileBody s.Name s.ParamsNum /*t.1=*/0 (e.LabelExit) e.DefaultCode>
           (':' e.LabelExit);
 }
 
@@ -110,6 +156,9 @@ CompileStatement {
     s.Name s.ParamsNum t.LabelLoop t.LabelExit (if t.BoolExpr e.Code)
         = <CompileIf s.Name s.ParamsNum t.LabelLoop t.LabelExit
                      t.BoolExpr (e.Code) ()>;
+
+    s.Name s.ParamsNum t.1 t.2 (switch t.Expr e.Branches t.DefaultBranch)
+        = <CompileSwitch s.Name s.ParamsNum t.Expr e.Branches t.DefaultBranch>;
 
     s.Name s.ParamsNum t.1 t.2 (while t.BoolExpr e.Code)
         = <CompileWhile s.Name s.ParamsNum t.BoolExpr e.Code>;
