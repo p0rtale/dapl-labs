@@ -78,6 +78,6 @@ $ENTRY CompileFunction {
         , <Lenw e.Params> : s.ParamsNum e.Rest
         = (':_' <Explode s.Name>)
           <Prologue (e.Params) (e.LocalVars)>
-          <CompileBody s.Name s.ParamsNum e.Code>
+          <CompileBody s.Name s.ParamsNum /*t.1=*/0 /*t.2=*/0 e.Code>
           <Epilogue s.Name (e.Params) (e.LocalVars)>
 }

@@ -27,35 +27,41 @@ CompileReturn {
 }
 
 CompileIf {
-    s.Name s.ParamsNum t.BoolExpr (e.CodeTrue) ()
+    s.Name s.ParamsNum t.ExtLabelLoop t.ExtLabelExit
+    t.BoolExpr (e.CodeTrue) ()
         , <NewLabel s.Name> : e.LabelExit
         = (<CompileLogicalExprEffective t.BoolExpr (e.LabelExit)>)
-          <CompileBody s.Name s.ParamsNum e.CodeTrue>
+          <CompileBody s.Name s.ParamsNum t.ExtLabelLoop t.ExtLabelExit e.CodeTrue>
           (':' e.LabelExit);
 
-    s.Name s.ParamsNum t.BoolExpr (e.CodeTrue) (e.CodeFalse)
+    s.Name s.ParamsNum t.ExtLabelLoop t.ExtLabelExit
+    t.BoolExpr (e.CodeTrue) (e.CodeFalse)
         , <NewLabel s.Name> : e.LabelFalse, <NewLabel s.Name> : e.LabelExit
         = (<CompileLogicalExprEffective t.BoolExpr (e.LabelFalse)>)
-          <CompileBody s.Name s.ParamsNum e.CodeTrue>
+          <CompileBody s.Name s.ParamsNum t.ExtLabelLoop t.ExtLabelExit e.CodeTrue>
           (e.LabelExit) (JMP)
-          (':' e.LabelFalse) <CompileBody s.Name s.ParamsNum e.CodeFalse> (':' e.LabelExit);
+          (':' e.LabelFalse)
+          <CompileBody s.Name s.ParamsNum t.ExtLabelLoop t.ExtLabelExit e.CodeFalse>
+          (':' e.LabelExit);
 }
 
 CompileWhile {
     s.Name s.ParamsNum t.BoolExpr e.Code
-        , <NewLabel s.Name> : e.LabelLoop, <NewLabel s.Name> : e.LabelExit 
+        , <NewLabel s.Name> : e.LabelLoop, <NewLabel s.Name> : e.LabelExit
         = (':' e.LabelLoop)
           (<CompileLogicalExprEffective t.BoolExpr (e.LabelExit)>)
-          <CompileBody s.Name s.ParamsNum e.Code>
+          <CompileBody s.Name s.ParamsNum (e.LabelLoop) (e.LabelExit) e.Code>
           (e.LabelLoop) (JMP) 
           (':' e.LabelExit);
 }
 
 CompileRepeat {
     s.Name s.ParamsNum (e.Code) t.BoolExpr
-        , <NewLabel s.Name> : e.LabelLoop
-        = (':' e.LabelLoop) <CompileBody s.Name s.ParamsNum e.Code>
-          (<CompileLogicalExprEffective t.BoolExpr (e.LabelLoop)>);
+        , <NewLabel s.Name> : e.LabelLoop, <NewLabel s.Name> : e.LabelExit
+        = (':' e.LabelLoop)
+          <CompileBody s.Name s.ParamsNum (e.LabelLoop) (e.LabelExit) e.Code>
+          (<CompileLogicalExprEffective t.BoolExpr (e.LabelLoop)>)
+          (':' e.LabelExit);
 }
 
 OptStatement {
@@ -65,7 +71,7 @@ OptStatement {
 
 CompileFor {
     s.Name s.ParamsNum t.Init t.BoolExpr t.Step e.Code 
-        = <CompileBody s.Name s.ParamsNum
+        = <CompileBody s.Name s.ParamsNum /*t.1=*/0 /*t.2=*/0
           <OptStatement t.Init>
           (while t.BoolExpr
               e.Code
@@ -79,30 +85,46 @@ CompileInit {
 }
 
 CompileStatement {
-    s.1 s.2 (t.ExprLeft "=" t.ExprRight) = <CompileAssignment t.ExprLeft t.ExprRight>;
+    s.1 s.2 t.1 t.2 (t.ExprLeft "=" t.ExprRight)
+        = <CompileAssignment t.ExprLeft t.ExprRight>;
 
-    s.1 s.2 (t.ExprLeft s.BinOp "=" t.ExprRight) = <CompileBinOpAssignment t.ExprLeft s.BinOp t.ExprRight>;
+    s.1 s.2 t.1 t.2 (t.ExprLeft s.BinOp "=" t.ExprRight)
+        = <CompileBinOpAssignment t.ExprLeft s.BinOp t.ExprRight>;
 
-    s.1 s.2 (call t.Func e.Args) = <CompileCall t.Func e.Args>;
+    s.1 s.2 t.1 t.2 (call t.Func e.Args)
+        = <CompileCall t.Func e.Args>;
 
-    s.Name s.ParamsNum (return t.Expr) = <CompileReturn s.Name s.ParamsNum t.Expr>;
+    s.Name s.ParamsNum t.1 t.2 (return t.Expr)
+        = <CompileReturn s.Name s.ParamsNum t.Expr>;
 
-    s.Name s.ParamsNum (if t.BoolExpr e.CodeTrue else e.CodeFalse)
-        = <CompileIf s.Name s.ParamsNum t.BoolExpr (e.CodeTrue) (e.CodeFalse)>;
+    s.Name s.ParamsNum t.1 (e.LabelExit) (break)
+        = (e.LabelExit) (JMP);
 
-    s.Name s.ParamsNum (if t.BoolExpr e.Code) = <CompileIf s.Name s.ParamsNum t.BoolExpr (e.Code) ()>;
+    s.Name s.ParamsNum (e.LabelLoop) t.2 (continue)
+        = (e.LabelLoop) (JMP);
 
-    s.Name s.ParamsNum (while t.BoolExpr e.Code) = <CompileWhile s.Name s.ParamsNum t.BoolExpr e.Code>;
+    s.Name s.ParamsNum t.LabelLoop t.LabelExit (if t.BoolExpr e.CodeTrue else e.CodeFalse)
+        = <CompileIf s.Name s.ParamsNum t.LabelLoop t.LabelExit
+                     t.BoolExpr (e.CodeTrue) (e.CodeFalse)>;
 
-    s.Name s.ParamsNum (for (t.Init t.BoolExpr t.Step) e.Code)
+    s.Name s.ParamsNum t.LabelLoop t.LabelExit (if t.BoolExpr e.Code)
+        = <CompileIf s.Name s.ParamsNum t.LabelLoop t.LabelExit
+                     t.BoolExpr (e.Code) ()>;
+
+    s.Name s.ParamsNum t.1 t.2 (while t.BoolExpr e.Code)
+        = <CompileWhile s.Name s.ParamsNum t.BoolExpr e.Code>;
+
+    s.Name s.ParamsNum t.1 t.2 (for (t.Init t.BoolExpr t.Step) e.Code)
         = <CompileFor s.Name s.ParamsNum t.Init t.BoolExpr t.Step e.Code>;
 
-    s.Name s.ParamsNum (repeat e.Code until t.BoolExpr) = <CompileRepeat s.Name s.ParamsNum (e.Code) t.BoolExpr>;
+    s.Name s.ParamsNum t.1 t.2 (repeat e.Code until t.BoolExpr)
+        = <CompileRepeat s.Name s.ParamsNum (e.Code) t.BoolExpr>;
 
     s.1 s.2 (init t.ObjectPtr s.ClassName) = <CompileInit t.ObjectPtr s.ClassName>
 }
 
 $ENTRY CompileBody {
-    s.Name s.ParamsNum e.Statements
-      = <Map (&CompileStatement s.Name s.ParamsNum) e.Statements>;
+    s.Name s.ParamsNum t.LabelLoop t.LabelExit e.Statements
+        = <Map (&CompileStatement s.Name s.ParamsNum t.LabelLoop t.LabelExit)
+               e.Statements>;
 }

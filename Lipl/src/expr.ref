@@ -52,7 +52,7 @@ $ENTRY CompileExpr {
     (t.Cond "?" t.OnTrue ":" t.OnFalse) = <CompileTernaryCond t.Cond t.OnTrue t.OnFalse>;
 
     s.Name, <GetConst s.Name> : Found (e.Number) = e.Number;
-    
+
     s.Name, <GetLocal s.Name> : Found (s.Sign s.Offset)
           , ('+' ADD) ('-' SUB) : e.Before (s.Sign s.Operation) e.After
           = GETBP s.Offset s.Operation;
