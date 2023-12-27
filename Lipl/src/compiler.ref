@@ -1,5 +1,5 @@
 $EXTERN Map, GenTrampoline, GenAuxFunctions, CompileStruct, CompileClass,
-        CompileUnion, CompileConst, CompileGlobalVar, CompileFunction;
+        CompileUnion, CompileConst, CompileGlobalVar, CompileFunction, CompileVFunction;
 
 $ENTRY CompileDefinition {
     (struct s.Name e.Fields) = <CompileStruct s.Name e.Fields>;
@@ -10,12 +10,21 @@ $ENTRY CompileDefinition {
 
     (var s.Name t.ConstExpr e.Init) = <CompileGlobalVar s.Name t.ConstExpr e.Init>;
     
-    (function s.Name (e.Params) (var e.LocalVars) e.Code) = <CompileFunction s.Name (e.Params) (e.LocalVars) e.Code>;
+    (function s.Name (e.Params) (var e.LocalVars) e.Code)
+        = <CompileFunction s.Name (e.Params) (e.LocalVars) e.Code>;
     (function s.Name (e.Params) e.Code) = <CompileFunction s.Name (e.Params) () e.Code>;
+
+    (vfunction s.Name (e.Params) (var e.LocalVars) e.Code)
+        = <CompileVFunction s.Name (e.Params) (e.LocalVars) e.Code>;
+    (vfunction s.Name (e.Params) e.Code) = <CompileVFunction s.Name (e.Params) () e.Code>;
 
     (union s.Name e.ConstExprs) = <CompileUnion s.Name e.ConstExprs>;
 }
 
+PreprocessProgram {
+    e.Program = (const int "=" 1) (const ptr "=" 1) e.Program;
+}
+
 $ENTRY Compile {
-    e.Program = <GenTrampoline> <Map &CompileDefinition e.Program> <GenAuxFunctions> 
+    e.Program = <GenTrampoline> <Map &CompileDefinition <PreprocessProgram e.Program>> <GenAuxFunctions> 
 }

@@ -18,12 +18,23 @@ CompileCall {
     t.Func e.Args = (<CompileArgs e.Args> <CompileExpr t.Func> CALL) (DROP);
 }
 
+CompileVCall {
+    t.Func e.Args
+        , <Lenw e.Args> : s.ArgsNum e._
+        = (<CompileArgs e.Args> <CompileExpr t.Func> CALL)
+          (s.ArgsNum 1 ADD DROPN);
+}
+
 CompileReturn {
     s.Name 0 t.Expr = (2 GETBP ADD) (<CompileExpr t.Expr>) (WRITE) 
                       ('_' <Explode s.Name> '_return') (JMP);
 
     s.Name s.ParamsNum t.Expr = (<+ s.ParamsNum 1> GETBP ADD) (<CompileExpr t.Expr>) (WRITE)
                                 ('_' <Explode s.Name> '_return') (JMP);
+}
+
+CompileVReturn {
+    s.Name s.ParamsNum t.Expr = <CompileReturn s.Name 0 t.Expr>;
 }
 
 CompileIf {
@@ -140,8 +151,14 @@ CompileStatement {
     s.1 s.2 t.1 t.2 (call t.Func e.Args)
         = <CompileCall t.Func e.Args>;
 
+    s.1 s.2 t.1 t.2 (vcall t.Func e.Args)
+        = <CompileVCall t.Func e.Args>;
+
     s.Name s.ParamsNum t.1 t.2 (return t.Expr)
         = <CompileReturn s.Name s.ParamsNum t.Expr>;
+
+    s.Name s.ParamsNum t.1 t.2 (vreturn t.Expr)
+        = <CompileVReturn s.Name s.ParamsNum t.Expr>;
 
     s.Name s.ParamsNum t.1 (e.LabelExit) (break)
         = (e.LabelExit) (JMP);

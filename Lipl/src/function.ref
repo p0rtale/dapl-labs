@@ -22,8 +22,8 @@ InitLocalVars {
 }
 
 PrologueImpl {
-    (e.Params) (e.LocalVars)
-        , <ParamsOffset 2 e.Params> : e.Something
+    (e.Params) (e.LocalVars) s.ParamsOffset
+        , <ParamsOffset s.ParamsOffset e.Params> : e.Something
         , <InitLocalVars 0 e.LocalVars> : s.Offset
         , e.LocalVars
         : {
@@ -41,7 +41,11 @@ Prologue {
             e._ = /* empty */;
           }
         : e.DUPopt
-        = e.DUPopt <PrologueImpl (e.Params) (e.LocalVars)>;
+        = e.DUPopt <PrologueImpl (e.Params) (e.LocalVars) 2>;
+}
+
+VPrologue {
+    (e.Params) (e.LocalVars) = (DUP) <PrologueImpl (e.Params) (e.LocalVars) 3>;
 }
 
 ClearParams {
@@ -73,6 +77,10 @@ Epilogue {
           <GenRetParams s.ParamsNum>;               
 }
 
+VEpilogue {
+    s.Name (e.Params) (e.LocalVars) = <Epilogue s.Name () (e.LocalVars)>;
+}
+
 $ENTRY CompileFunction {
     s.Name (e.Params) (e.LocalVars) e.Code
         , <Lenw e.Params> : s.ParamsNum e.Rest
@@ -80,4 +88,13 @@ $ENTRY CompileFunction {
           <Prologue (e.Params) (e.LocalVars)>
           <CompileBody s.Name s.ParamsNum /*t.1=*/0 /*t.2=*/0 e.Code>
           <Epilogue s.Name (e.Params) (e.LocalVars)>
+}
+
+$ENTRY CompileVFunction {
+    s.Name (e.Params) (e.LocalVars) e.Code
+        , <Lenw e.Params> : s.ParamsNum e.Rest
+        = (':_' <Explode s.Name>)
+          <VPrologue (e.Params) (e.LocalVars)>
+          <CompileBody s.Name s.ParamsNum /*t.1=*/0 /*t.2=*/0 e.Code>
+          <VEpilogue s.Name (e.Params) (e.LocalVars)>
 }

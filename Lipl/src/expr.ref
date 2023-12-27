@@ -109,6 +109,12 @@ $ENTRY CompileExpr {
 
     (call t.Func e.Args) = <CompileArgs e.Args> <CompileExpr t.Func> CALL;
 
+    (vcall t.Func e.Args)
+        , <Lenw e.Args> : s.ArgsNum e._
+        = <CompileArgs e.Args> <CompileExpr t.Func> CALL
+          GETSP DUP s.ArgsNum ADD SWAP READ WRITE
+          s.ArgsNum DROPN;
+
     (mcall t.ObjectPtr s.Method e.Args)
         = <CompileArgs e.Args> <CompileExpr t.ObjectPtr> DUP READ <CompileExpr s.Method> ADD READ CALL;
 }
