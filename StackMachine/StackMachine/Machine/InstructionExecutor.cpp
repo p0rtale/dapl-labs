@@ -52,13 +52,15 @@ void InstructionExecutor::execute() {
         case Instruction::kWrite: std::cout << "WRITE\n"; return executeWrite();
 
         case Instruction::kCmp:  std::cout << "CMP\n"; return executeCmp();
-        case Instruction::kJmp: std::cout << "JMP\n";  return executeJmp();
-        case Instruction::kJlt: std::cout << "JLT\n"; return executeJlt();
-        case Instruction::kJgt: std::cout << "JGT\n"; return executeJgt();
-        case Instruction::kJeq: std::cout << "JEQ\n"; return executeJeq();
-        case Instruction::kJle: std::cout << "JLE\n"; return executeJle();
-        case Instruction::kJge: std::cout << "JGE\n"; return executeJge();
-        case Instruction::kJne: std::cout << "JNE\n"; return executeJne();
+        case Instruction::kFCmp: std::cout << "FCMP\n"; return executeFCmp();
+        case Instruction::kUCmp: std::cout << "UCMP\n"; return executeUCmp();
+        case Instruction::kJmp:  std::cout << "JMP\n";  return executeJmp();
+        case Instruction::kJlt:  std::cout << "JLT\n"; return executeJlt();
+        case Instruction::kJgt:  std::cout << "JGT\n"; return executeJgt();
+        case Instruction::kJeq:  std::cout << "JEQ\n"; return executeJeq();
+        case Instruction::kJle:  std::cout << "JLE\n"; return executeJle();
+        case Instruction::kJge:  std::cout << "JGE\n"; return executeJge();
+        case Instruction::kJne:  std::cout << "JNE\n"; return executeJne();
         case Instruction::kCall: std::cout << "CALL\n"; return executeCall();
         case Instruction::kRetn: std::cout << "RETN\n"; return executeRetn();
         case Instruction::kHalt: std::cout << "HALT\n"; return executeHalt();
