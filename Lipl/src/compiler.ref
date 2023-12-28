@@ -1,5 +1,6 @@
-$EXTERN Map, GenTrampoline, GenAuxFunctions, CompileStruct, CompileClass,
-        CompileUnion, CompileConst, CompileGlobalVar, CompileFunction, CompileVFunction;
+$EXTERN Map, GenTrampoline, GenAuxFunctions, GenDynamicMemoryTools,
+        CompileStruct, CompileClass, CompileUnion, CompileConst,
+        CompileGlobalVar, CompileFunction, CompileVFunction;
 
 $ENTRY CompileDefinition {
     (struct s.Name e.Fields) = <CompileStruct s.Name e.Fields>;
@@ -26,5 +27,9 @@ PreprocessProgram {
 }
 
 $ENTRY Compile {
-    e.Program = <GenTrampoline> <Map &CompileDefinition <PreprocessProgram e.Program>> <GenAuxFunctions> 
+    e.Program = ('_init_heap__ CALL DROP')
+                <GenTrampoline>
+                <Map &CompileDefinition <PreprocessProgram e.Program>>
+                <GenAuxFunctions>
+                <GenDynamicMemoryTools BlockList>;
 }

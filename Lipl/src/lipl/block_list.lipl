@@ -1,0 +1,94 @@
+(const HEAP_SIZE "=" 100)
+
+(struct Block
+    (Block_prev ptr)
+    (Block_next ptr)
+
+    (Block_size  int)
+    (Block_state int)
+)
+
+(const USED "=" 1)
+(const FREE "=" 0)
+
+(var heap HEAP_SIZE)
+
+(function init_heap__ ()
+    (var (dummy ptr))
+
+    ((heap "+" Block_prev) "=" 0)
+
+    ((heap "+" Block_size) "=" (HEAP_SIZE "-" (2 "*" Block)))
+    ((heap "+" Block_state) "=" FREE)
+
+    (dummy "=" ((heap "+" HEAP_SIZE) "-" Block))
+
+    (((L dummy) "+" Block_prev) "=" heap)
+    (((L dummy) "+" Block_next) "=" 0)
+
+    (((L dummy) "+" Block_size) "=" 0)
+    (((L dummy) "+" Block_state) "=" USED)
+
+    ((heap "+" Block_next) "=" (L dummy))
+)
+
+(function split_block__ (current alloc_size)
+    (var (next ptr))
+
+    (if ((L ((L current) "+" Block_size)) ">" (L alloc_size))
+        (next "=" ((L current) "+" (Block "+" (L alloc_size))))
+
+        (((L next) "+" Block_prev) "=" (L current))
+        (((L next) "+" Block_next) "=" (L ((L current) "+" Block_next)))
+
+        (((L next) "+" Block_size) "="
+            ((L ((L current) "+" Block_size)) "-" ((L alloc_size) "+" Block))
+        )
+        (((L next) "+" Block_state) "=" FREE)
+
+        (((L current) "+" Block_next) "=" (L next))
+        (((L current) "+" Block_size) "=" (L alloc_size))
+    )
+)
+
+(function malloc (alloc_size)
+    (var (current ptr))
+
+    (current "=" heap)
+    (while ((L current) "<>" 0)
+        (if (((L ((L current) "+" Block_state)) "==" FREE) and
+                ((L ((L current) "+" Block_size)) ">=" (L alloc_size)))
+            (call split_block__ (L current) (L alloc_size))
+            (((L current) "+" Block_state) "=" USED)
+            (return ((L current) "+" Block)))
+        (current "=" (L ((L current) "+" Block_next)))
+    )
+
+    (return 0)
+)
+
+(function merge_blocks__ (current next next_next)
+    (((L current) "+" Block_next) "=" (L next_next))
+    (((L next_next) "+" Block_prev) "=" (L current))
+    (((L current) "+" Block_size) "+" "=" (Block "+" (L ((L next) "+" Block_size))))
+)
+
+(function free (current)
+    (var (prev ptr) (next ptr))
+
+    (((L current) "+" Block_state) "=" FREE)
+
+    (next "=" (L ((L current) "+" Block_next)))
+    (if ((L next) "<>" 0)
+        (if ((L ((L next) "+" Block_state)) "==" FREE)
+            (call merge_blocks__ (L current) (L next) (L ((L next) "+" Block_next)))
+        ) 
+    )
+
+    (prev "=" (L ((L current) "+" Block_prev)))
+    (if ((L prev) "<>" 0)
+        (if ((L ((L prev) "+" Block_state)) "==" FREE)
+            (call merge_blocks__ (L prev) (L current) (L ((L current) "+" Block_next)))
+        )
+    )
+)

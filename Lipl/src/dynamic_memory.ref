@@ -1,0 +1,17 @@
+$EXTERN LoadExpr, Map, CompileDefinition;
+
+/*
+(function approx_getsp ()
+    (var (local 1))
+    (return local)
+)
+*/
+
+GenBlockListTools {
+    /* empty */ = (':_START_OF_HEAP__') ('PROGRAM_SIZE')
+                  <Map &CompileDefinition <Ord <LoadExpr 'src/lipl/block_list.lipl'>>>;
+}
+
+$ENTRY GenDynamicMemoryTools {
+    BlockList = <GenBlockListTools>;
+}
