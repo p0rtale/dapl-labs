@@ -14,6 +14,9 @@ InstructionExecutor::InstructionExecutor(Instruction instruction, Memory& memory
 void InstructionExecutor::execute() {
     switch (m_instruction) {
         case Instruction::kBlank: return;
+
+        case Instruction::kProgramSize: return executeProgramSize();
+
         case Instruction::kAdd:  std::cout << "ADD\n";  return executeAdd();
         case Instruction::kFAdd: std::cout << "FADD\n"; return executeFAdd();
         case Instruction::kUAdd: std::cout << "UADD\n"; return executeUAdd();
@@ -74,7 +77,9 @@ void InstructionExecutor::execute() {
         case Instruction::kIn: std::cout << "IN\n"; return executeIn();
         case Instruction::kOut: std::cout << "OUT\n"; return executeOut();
 
-        default: return executePush(static_cast<Word>(m_instruction));
+        default:
+            std::cout << "PUSH " << static_cast<Word>(m_instruction) << "\n";
+            return executePush(static_cast<Word>(m_instruction));
     }
 }
 
@@ -83,6 +88,11 @@ Word InstructionExecutor::getHaltResult() {
         return m_stack.pop();
     }
     return Word{0};
+}
+
+void InstructionExecutor::executeProgramSize() {
+    auto& program = m_memory.program();
+    m_stack.push(program.size());
 }
 
 void InstructionExecutor::executeAdd() {

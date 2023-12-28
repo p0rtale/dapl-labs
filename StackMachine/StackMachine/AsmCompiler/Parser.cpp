@@ -38,7 +38,7 @@ bool Parser::parse(Lexer& lexer) {
             } else if (token.type == TokenType::kName) {
                 std::string prevConstantName = token.value;
                 if (m_constants.contains(prevConstantName)) {
-                    m_constants[constantName] = prevConstantName;
+                    m_constants[constantName] = m_constants[prevConstantName];
                 } else {
                     std::cerr << "Error: unknown constant name: " << prevConstantName << std::endl;
                     return false;

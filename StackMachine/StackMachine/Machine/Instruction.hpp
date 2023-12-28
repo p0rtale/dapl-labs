@@ -9,6 +9,7 @@ namespace stack_machine {
 
 enum class Instruction {
     kBlank = std::numeric_limits<int>::min(),
+    kProgramSize,
 
     kAdd = -1, kFAdd = -41, kUAdd = -42,
     kSub = -2, kFSub = -43, kUSub = -44,

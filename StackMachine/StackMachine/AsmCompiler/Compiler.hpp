@@ -10,6 +10,8 @@
 namespace asm_compiler {
 
 static std::unordered_map<std::string, stack_machine::Instruction> instructionNameMap = {
+    {"PROGRAM_SIZE", stack_machine::Instruction::kProgramSize},
+
     {"ADD",  stack_machine::Instruction::kAdd},
     {"SADD", stack_machine::Instruction::kAdd},
     {"FADD", stack_machine::Instruction::kFAdd},

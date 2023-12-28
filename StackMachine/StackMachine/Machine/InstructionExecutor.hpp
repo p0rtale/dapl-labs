@@ -27,6 +27,8 @@ public:
     Word getHaltResult();
 
 private:
+    void executeProgramSize();
+
     void executeAdd(); void executeFAdd(); void executeUAdd();
     void executeSub(); void executeFSub(); void executeUSub();
     void executeDiv(); void executeFDiv(); void executeUDiv();
