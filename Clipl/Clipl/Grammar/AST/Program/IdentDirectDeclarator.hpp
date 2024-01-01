@@ -10,7 +10,7 @@ namespace ast {
 class IdentDirectDeclarator: public DirectDeclarator {
 public:
     IdentDirectDeclarator(std::string identifier)
-        : m_Identifier(std::move(identifier)) {};
+        : m_Identifier(std::move(identifier)) {}
 
     // void accept(Visitor *visitor) override;
 

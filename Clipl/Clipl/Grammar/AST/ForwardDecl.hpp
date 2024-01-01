@@ -4,6 +4,7 @@ namespace ast {
 
 // Program
 class AbstractDeclarator;
+class ArrayDirectAbstractDeclarator;
 class ArrayDirectDeclarator;
 class BasicKeywordSpecifier;
 class Declaration;
@@ -26,8 +27,10 @@ class Initializer;
 class InitializerList;
 class KeywordDeclarationSpecifiers;
 class KeywordSpecifier;
+class NestedDirectAbstractDeclarator;
 class NestedDirectDeclarator;
 class ParameterDeclaration;
+class ParameterDirectAbstractDeclarator;
 class ParameterDirectDeclarator;
 class ParameterList;
 class ParameterTypeList;

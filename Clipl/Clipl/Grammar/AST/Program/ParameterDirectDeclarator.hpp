@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <memory>
 
 #include <Clipl/Grammar/AST/Program/DirectDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/ParameterTypeList.hpp>
@@ -13,7 +13,7 @@ public:
     ParameterDirectDeclarator(std::shared_ptr<DirectDeclarator> directDeclarator,
                               std::shared_ptr<ParameterTypeList> parameterTypeList = nullptr)
         : m_DirectDeclarator(directDeclarator),
-          m_ParameterTypeList(parameterTypeList) {};
+          m_ParameterTypeList(parameterTypeList) {}
 
     // void accept(Visitor *visitor) override;
 

@@ -6,6 +6,7 @@
 
 // Program
 #include <Clipl/Grammar/AST/Program/AbstractDeclarator.hpp>
+#include <Clipl/Grammar/AST/Program/ArrayDirectAbstractDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/ArrayDirectDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/BasicKeywordSpecifier.hpp>
 #include <Clipl/Grammar/AST/Program/Declaration.hpp>
@@ -28,8 +29,10 @@
 #include <Clipl/Grammar/AST/Program/InitializerList.hpp>
 #include <Clipl/Grammar/AST/Program/KeywordDeclarationSpecifiers.hpp>
 #include <Clipl/Grammar/AST/Program/KeywordSpecifier.hpp>
+#include <Clipl/Grammar/AST/Program/NestedDirectAbstractDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/NestedDirectDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/ParameterDeclaration.hpp>
+#include <Clipl/Grammar/AST/Program/ParameterDirectAbstractDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/ParameterDirectDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/ParameterList.hpp>
 #include <Clipl/Grammar/AST/Program/ParameterTypeList.hpp>

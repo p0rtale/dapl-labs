@@ -587,45 +587,45 @@ parameter_declaration
 
 abstract_declarator
     : pointer {
-
+        $$ = std::make_shared<AbstractDeclarator>($1);
     }
     | direct_abstract_declarator {
-
+        $$ = std::make_shared<AbstractDeclarator>($1);
     }
     | pointer direct_abstract_declarator {
-
+        $$ = std::make_shared<AbstractDeclarator>($2, $1);
     };
 
 direct_abstract_declarator
     : "(" abstract_declarator ")" {
-
+        $$ = std::make_shared<NestedDirectAbstractDeclarator>($2);
     }
     | "[" "]" {
-
+        $$ = std::make_shared<ArrayDirectAbstractDeclarator>();
     }
     | "[" constant_expression "]" {
-
+        $$ = std::make_shared<ArrayDirectAbstractDeclarator>($2);
     }
     | "[" error "]" {
         // TODO: handle error
     }
     | direct_abstract_declarator "[" "]" {
-
+        $$ = std::make_shared<ArrayDirectAbstractDeclarator>($1);
     }
     | direct_abstract_declarator "[" constant_expression "]" {
-
+        $$ = std::make_shared<ArrayDirectAbstractDeclarator>($1, $3);
     }
     | "(" ")" {
-
+        $$ = std::make_shared<ParameterDirectAbstractDeclarator>();
     }
     | "(" parameter_type_list ")" {
-
+        $$ = std::make_shared<ParameterDirectAbstractDeclarator>($2);
     }
     | direct_abstract_declarator "(" ")" {
-
+        $$ = std::make_shared<ParameterDirectAbstractDeclarator>($1);
     }
     | direct_abstract_declarator "(" parameter_type_list ")" {
-
+        $$ = std::make_shared<ParameterDirectAbstractDeclarator>($1, $3);
     }
     | direct_abstract_declarator "(" error ")" {
         // TODO: handle error

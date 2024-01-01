@@ -7,7 +7,7 @@ namespace ast {
 
 class DirectAbstractDeclarator: public ASTNode {
 public:
-    DirectAbstractDeclarator();
+    virtual ~DirectAbstractDeclarator() = default;
 
     // void accept(Visitor *visitor) override;
 };
