@@ -62,11 +62,13 @@
 #include <Clipl/Grammar/AST/Expression/CastExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/CastTypenameExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/CastUnaryExpression.hpp>
+#include <Clipl/Grammar/AST/Expression/ConditionalAssignmentExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/ConditionalExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/ConstantExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/EqualityExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/ExclusiveOrExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/Expression.hpp>
+#include <Clipl/Grammar/AST/Expression/IdentPrimaryExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/IncDecPostfixExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/IncDecPrefixExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/InclusiveOrExpression.hpp>
@@ -74,6 +76,8 @@
 #include <Clipl/Grammar/AST/Expression/LogicalAndExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/LogicalOrExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/MultiplicativeExpression.hpp>
+#include <Clipl/Grammar/AST/Expression/NestedPrimaryExpression.hpp>
+#include <Clipl/Grammar/AST/Expression/NumberPrimaryExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/OperatorUnaryExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/PostfixExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/PrimaryExpression.hpp>
@@ -81,6 +85,7 @@
 #include <Clipl/Grammar/AST/Expression/ShiftExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/SizeofTypenameExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/SizeofUnaryExpression.hpp>
+#include <Clipl/Grammar/AST/Expression/UnaryAssignExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/UnaryExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/UnaryOperator.hpp>
 

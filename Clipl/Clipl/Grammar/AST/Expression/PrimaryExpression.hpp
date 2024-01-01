@@ -7,7 +7,7 @@ namespace ast {
 
 class PrimaryExpression: public PostfixExpression {
 public:
-    PrimaryExpression();
+    virtual ~PrimaryExpression() = default;
 
     // void accept(Visitor *visitor) override;
 };

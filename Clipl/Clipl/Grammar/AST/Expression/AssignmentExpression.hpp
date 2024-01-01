@@ -7,7 +7,7 @@ namespace ast {
 
 class AssignmentExpression: public ASTNode {
 public:
-    AssignmentExpression();
+    virtual ~AssignmentExpression() = default;
 
     // void accept(Visitor *visitor) override;
 };

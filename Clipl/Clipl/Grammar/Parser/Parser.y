@@ -890,13 +890,14 @@ argument_expression_list
 
 primary_expression
     : "identifier" {
-
+        $$ = std::make_shared<IdentPrimaryExpression>(std::move($1));
     }
     | "number" {
-
+        // TODO: real numbers
+        $$ = std::make_shared<NumberPrimaryExpression>($1);
     }
     | '(' expression ')' {
-
+        $$ = std::make_shared<NestedPrimaryExpression>($2);
     }
     | '(' error ')' {
         // TODO: handle error
@@ -906,18 +907,18 @@ primary_expression
 
 expression
     : assignment_expression {
-
+        $$ = std::make_shared<Expression>($1);
     }
     | expression "," assignment_expression {
-
+        $$ = std::make_shared<Expression>($3, $1);
     };
 
 assignment_expression
     : conditional_expression {
-
+        $$ = std::make_shared<ConditionalAssignmentExpression>($1);
     }
     | unary_expression assignment_operator assignment_expression {
-
+        $$ = std::make_shared<UnaryAssignExpression>($1, $2, $3);
     };
 
 assignment_operator
