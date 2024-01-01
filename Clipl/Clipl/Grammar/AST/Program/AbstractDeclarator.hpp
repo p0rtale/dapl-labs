@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Clipl/Grammar/AST/Base/ASTNode.hpp>
+#include <Clipl/Grammar/AST/Program/BaseDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/Pointer.hpp>
 #include <Clipl/Grammar/AST/Program/DirectAbstractDeclarator.hpp>
 
 namespace ast {
 
-class AbstractDeclarator: public ASTNode {
+class AbstractDeclarator: public BaseDeclarator {
 public:
     AbstractDeclarator(std::shared_ptr<Pointer> pointer)
         : m_Pointer(pointer) {}

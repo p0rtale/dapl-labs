@@ -576,13 +576,13 @@ parameter_list
 
 parameter_declaration
     : declaration_specifiers declarator {
-
+        $$ = std::make_shared<ParameterDeclaration>($1, $2);
     }
     | declaration_specifiers abstract_declarator {
-
+        $$ = std::make_shared<ParameterDeclaration>($1, $2);
     }
     | declaration_specifiers {
-
+        $$ = std::make_shared<ParameterDeclaration>($1);
     };
 
 abstract_declarator
