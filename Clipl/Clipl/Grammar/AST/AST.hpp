@@ -58,6 +58,8 @@
 #include <Clipl/Grammar/AST/Expression/AssignmentExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/AssignmentOperator.hpp>
 #include <Clipl/Grammar/AST/Expression/CastExpression.hpp>
+#include <Clipl/Grammar/AST/Expression/CastTypenameExpression.hpp>
+#include <Clipl/Grammar/AST/Expression/CastUnaryExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/ConditionalExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/ConstantExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/EqualityExpression.hpp>

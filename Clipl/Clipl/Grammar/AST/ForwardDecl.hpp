@@ -56,6 +56,8 @@ class ArgumentExpressionList;
 class AssignmentExpression;
 class AssignmentOperator;
 class CastExpression;
+class CastTypenameExpression;
+class CastUnaryExpression;
 class ConditionalExpression;
 class ConstantExpression;
 class EqualityExpression;

@@ -744,24 +744,24 @@ relational_expression
 
 shift_expression
     : additive_expression {
-
+        $$ = std::make_shared<ShiftExpression>($1);
     }
     | shift_expression "<<" additive_expression {
-
+        $$ = std::make_shared<ShiftExpression>($1, $3, ShiftExpression::Type::kLeft);
     }
     | shift_expression ">>" additive_expression {
-
+        $$ = std::make_shared<ShiftExpression>($1, $3, ShiftExpression::Type::kRight);
     };
 
 additive_expression
     : multiplicative_expression {
-
+        $$ = std::make_shared<AdditiveExpression>($1);
     }
     | additive_expression "+" multiplicative_expression {
-
+        $$ = std::make_shared<AdditiveExpression>($1, $3, AdditiveExpression::Type::kPlus);
     }
     | additive_expression "-" multiplicative_expression {
-
+        $$ = std::make_shared<AdditiveExpression>($1, $3, AdditiveExpression::Type::kMinus);
     }
     | error "+" multiplicative_expression {
         // TODO: handle error
@@ -772,16 +772,16 @@ additive_expression
 
 multiplicative_expression
     : cast_expression {
-
+        $$ = std::make_shared<MultiplicativeExpression>($1);
     }
     | multiplicative_expression "*" cast_expression {
-
+        $$ = std::make_shared<MultiplicativeExpression>($1, $3, MultiplicativeExpression::Type::kMult);
     }
     | multiplicative_expression "/" cast_expression {
-
+        $$ = std::make_shared<MultiplicativeExpression>($1, $3, MultiplicativeExpression::Type::kDiv);
     }
     | multiplicative_expression "%" cast_expression {
-
+        $$ = std::make_shared<MultiplicativeExpression>($1, $3, MultiplicativeExpression::Type::kMod);
     }
     | error "*" cast_expression {
         // TODO: handle error
@@ -795,10 +795,10 @@ multiplicative_expression
 
 cast_expression
     : unary_expression {
-
+        $$ = std::make_shared<CastUnaryExpression>($1);
     }
     | "(" type_name ")" cast_expression {
-
+        $$ = std::make_shared<CastTypenameExpression>($2, $4);
     };
 
 type_name
@@ -820,7 +820,7 @@ unary_expression
 
     }
     | unary_operator cast_expression {
-
+        
     }
     | "sizeof" unary_expression {
 

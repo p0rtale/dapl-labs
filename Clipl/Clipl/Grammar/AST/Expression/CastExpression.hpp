@@ -7,7 +7,7 @@ namespace ast {
 
 class CastExpression: public ASTNode {
 public:
-    CastExpression();
+    virtual ~CastExpression() = default;
 
     // void accept(Visitor *visitor) override;
 };
