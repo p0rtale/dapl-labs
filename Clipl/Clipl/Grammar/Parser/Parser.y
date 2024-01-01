@@ -161,20 +161,20 @@
 %nterm <std::shared_ptr<ExternalDeclaration>> external_declaration;
 %nterm <std::shared_ptr<FunctionDefinition>> function_definition;
 %nterm <std::shared_ptr<DeclarationSpecifiers>> declaration_specifiers;
+%nterm <std::shared_ptr<IdentDeclarationSpecifiers>> ident_specifier_list;
 %nterm <std::shared_ptr<IdentSpecifier>> ident_specifier;
-%nterm <std::shared_ptr<IdentSpecifierList>> ident_specifier_list;
 %nterm <std::shared_ptr<KeywordSpecifier>> keyword_specifier;
-%nterm <std::shared_ptr<KeywordSpecifierList>> keyword_specifier_list;
+%nterm <std::shared_ptr<KeywordDeclarationSpecifiers>> keyword_specifier_list;
 %nterm <std::shared_ptr<Specifier>> specifier;
-%nterm <std::shared_ptr<SpecifierList>> specifier_list;
+%nterm <std::vector<std::shared_ptr<Specifier>>> specifier_list;
 %nterm <std::shared_ptr<StorageClassSpecifier>> storage_class_specifier;
 %nterm <std::shared_ptr<TypeQualifier>> type_qualifier;
-%nterm <std::shared_ptr<TypeQualifierList>> type_qualifier_list;
+%nterm <std::vector<std::shared_ptr<TypeQualifier>>> type_qualifier_list;
 %nterm <std::shared_ptr<Declarator>> declarator;
 %nterm <std::shared_ptr<Pointer>> pointer;
 %nterm <std::shared_ptr<DirectDeclarator>> direct_declarator;
 %nterm <std::shared_ptr<ParameterTypeList>> parameter_type_list;
-%nterm <std::shared_ptr<ParameterList>> parameter_list;
+%nterm <std::vector<std::shared_ptr<ParameterDeclaration>>> parameter_list;
 %nterm <std::shared_ptr<ParameterDeclaration>> parameter_declaration;
 %nterm <std::shared_ptr<AbstractDeclarator>> abstract_declarator;
 %nterm <std::shared_ptr<DirectAbstractDeclarator>> direct_abstract_declarator;
@@ -211,7 +211,7 @@
 %nterm <std::shared_ptr<StatementList>> statement_list;
 %nterm <std::shared_ptr<Statement>> statement;
 %nterm <std::shared_ptr<LabeledStatement>> labeled_statement;
-%nterm <std::shared_ptr<ExpressionStatement>> expression_statement;
+%nterm <std::shared_ptr<Expression>> expression_statement;
 %nterm <std::shared_ptr<SelectionStatement>> selection_statement;
 %nterm <std::shared_ptr<IterationStatement>> iteration_statement;
 %nterm <std::shared_ptr<JumpStatement>> jump_statement;
@@ -228,7 +228,7 @@
 
 
 // Prints output in parsing option for debugging location terminal
-%printer { yyo << $$; } <*>;
+// %printer { yyo << $$; } <*>;
 
 %%
 
@@ -263,18 +263,20 @@ function_definition
 
 declaration_specifiers
     : specifier declaration_specifiers {
-
+        auto declarationSpecifiers = $2;
+        declarationSpecifiers->addSpecifier($1);
+        $$ = declarationSpecifiers;
     }
     | keyword_specifier_list {
-
+        $$ = std::static_pointer_cast<DeclarationSpecifiers>($1);
     }
     | ident_specifier_list {
-
+        $$ = std::static_pointer_cast<DeclarationSpecifiers>($1);
     };
 
 specifier_qualifier_list
     : keyword_specifier specifier_qualifier_list {
-        
+
     }
     | keyword_specifier {
 
@@ -294,66 +296,72 @@ specifier_qualifier_list
 
 specifier
     : storage_class_specifier {
-
+        $$ = $1;
     }
     | type_qualifier {
-
+        $$ = $1;
     };
 
 keyword_specifier_list
     : keyword_specifier {
-
+        $$ = std::make_shared<KeywordDeclarationSpecifiers>($1);
     }
     | keyword_specifier_list keyword_specifier {
-
+        auto keywordSpecifierList = $1;
+        keywordSpecifierList->addKeywordSpecifier($2);
+        $$ = keywordSpecifierList;
     }
     | keyword_specifier_list specifier {
-
+        auto keywordSpecifierList = $1;
+        keywordSpecifierList->addSpecifier($2);
+        $$ = keywordSpecifierList;
     };
 
 ident_specifier_list
     : ident_specifier {
-
+        $$ = std::make_shared<IdentDeclarationSpecifiers>($1);
     }
     | ident_specifier specifier_list {
-
+        $$ = std::make_shared<IdentDeclarationSpecifiers>($1, $2);  
     };
 
 specifier_list
     : specifier_list specifier {
-
+        auto specifierList = $1;
+        specifierList.push_back($2);
+        $$ = specifierList;
     }
     | specifier {
-
+        $$ = std::vector{$1};
     };
 
 keyword_specifier
     : "void" {
-        // $$ = std::make_shared<TypeSpecifier>($1);
+        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kVoid);
     }
     | "char" {
-        // $$ = std::make_shared<TypeSpecifier>($1);
+        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kChar);
     }
     | "short" {
-        // $$ = std::make_shared<TypeSpecifier>($1);
+        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kShort);
     }
     | "int" {
-        // $$ = std::make_shared<TypeSpecifier>($1);
+        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kInt);
     }
     | "long" {
-        // $$ = std::make_shared<TypeSpecifier>($1);
+        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kLong);
     }
     | "float" {
-        // $$ = std::make_shared<TypeSpecifier>($1);
+        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kFloat);
     }
     | "double" {
-        // $$ = std::make_shared<TypeSpecifier>($1);
+        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kDouble);
     }
     | "signed" {
-        // $$ = std::make_shared<TypeSpecifier>($1);
+        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kSigned);
     }
     | "unsigned" {
-        // $$ = std::make_shared<TypeSpecifier>($1);
+        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kUnsigned);
     }
     | struct_or_union_specifier {
 
@@ -471,40 +479,43 @@ storage_class_specifier
 
 type_qualifier
     : "const" {
-        // $$ = std::make_shared<TypeQualifier>($1);
+        $$ = std::make_shared<TypeQualifier>(TypeQualifier::Type::kConst);
     }
     | "volatile" {
-        // $$ = std::make_shared<TypeQualifier>($1);
+        $$ = std::make_shared<TypeQualifier>(TypeQualifier::Type::kVolatile);
     };
 
 type_qualifier_list
     : type_qualifier {
-
+        $$ = std::vector{$1};
     }
     | type_qualifier_list type_qualifier {
-        
+        auto typeQualifierList = $1;
+        typeQualifierList.push_back($2);
+        $$ = typeQualifierList;
     };
 
 declarator
     : pointer direct_declarator {
-
+        $$ = std::make_shared<Declarator>($2, $1);
     }
     | direct_declarator {
-
+        $$ = std::make_shared<Declarator>($1);
     };
 
 pointer
     : "*" {
-
+        $$ = std::make_shared<Pointer>();
     }
     | "*" type_qualifier_list {
-
+        $$ = std::make_shared<Pointer>($2);
     }
     | "*" pointer {
-
+        std::vector<std::shared_ptr<TypeQualifier>> typeQualifiers;
+        $$ = std::make_shared<Pointer>(typeQualifiers, $2);
     }
     | "*" type_qualifier_list pointer {
-
+        $$ = std::make_shared<Pointer>($2, $3);
     }
     | "*" error pointer {
         // TODO: handle error
@@ -512,20 +523,22 @@ pointer
 
 direct_declarator
     : "identifier" {
-
+        $$ = std::make_shared<IdentDirectDeclarator>(std::move($1));
     }
     | "(" declarator ")" {
-
+        $$ = std::make_shared<NestedDirectDeclarator>($2);
     }
-    // | "[" constant_expression "]"
+    | direct_declarator "[" constant_expression "]" {
+        $$ = std::make_shared<ArrayDirectDeclarator>($1, $3);
+    }
     | direct_declarator "[" "]" {
-
+        $$ = std::make_shared<ArrayDirectDeclarator>($1);
     }
     | direct_declarator "(" parameter_type_list ")" {
-
+        $$ = std::make_shared<ParameterDirectDeclarator>($1, $3);
     }
     | direct_declarator "(" ")" {
-
+        $$ = std::make_shared<ParameterDirectDeclarator>($1);
     }
     | direct_declarator "(" error ")" {
         // TODO: handle error
@@ -539,10 +552,10 @@ direct_declarator
 
 parameter_type_list
     : parameter_list {
-
+        $$ = std::make_shared<ParameterTypeList>($1);
     }
     | parameter_list "," "..." {
-
+        $$ = std::make_shared<ParameterTypeList>($1, /*haveEllipsis=*/true);
     }
     | error "," "..." {
         // TODO: handle error
@@ -550,10 +563,12 @@ parameter_type_list
 
 parameter_list
     : parameter_declaration {
-
+        $$ = std::vector{$1};
     }
     | parameter_list "," parameter_declaration {
-
+        auto parameterList = $1;
+        parameterList.push_back($3);
+        $$ = parameterList;
     }
     | error "," parameter_declaration {
         // TODO: handle error
@@ -1034,7 +1049,7 @@ statement_list
 
 statement
     : labeled_statement {
-        // $$ = $1;
+        $$ = $1;
     }
     | compound_statement {
         // $$ = $1; 
@@ -1046,7 +1061,7 @@ statement
         // $$ = $1;
     }
     | iteration_statement {
-        // $$ = $1;
+        $$ = $1;
     }
     | jump_statement {
         // $$ = $1;
@@ -1054,13 +1069,13 @@ statement
 
 labeled_statement
     : "identifier" ":" statement {
-
+        $$ = std::make_shared<IdentLabeledStatement>(std::move($1), $3);
     }
     | "case" constant_expression ":" statement {
-
+        $$ = std::make_shared<CaseLabeledStatement>($2, $4);
     }
     | "default" ":" statement {
-
+        $$ = std::make_shared<DefaultLabeledStatement>($3);
     };
 
 expression_statement
@@ -1068,18 +1083,18 @@ expression_statement
         // TODO: handle error
     }
     | expression ";" {
-
+        $$ = $1;
     };
 
 selection_statement
     : "if" "(" expression ")" statement {
-
+        $$ = std::make_shared<IfSelectionStatement>($3, $5);
     }
     | "if" "(" expression ")" statement "else" statement {
-
+        $$ = std::make_shared<IfSelectionStatement>($3, $5, $7);
     }
     | "switch" "(" expression ")" statement {
-
+        $$ = std::make_shared<SwitchSelectionStatement>($3, $5);
     }
     | "if" "(" error ")" statement {
         // TODO: handle error
@@ -1093,16 +1108,16 @@ selection_statement
 
 iteration_statement
     : "while" "(" expression ")" statement {
-
+        $$ = std::make_shared<WhileIterationStatement>($3, $5);
     }
     | "do" statement "while" "(" expression ")" ";" {
-
+        $$ = std::make_shared<DoWhileIterationStatement>($5, $2);
     }
     | "for" "(" expression_statement expression_statement ")" statement {
-
+        $$ = std::make_shared<ForIterationStatement>($6, $3, $4);
     }
     | "for" "(" expression_statement expression_statement expression ")" statement {
-
+        $$ = std::make_shared<ForIterationStatement>($7, $3, $4, $5);
     }
     | "do" error "while" "(" expression ")" ";" {
         // TODO: handle error
@@ -1116,16 +1131,16 @@ jump_statement
 
     }
     | "continue" ";" {
-
+        $$ = std::make_shared<LoopJumpStatement>(LoopJumpStatement::Type::kContinue);
     }
     | "break" ";" {
-
+        $$ = std::make_shared<LoopJumpStatement>(LoopJumpStatement::Type::kBreak);
     }
     | "return" ";" {
-
+        $$ = std::make_shared<ReturnJumpStatement>();
     }
     | "return" expression ";" {
-
+        $$ = std::make_shared<ReturnJumpStatement>($2);
     }
     | "return" error ";" {
         // TODO: handle error
@@ -1133,7 +1148,7 @@ jump_statement
 
 ident_specifier
     : "identifier" {
-
+        $$ = std::make_shared<IdentSpecifier>(std::move($1));
     };
 
 %%
