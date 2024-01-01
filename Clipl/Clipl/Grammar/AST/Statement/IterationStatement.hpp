@@ -7,7 +7,7 @@ namespace ast {
 
 class IterationStatement: public Statement {
 public:
-    IterationStatement();
+    virtual ~IterationStatement() = default;
 
     // void accept(Visitor *visitor) override;
 };
