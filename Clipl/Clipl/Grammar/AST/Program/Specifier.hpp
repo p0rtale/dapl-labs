@@ -7,7 +7,7 @@ namespace ast {
 
 class Specifier: public ASTNode {
 public:
-    Specifier();
+    virtual ~Specifier() = default;
 
     // void accept(Visitor *visitor) override;
 };

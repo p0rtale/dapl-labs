@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Clipl/Grammar/AST/Base/ASTNode.hpp>
+#include <Clipl/Grammar/AST/Program/Specifier.hpp>
 
 
 namespace ast {
 
-class StorageClassSpecifier: public ASTNode {
+class StorageClassSpecifier: public Specifier {
 public:
     enum class Type {
         kTypedef,
