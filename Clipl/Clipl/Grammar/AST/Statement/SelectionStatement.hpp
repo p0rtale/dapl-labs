@@ -7,7 +7,7 @@ namespace ast {
 
 class SelectionStatement: public Statement {
 public:
-    SelectionStatement();
+    virtual ~SelectionStatement() = default;
 
     // void accept(Visitor *visitor) override;
 };
