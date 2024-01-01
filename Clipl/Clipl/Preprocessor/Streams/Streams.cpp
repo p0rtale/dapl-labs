@@ -8,21 +8,33 @@ namespace preprocessor {
 StreamStack::StreamStack(TOnPushCallback pushCallback, TOnPopCallback popCallback)
     : m_PushCallback(std::move(pushCallback)), m_PopCallback(std::move(popCallback)) {}
 
-void StreamStack::pushStream(TStreamScope stream) {
+void StreamStack::pushStream(std::string filename, size_t line) {
+    if (!m_Streams.empty()) {
+        auto& topStream = m_Streams.top();
+        topStream.second.second = line;
+    }
+
+    auto stream = std::make_unique<std::ifstream>(filename);
     m_PushCallback(stream);
-    m_Streams.push(std::move(stream));
+    m_Streams.push({std::move(stream), std::make_pair(filename, 1)});
 }
 
-void StreamStack::popStream() {
+std::pair<std::string, size_t> StreamStack::popStream() {
     auto streamsSize = m_Streams.size();
     if (streamsSize == 0) {
-        return;
+        return {std::string{}, 0};
     }
     m_Streams.pop();
     if (streamsSize == 1) {
-        return;
+        return {std::string{}, 0};
     }
-    m_PopCallback(m_Streams.top());
+
+    auto& stream = m_Streams.top().first;
+    m_PopCallback(stream);
+
+    auto [filename, line] = m_Streams.top().second;
+
+    return {filename, line}; 
 }
 
 }  // namespace preprocessor

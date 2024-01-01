@@ -1,10 +1,12 @@
 #include <Clipl/Preprocessor/Preprocessor.hpp>
 
-#include <Clipl/Logger/Logger.hpp>
+#include <format>
 
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
+
+#include <Clipl/Logger/Logger.hpp>
 
 
 namespace preprocessor {
@@ -21,7 +23,13 @@ std::string Preprocessor::run(const std::string& cliplFilename, bool debug) {
         tokenCurrent = scanTokenWithComments();
         if (tokenCurrent.isEnd()) {
             CLIPL_INFO("End of stream");
-            m_StreamStack.popStream();
+            auto [nextFileName, line] = m_StreamStack.popStream();
+            if (nextFileName != "") {
+                m_PreprocessedString.append(
+                    std::format("\n#line {} \"{}\"\n",
+                                line, nextFileName)
+                );
+            }
             continue;
         }
 
@@ -87,8 +95,8 @@ void Preprocessor::initRun(const std::string& cliplFilename, bool debug) {
         m_Lexer.set_debug(true);
     }
     CLIPL_INFO("Add new stream");
-    m_StreamStack.pushStream(std::make_unique<std::ifstream>(cliplFilename));
-    m_PreprocessedString.clear();
+    m_StreamStack.pushStream(cliplFilename, 1);
+    m_PreprocessedString = std::format("#line {} \"{}\"\n", 1, cliplFilename);
 }
 
 std::string Preprocessor::processDefine() {
@@ -231,11 +239,15 @@ std::string Preprocessor::processInclude() {
         filenameToken = scanTokenWithComments();
     }
 
-    skipSpacesToLineEnd();
+    Token nextToken = skipSpacesToLineEnd();
 
     CLIPL_INFO("processInclude: includeFilename=\"{}\"", includeFilename);
     CLIPL_INFO("Add new stream");
-    m_StreamStack.pushStream(std::make_unique<std::ifstream>(includeFilename));
+    auto coords = nextToken.getCoords();
+    size_t line = coords.End.Line - m_LineOffset;
+    m_LineOffset += line - 1;
+    m_StreamStack.pushStream(includeFilename, line);
+    m_PreprocessedString.append(std::format("#line {} \"{}\"", 1, includeFilename));
 
     return std::string{'\n'};
 }
@@ -280,7 +292,7 @@ Token Preprocessor::scanFirstNonSpace() {
     return token; 
 }
 
-void Preprocessor::skipSpacesToLineEnd() {
+Token Preprocessor::skipSpacesToLineEnd() {
     auto token = m_Lexer.scanToken();
     while (token.isSpace()) {
         token = m_Lexer.scanToken();
@@ -297,6 +309,8 @@ void Preprocessor::skipSpacesToLineEnd() {
     CLIPL_TRACE("Scan Token {}({}) {},{}-{},{}",
         static_cast<uint32_t>(tokenType), token.getValue(),
         positionBegin.Line, positionBegin.Column, positionEnd.Line, positionEnd.Column);
+
+    return token;
 }
 
 void Preprocessor::skipLine() {

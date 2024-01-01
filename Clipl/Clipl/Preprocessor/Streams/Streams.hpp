@@ -17,11 +17,11 @@ public:
     StreamStack(TOnPushCallback pushCallback, TOnPopCallback popCallback);
 
     bool empty() const { return m_Streams.empty(); }
-    void pushStream(TStreamScope stream);
-    void popStream();
+    void pushStream(std::string filename, size_t line);
+    std::pair<std::string, size_t> popStream();
 
 private:
-    std::stack<TStreamScope> m_Streams;
+    std::stack<std::pair<TStreamScope, std::pair<std::string, size_t>>> m_Streams;
     TOnPushCallback m_PushCallback;
     TOnPopCallback m_PopCallback;
 };

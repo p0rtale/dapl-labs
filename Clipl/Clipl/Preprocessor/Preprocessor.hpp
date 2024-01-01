@@ -29,7 +29,7 @@ private:
     Token scanTokenWithComments();
     Token scanFirstNonSpace();
 
-    void skipSpacesToLineEnd();
+    Token skipSpacesToLineEnd();
     void skipLine();
 
 private:
@@ -43,6 +43,8 @@ private:
             m_Lexer.yyrestart(streamScope.get());
         }
     );
+
+    size_t m_LineOffset = 0;
 
     std::string m_PreprocessedString;
     std::unordered_map<std::string, std::string> m_Defines;

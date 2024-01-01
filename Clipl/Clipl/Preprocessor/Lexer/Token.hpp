@@ -23,9 +23,9 @@ enum class TokenType {
 };
 
 struct Position {
-    int Line;
-    int Column;
-    int Index;
+    size_t Line;
+    size_t Column;
+    size_t Index;
 };
 
 struct Fragment {
