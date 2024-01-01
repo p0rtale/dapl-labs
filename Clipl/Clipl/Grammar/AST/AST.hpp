@@ -6,6 +6,8 @@
 
 // Program
 #include <Clipl/Grammar/AST/Program/AbstractDeclarator.hpp>
+#include <Clipl/Grammar/AST/Program/ArrayDirectDeclarator.hpp>
+#include <Clipl/Grammar/AST/Program/BasicKeywordSpecifier.hpp>
 #include <Clipl/Grammar/AST/Program/Declaration.hpp>
 #include <Clipl/Grammar/AST/Program/DeclarationList.hpp>
 #include <Clipl/Grammar/AST/Program/DeclarationSpecifiers.hpp>
@@ -17,20 +19,22 @@
 #include <Clipl/Grammar/AST/Program/EnumSpecifier.hpp>
 #include <Clipl/Grammar/AST/Program/ExternalDeclaration.hpp>
 #include <Clipl/Grammar/AST/Program/FunctionDefinition.hpp>
+#include <Clipl/Grammar/AST/Program/IdentDeclarationSpecifiers.hpp>
+#include <Clipl/Grammar/AST/Program/IdentDirectDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/IdentSpecifier.hpp>
-#include <Clipl/Grammar/AST/Program/IdentSpecifierList.hpp>
 #include <Clipl/Grammar/AST/Program/InitDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/InitDeclaratorList.hpp>
 #include <Clipl/Grammar/AST/Program/Initializer.hpp>
 #include <Clipl/Grammar/AST/Program/InitializerList.hpp>
+#include <Clipl/Grammar/AST/Program/KeywordDeclarationSpecifiers.hpp>
 #include <Clipl/Grammar/AST/Program/KeywordSpecifier.hpp>
-#include <Clipl/Grammar/AST/Program/KeywordSpecifierList.hpp>
+#include <Clipl/Grammar/AST/Program/NestedDirectDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/ParameterDeclaration.hpp>
+#include <Clipl/Grammar/AST/Program/ParameterDirectDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/ParameterList.hpp>
 #include <Clipl/Grammar/AST/Program/ParameterTypeList.hpp>
 #include <Clipl/Grammar/AST/Program/Pointer.hpp>
 #include <Clipl/Grammar/AST/Program/Specifier.hpp>
-#include <Clipl/Grammar/AST/Program/SpecifierList.hpp>
 #include <Clipl/Grammar/AST/Program/SpecifierQualifierList.hpp>
 #include <Clipl/Grammar/AST/Program/StorageClassSpecifier.hpp>
 #include <Clipl/Grammar/AST/Program/StructDeclaration.hpp>
@@ -69,11 +73,21 @@
 
 
 // Statement
+#include <Clipl/Grammar/AST/Statement/CaseLabeledStatement.hpp>
 #include <Clipl/Grammar/AST/Statement/CompoundStatement.hpp>
+#include <Clipl/Grammar/AST/Statement/DefaultLabeledStatement.hpp>
+#include <Clipl/Grammar/AST/Statement/DoWhileIterationStatement.hpp>
 #include <Clipl/Grammar/AST/Statement/ExpressionStatement.hpp>
+#include <Clipl/Grammar/AST/Statement/ForIterationStatement.hpp>
+#include <Clipl/Grammar/AST/Statement/IdentLabeledStatement.hpp>
+#include <Clipl/Grammar/AST/Statement/IfSelectionStatement.hpp>
 #include <Clipl/Grammar/AST/Statement/IterationStatement.hpp>
 #include <Clipl/Grammar/AST/Statement/JumpStatement.hpp>
 #include <Clipl/Grammar/AST/Statement/LabeledStatement.hpp>
+#include <Clipl/Grammar/AST/Statement/LoopJumpStatement.hpp>
+#include <Clipl/Grammar/AST/Statement/ReturnJumpStatement.hpp>
 #include <Clipl/Grammar/AST/Statement/SelectionStatement.hpp>
 #include <Clipl/Grammar/AST/Statement/Statement.hpp>
 #include <Clipl/Grammar/AST/Statement/StatementList.hpp>
+#include <Clipl/Grammar/AST/Statement/SwitchSelectionStatement.hpp>
+#include <Clipl/Grammar/AST/Statement/WhileIterationStatement.hpp>
