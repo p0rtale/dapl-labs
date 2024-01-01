@@ -7,9 +7,13 @@ namespace ast {
 
 class IdentSpecifier: public ASTNode {
 public:
-    IdentSpecifier();
+    IdentSpecifier(std::string identifier)
+        : m_Identifier(std::move(identifier)) {}
 
     // void accept(Visitor *visitor) override;
+
+private:
+    std::string m_Identifier;
 };
 
 }  // namespace ast

@@ -7,7 +7,7 @@ namespace ast {
 
 class KeywordSpecifier: public ASTNode {
 public:
-    KeywordSpecifier();
+    virtual ~KeywordSpecifier() = default;
 
     // void accept(Visitor *visitor) override;
 };
