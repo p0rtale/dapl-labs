@@ -30,7 +30,7 @@ IsRealNumber {
     s.Sign e.Rest
         , '+-' : e.1 s.Sign e.2
         = <IsRealNumber e.Rest>;
-    
+
     e.FirstPart 'e' s.Sign e.IntDeg
         , '+-' : e.1 s.Sign e.2
         , <IsDigits e.IntDeg> : True
@@ -40,7 +40,7 @@ IsRealNumber {
         , <IsDigits e.IntPart> : True
         , <IsDigits e.FracPart> : True 
         = True;
-    
+
     e.Other = False;
 }
 

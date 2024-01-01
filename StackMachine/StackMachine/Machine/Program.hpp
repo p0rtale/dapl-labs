@@ -20,6 +20,10 @@ public:
 
     ~Program() = default;
 
+    size_t size() const {
+        return m_size;
+    }
+
     Instruction nextInstruction() {
         auto word = m_memoryCells[m_cp++];
         return static_cast<Instruction>(word);
@@ -29,11 +33,14 @@ public:
         auto& memory = m_memoryCells.data();
         const auto& program = programCells.data();
         std::copy(program.begin(), program.end(), memory.begin());
+        m_size = program.size();
     }
 
 private:
     MemoryContainer& m_memoryCells;
     size_t& m_cp;
+
+    size_t m_size = 0;
 };
 
 }  // namespace stack_machine

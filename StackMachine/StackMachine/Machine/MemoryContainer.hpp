@@ -5,7 +5,7 @@
 
 namespace stack_machine {
 
-using Word = int;
+using Word = int32_t;
 
 class MemoryContainer {
 public:
