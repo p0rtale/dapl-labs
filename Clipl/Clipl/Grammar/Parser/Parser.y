@@ -204,14 +204,14 @@
 %nterm <std::shared_ptr<CompoundStatement>> compound_statement;
 %nterm <std::vector<std::shared_ptr<Declaration>>> declaration_list;
 %nterm <std::shared_ptr<Declaration>> declaration;
-%nterm <std::shared_ptr<InitDeclaratorList>> init_declarator_list;
+%nterm <std::vector<std::shared_ptr<InitDeclarator>>> init_declarator_list;
 %nterm <std::shared_ptr<InitDeclarator>> init_declarator;
-%nterm <std::shared_ptr<InitializerList>> initializer_list;
+%nterm <std::vector<std::shared_ptr<Initializer>>> initializer_list;
 %nterm <std::shared_ptr<Initializer>> initializer;
 %nterm <std::vector<std::shared_ptr<Statement>>> statement_list;
 %nterm <std::shared_ptr<Statement>> statement;
 %nterm <std::shared_ptr<LabeledStatement>> labeled_statement;
-%nterm <std::shared_ptr<Expression>> expression_statement;
+%nterm <std::shared_ptr<ExpressionStatement>> expression_statement;
 %nterm <std::shared_ptr<SelectionStatement>> selection_statement;
 %nterm <std::shared_ptr<IterationStatement>> iteration_statement;
 %nterm <std::shared_ptr<JumpStatement>> jump_statement;
@@ -980,13 +980,13 @@ declaration_list
 
 declaration
     : declaration_specifiers ";" {
-
+        $$ = std::make_shared<Declaration>($1);
     }
     | declaration_specifiers init_declarator_list ";" {
-
+        $$ = std::make_shared<Declaration>($1, $2);
     }
     | declaration_specifiers init_declarator_list "=" assignment_expression ";" {
-
+        $$ = std::make_shared<Declaration>($1, $2, $4);
     }
     | declaration_specifiers error ";" {
         // TODO: handle error
@@ -994,10 +994,11 @@ declaration
 
 init_declarator_list
     : init_declarator {
-
+        $$ = std::vector{$1};
     }
     | init_declarator_list "," init_declarator {
-
+        ($1).push_back($3);
+        $$ = std::move($1);
     }
     | error "," init_declarator {
         // TODO: handle error
@@ -1005,10 +1006,10 @@ init_declarator_list
 
 init_declarator
     : declarator "=" initializer {
-
+        $$ = std::make_shared<InitDeclarator>($1, $3);
     }
     | declarator {
-
+        $$ = std::make_shared<InitDeclarator>($1);
     }
     | error "=" initializer {
         // TODO: handle error
@@ -1016,13 +1017,13 @@ init_declarator
 
 initializer
     : assignment_expression {
-
+        $$ = std::make_shared<ExpressionInitializer>($1);
     }
     | "{" initializer_list "}" {
-
+        $$ = std::make_shared<InitializerList>($2);
     }
     | "{" initializer_list "," "}" {
-
+        $$ = std::make_shared<InitializerList>($2);
     }
     | "{" error "}" {
         // TODO: handle error
@@ -1030,10 +1031,11 @@ initializer
 
 initializer_list
     : initializer {
-
+        $$ = std::vector{$1};
     }
     | initializer_list "," initializer {
-
+        ($1).push_back($3);
+        $$ = std::move($1);
     }
     | error "," initializer {
         // TODO: handle error
@@ -1041,10 +1043,11 @@ initializer_list
 
 statement_list
     : statement {
-
+        $$ = std::vector{$1};
     }
     | statement_list statement {
-
+        ($1).push_back($2);
+        $$ = std::move($1);
     };
 
 statement
@@ -1052,19 +1055,19 @@ statement
         $$ = $1;
     }
     | compound_statement {
-        // $$ = $1; 
+        $$ = $1;
     }
     | expression_statement {
-        // $$ = $1;
+        $$ = $1;
     }
     | selection_statement {
-        // $$ = $1;
+        $$ = $1;
     }
     | iteration_statement {
         $$ = $1;
     }
     | jump_statement {
-        // $$ = $1;
+        $$ = $1;
     };
 
 labeled_statement
@@ -1083,7 +1086,7 @@ expression_statement
         // TODO: handle error
     }
     | expression ";" {
-        $$ = $1;
+        $$ = std::make_shared<ExpressionStatement>($1);
     };
 
 selection_statement

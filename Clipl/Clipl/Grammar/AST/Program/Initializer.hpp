@@ -7,7 +7,7 @@ namespace ast {
 
 class Initializer: public ASTNode {
 public:
-    Initializer();
+    virtual ~Initializer() = default;
 
     // void accept(Visitor *visitor) override;
 };

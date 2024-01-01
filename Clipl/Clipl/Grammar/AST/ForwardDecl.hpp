@@ -16,6 +16,7 @@ class DirectDeclarator;
 class Enumerator;
 class EnumeratorList;
 class EnumSpecifier;
+class ExpressionInitializer;
 class ExternalDeclaration;
 class FunctionDefinition;
 class IdentDeclarationSpecifiers;

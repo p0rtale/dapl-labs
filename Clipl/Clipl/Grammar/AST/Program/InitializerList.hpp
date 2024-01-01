@@ -1,15 +1,22 @@
 #pragma once
 
-#include <Clipl/Grammar/AST/Base/ASTNode.hpp>
+#include <vector>
+#include <memory>
+
+#include <Clipl/Grammar/AST/Program/Initializer.hpp>
 
 
 namespace ast {
 
-class InitializerList: public ASTNode {
+class InitializerList: public Initializer {
 public:
-    InitializerList();
+    InitializerList(std::vector<std::shared_ptr<Initializer>> initializers)
+        : m_Initializers(initializers) {}
 
     // void accept(Visitor *visitor) override;
+
+private:
+    std::vector<std::shared_ptr<Initializer>> m_Initializers;
 };
 
 }  // namespace ast

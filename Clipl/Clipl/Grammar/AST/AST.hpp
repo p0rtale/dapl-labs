@@ -18,6 +18,7 @@
 #include <Clipl/Grammar/AST/Program/Enumerator.hpp>
 #include <Clipl/Grammar/AST/Program/EnumeratorList.hpp>
 #include <Clipl/Grammar/AST/Program/EnumSpecifier.hpp>
+#include <Clipl/Grammar/AST/Program/ExpressionInitializer.hpp>
 #include <Clipl/Grammar/AST/Program/ExternalDeclaration.hpp>
 #include <Clipl/Grammar/AST/Program/FunctionDefinition.hpp>
 #include <Clipl/Grammar/AST/Program/IdentDeclarationSpecifiers.hpp>
