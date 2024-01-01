@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <Clipl/Grammar/AST/Program/DirectDeclarator.hpp>
 #include <Clipl/Grammar/AST/Expression/ConstantExpression.hpp>
 

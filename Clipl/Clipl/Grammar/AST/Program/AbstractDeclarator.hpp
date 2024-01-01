@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <Clipl/Grammar/AST/Program/BaseDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/Pointer.hpp>
 #include <Clipl/Grammar/AST/Program/DirectAbstractDeclarator.hpp>

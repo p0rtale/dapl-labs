@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <Clipl/Grammar/AST/Program/ExternalDeclaration.hpp>
 #include <Clipl/Grammar/AST/Program/DeclarationSpecifiers.hpp>
 #include <Clipl/Grammar/AST/Program/Declarator.hpp>
