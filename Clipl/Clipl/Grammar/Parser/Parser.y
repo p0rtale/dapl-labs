@@ -202,13 +202,13 @@
 %nterm <std::shared_ptr<AssignmentExpression>> assignment_expression;
 %nterm <std::shared_ptr<AssignmentOperator>> assignment_operator;
 %nterm <std::shared_ptr<CompoundStatement>> compound_statement;
-%nterm <std::shared_ptr<DeclarationList>> declaration_list;
+%nterm <std::vector<std::shared_ptr<Declaration>>> declaration_list;
 %nterm <std::shared_ptr<Declaration>> declaration;
 %nterm <std::shared_ptr<InitDeclaratorList>> init_declarator_list;
 %nterm <std::shared_ptr<InitDeclarator>> init_declarator;
 %nterm <std::shared_ptr<InitializerList>> initializer_list;
 %nterm <std::shared_ptr<Initializer>> initializer;
-%nterm <std::shared_ptr<StatementList>> statement_list;
+%nterm <std::vector<std::shared_ptr<Statement>>> statement_list;
 %nterm <std::shared_ptr<Statement>> statement;
 %nterm <std::shared_ptr<LabeledStatement>> labeled_statement;
 %nterm <std::shared_ptr<Expression>> expression_statement;
@@ -327,9 +327,8 @@ ident_specifier_list
 
 specifier_list
     : specifier_list specifier {
-        auto specifierList = $1;
-        specifierList.push_back($2);
-        $$ = specifierList;
+        ($1).push_back($2);
+        $$ = std::move($1);
     }
     | specifier {
         $$ = std::vector{$1};
@@ -490,9 +489,8 @@ type_qualifier_list
         $$ = std::vector{$1};
     }
     | type_qualifier_list type_qualifier {
-        auto typeQualifierList = $1;
-        typeQualifierList.push_back($2);
-        $$ = typeQualifierList;
+        ($1).push_back($2);
+        $$ = std::move($1);
     };
 
 declarator
@@ -566,9 +564,8 @@ parameter_list
         $$ = std::vector{$1};
     }
     | parameter_list "," parameter_declaration {
-        auto parameterList = $1;
-        parameterList.push_back($3);
-        $$ = parameterList;
+        ($1).push_back($3);
+        $$ = std::move($1);
     }
     | error "," parameter_declaration {
         // TODO: handle error
@@ -880,9 +877,8 @@ argument_expression_list
         $$ = std::vector{$1};
     }
     | argument_expression_list "," assignment_expression {
-        auto argumentExpressionList = $1;
-        argumentExpressionList.push_back($3);
-        $$ = argumentExpressionList;
+        ($1).push_back($3);
+        $$ = std::move($1);
     }
     | error "," assignment_expression {
         // TODO: handle error
@@ -958,16 +954,16 @@ assignment_operator
 
 compound_statement
     : "{" "}" {
-
+        $$ = std::make_shared<CompoundStatement>();
     }
     | "{" statement_list "}" {
-
+        $$ = std::make_shared<CompoundStatement>($2);
     }
     | "{" declaration_list "}" {
-
+        $$ = std::make_shared<CompoundStatement>($2);
     }
     | "{" declaration_list statement_list "}" {
-
+        $$ = std::make_shared<CompoundStatement>($2, $3);
     }
     | "{" error "}" {
         // TODO: handle error
@@ -975,10 +971,11 @@ compound_statement
 
 declaration_list
     : declaration {
-
+        $$ = std::vector{$1};
     }
     | declaration_list declaration {
-
+        ($1).push_back($2);
+        $$ = std::move($1);
     };
 
 declaration
