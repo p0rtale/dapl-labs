@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
 
 

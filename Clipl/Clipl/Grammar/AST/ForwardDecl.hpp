@@ -50,11 +50,13 @@ class TypeQualifierList;
 
 
 // Expression
+class AccessExpression;
 class AdditiveExpression;
 class AndExpression;
 class ArgumentExpressionList;
 class AssignmentExpression;
 class AssignmentOperator;
+class CallExpression;
 class CastExpression;
 class CastTypenameExpression;
 class CastUnaryExpression;
@@ -63,14 +65,21 @@ class ConstantExpression;
 class EqualityExpression;
 class ExclusiveOrExpression;
 class Expression;
+class IncDecPostfixExpression;
+class IncDecPrefixExpression;
 class InclusiveOrExpression;
+class IndexExpression;
 class LogicalAndExpression;
 class LogicalOrExpression;
 class MultiplicativeExpression;
+class OperatorUnaryExpression;
 class PostfixExpression;
+class PrefixExpression;
 class PrimaryExpression;
 class RelationalExpression;
 class ShiftExpression;
+class SizeofTypenameExpression;
+class SizeofUnaryExpression;
 class UnaryExpression;
 class UnaryOperator;
 

@@ -196,7 +196,7 @@
 %nterm <std::shared_ptr<UnaryExpression>> unary_expression;
 %nterm <std::shared_ptr<UnaryOperator>> unary_operator;
 %nterm <std::shared_ptr<PostfixExpression>> postfix_expression;
-%nterm <std::shared_ptr<ArgumentExpressionList>> argument_expression_list;
+%nterm <std::vector<std::shared_ptr<AssignmentExpression>>> argument_expression_list;
 %nterm <std::shared_ptr<PrimaryExpression>> primary_expression;
 %nterm <std::shared_ptr<Expression>> expression;
 %nterm <std::shared_ptr<AssignmentExpression>> assignment_expression;
@@ -811,22 +811,22 @@ type_name
 
 unary_expression
     : postfix_expression {
-
+        $$ = $1;
     }
     | "++" unary_expression {
-
+        $$ = std::make_shared<IncDecPrefixExpression>($2, IncDecPrefixExpression::Type::kPlus);
     }
     | "--" unary_expression {
-
+        $$ = std::make_shared<IncDecPrefixExpression>($2, IncDecPrefixExpression::Type::kMinus);
     }
     | unary_operator cast_expression {
-        
+        $$ = std::make_shared<OperatorUnaryExpression>($1, $2);
     }
     | "sizeof" unary_expression {
-
+        $$ = std::make_shared<SizeofUnaryExpression>($2);
     }
     | "sizeof" "(" type_name ")" {
-
+        $$ = std::make_shared<SizeofTypenameExpression>($3);
     };
 
 unary_operator
@@ -851,36 +851,38 @@ unary_operator
 
 postfix_expression
     : primary_expression {
-
+        $$ = $1;
     }
     | postfix_expression "[" expression "]" {
-
+        $$ = std::make_shared<IndexExpression>($1, $3);
     }
     | postfix_expression "(" ")" {
-
+        $$ = std::make_shared<CallExpression>($1);
     }
     | postfix_expression "(" argument_expression_list ")" {
-
+        $$ = std::make_shared<CallExpression>($1, $3);
     }
     | postfix_expression "." "identifier" {
-
+        $$ = std::make_shared<AccessExpression>($1, std::move($3), AccessExpression::Type::kDot);
     }
     | postfix_expression "->" "identifier" {
-
+        $$ = std::make_shared<AccessExpression>($1, std::move($3), AccessExpression::Type::kArrow);
     }
     | postfix_expression "++" {
-
+        $$ = std::make_shared<IncDecPostfixExpression>($1, IncDecPostfixExpression::Type::kPlus);
     }
     | postfix_expression "--" {
-
+        $$ = std::make_shared<IncDecPostfixExpression>($1, IncDecPostfixExpression::Type::kMinus);
     };
 
 argument_expression_list
     : assignment_expression {
-
+        $$ = std::vector{$1};
     }
     | argument_expression_list "," assignment_expression {
-
+        auto argumentExpressionList = $1;
+        argumentExpressionList.push_back($3);
+        $$ = argumentExpressionList;
     }
     | error "," assignment_expression {
         // TODO: handle error

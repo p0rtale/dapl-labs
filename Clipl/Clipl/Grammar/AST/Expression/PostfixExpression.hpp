@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Clipl/Grammar/AST/Base/ASTNode.hpp>
+#include <Clipl/Grammar/AST/Expression/UnaryExpression.hpp>
 
 
 namespace ast {
 
-class PostfixExpression: public ASTNode {
+class PostfixExpression: public UnaryExpression {
 public:
-    PostfixExpression();
+    virtual ~PostfixExpression() = default;
 
     // void accept(Visitor *visitor) override;
 };

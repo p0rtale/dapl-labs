@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Clipl/Grammar/AST/Base/ASTNode.hpp>
+#include <Clipl/Grammar/AST/Expression/PostfixExpression.hpp>
 
 
 namespace ast {
 
-class PrimaryExpression: public ASTNode {
+class PrimaryExpression: public PostfixExpression {
 public:
     PrimaryExpression();
 
