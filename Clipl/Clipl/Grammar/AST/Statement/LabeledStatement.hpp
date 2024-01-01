@@ -7,7 +7,7 @@ namespace ast {
 
 class LabeledStatement: public Statement {
 public:
-    LabeledStatement();
+    virtual ~LabeledStatement() = default;
 
     // void accept(Visitor *visitor) override;
 };
