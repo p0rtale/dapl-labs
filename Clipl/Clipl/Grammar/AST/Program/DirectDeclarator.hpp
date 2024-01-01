@@ -7,7 +7,7 @@ namespace ast {
 
 class DirectDeclarator: public ASTNode {
 public:
-    DirectDeclarator();
+    virtual ~DirectDeclarator() = default;
 
     // void accept(Visitor *visitor) override;
 };
