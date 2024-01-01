@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
 #include <Clipl/Grammar/AST/Expression/Expression.hpp>
 #include <Clipl/Grammar/AST/Expression/LogicalOrExpression.hpp>
@@ -22,9 +24,9 @@ public:
     // void accept(Visitor *visitor) override;
 
 private:
-    std::shared_ptr<LogicalOrExpression> m_Condition = nullptr;
-    std::shared_ptr<Expression> m_Expression = nullptr;
-    std::shared_ptr<ConditionalExpression> m_ConditionalExpression = nullptr;
+    std::shared_ptr<LogicalOrExpression> m_Condition;
+    std::shared_ptr<Expression> m_Expression;
+    std::shared_ptr<ConditionalExpression> m_ConditionalExpression;
 };
 
 }  // namespace ast

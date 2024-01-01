@@ -661,7 +661,7 @@ logical_or_expression
         $$ = std::make_shared<LogicalOrExpression>($1);
     }
     | logical_or_expression "||" logical_and_expression {
-        $$ = std::make_shared<LogicalOrExpression>($1, $3);
+        $$ = std::make_shared<LogicalOrExpression>($3, $1);
     };
 
 logical_and_expression
@@ -669,42 +669,42 @@ logical_and_expression
         $$ = std::make_shared<LogicalAndExpression>($1);
     }
     | logical_and_expression "&&" inclusive_or_expression {
-        $$ = std::make_shared<LogicalAndExpression>($1, $3);
+        $$ = std::make_shared<LogicalAndExpression>($3, $1);
     };
 
 inclusive_or_expression
     : exclusive_or_expression {
-        
+        $$ = std::make_shared<InclusiveOrExpression>($1);
     }
     | inclusive_or_expression "|" exclusive_or_expression {
-
+        $$ = std::make_shared<InclusiveOrExpression>($3, $1);
     };
 
 exclusive_or_expression
     : and_expression {
-
+        $$ = std::make_shared<ExclusiveOrExpression>($1);
     }
     | exclusive_or_expression "^" and_expression {
-
+        $$ = std::make_shared<ExclusiveOrExpression>($3, $1);
     };
 
 and_expression
     : equality_expression {
-
+        $$ = std::make_shared<AndExpression>($1);
     }
     | and_expression "&" equality_expression {
-
+        $$ = std::make_shared<AndExpression>($3, $1);
     };
 
 equality_expression
     : relational_expression {
-
+        $$ = std::make_shared<EqualityExpression>($1);
     }
     | equality_expression "==" relational_expression {
-
+        $$ = std::make_shared<EqualityExpression>($1, $3, EqualityExpression::Type::kEqual);
     }
     | equality_expression "!=" relational_expression {
-
+        $$ = std::make_shared<EqualityExpression>($1, $3, EqualityExpression::Type::kNotEqual);
     }
     | error "==" relational_expression {
         // TODO: handle error
@@ -715,19 +715,19 @@ equality_expression
 
 relational_expression
     : shift_expression {
-
+        $$ = std::make_shared<RelationalExpression>($1);
     }
     | relational_expression "<" shift_expression {
-
+        $$ = std::make_shared<RelationalExpression>($1, $3, RelationalExpression::Type::kLess);
     }
     | relational_expression ">" shift_expression {
-
+        $$ = std::make_shared<RelationalExpression>($1, $3, RelationalExpression::Type::kGreater);
     }
     | relational_expression "<=" shift_expression {
-
+        $$ = std::make_shared<RelationalExpression>($1, $3, RelationalExpression::Type::kLessEq);
     }
     | relational_expression ">=" shift_expression {
-
+        $$ = std::make_shared<RelationalExpression>($1, $3, RelationalExpression::Type::kGreaterEq);
     }
     | error "<" shift_expression {
         // TODO: handle error
