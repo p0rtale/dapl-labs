@@ -7,7 +7,7 @@ namespace ast {
 
 class JumpStatement: public Statement {
 public:
-    JumpStatement();
+    virtual ~JumpStatement() = default;
 
     // void accept(Visitor *visitor) override;
 };
