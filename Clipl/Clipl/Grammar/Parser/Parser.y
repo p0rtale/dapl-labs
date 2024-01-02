@@ -156,8 +156,8 @@
 %token <std::string> IDENTIFIER "identifier"
 %token <int> NUMBER "number"
 
-%nterm <RefT<TranslationUnit>> program;
-%nterm <RefT<TranslationUnit>> translation_unit;
+%nterm <RefT<Program>> program;
+%nterm <std::vector<RefT<ExternalDeclaration>>> translation_unit;
 %nterm <RefT<ExternalDeclaration>> external_declaration;
 %nterm <RefT<FunctionDefinition>> function_definition;
 %nterm <RefT<DeclarationSpecifiers>> declaration_specifiers;
@@ -238,16 +238,17 @@
 
 program
     : translation_unit {
-        $$ = $1;
+        $$ = CreateRef<Program>(std::move($1));
         driver.setAST(std::move($$));
     }
 
 translation_unit
     : external_declaration {
-        $$ = CreateRef<TranslationUnit>($1);
+        $$ = std::vector{$1};
     }
     | external_declaration translation_unit {
-        $$ = CreateRef<TranslationUnit>($1, $2);
+        ($2).push_back($1);
+        $$ = std::move($2);
     };
 
 external_declaration

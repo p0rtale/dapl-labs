@@ -36,6 +36,7 @@ class ParameterDirectAbstractDeclarator;
 class ParameterDirectDeclarator;
 class ParameterTypeList;
 class Pointer;
+class Program;
 class Specifier;
 class SpecifierQualifierList;
 class StorageClassSpecifier;
@@ -43,7 +44,6 @@ class StructDeclaration;
 class StructDeclarator;
 enum class StructOrUnionType;
 class StructOrUnionSpecifier;
-class TranslationUnit;
 class TypeName;
 class TypeQualifier;
 

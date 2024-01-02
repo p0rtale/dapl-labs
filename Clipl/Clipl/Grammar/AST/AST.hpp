@@ -64,10 +64,10 @@
 #include <Clipl/Grammar/AST/Program/ParameterDeclaration.hpp>
 #include <Clipl/Grammar/AST/Program/ParameterTypeList.hpp>
 #include <Clipl/Grammar/AST/Program/Pointer.hpp>
+#include <Clipl/Grammar/AST/Program/Program.hpp>
 #include <Clipl/Grammar/AST/Program/SpecifierQualifierList.hpp>
 #include <Clipl/Grammar/AST/Program/StructDeclaration.hpp>
 #include <Clipl/Grammar/AST/Program/StructDeclarator.hpp>
-#include <Clipl/Grammar/AST/Program/TranslationUnit.hpp>
 #include <Clipl/Grammar/AST/Program/TypeName.hpp>
 
 
