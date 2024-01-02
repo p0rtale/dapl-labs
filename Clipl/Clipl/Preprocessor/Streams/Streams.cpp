@@ -5,7 +5,7 @@
 
 namespace preprocessor {
 
-StreamStack::StreamStack(TOnPushCallback pushCallback, TOnPopCallback popCallback)
+StreamStack::StreamStack(OnPushCallbackT pushCallback, OnPopCallbackT popCallback)
     : m_PushCallback(std::move(pushCallback)), m_PopCallback(std::move(popCallback)) {}
 
 void StreamStack::pushStream(std::string filename, size_t line) {

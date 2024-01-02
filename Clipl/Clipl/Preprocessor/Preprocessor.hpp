@@ -36,10 +36,10 @@ private:
     Lexer m_Lexer;
 
     StreamStack m_StreamStack = StreamStack(
-        [this](StreamStack::TStreamScope& streamScope) {
+        [this](StreamStack::StreamScopeT& streamScope) {
             m_Lexer.yyrestart(streamScope.get());
         },
-        [this](StreamStack::TStreamScope& streamScope) {
+        [this](StreamStack::StreamScopeT& streamScope) {
             m_Lexer.yyrestart(streamScope.get());
         }
     );
