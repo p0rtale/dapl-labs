@@ -7,13 +7,16 @@ using namespace clipl;
 
 int main() {
     Driver driver{/*traceParsing=*/true, /*traceScanning=*/true};
-    Driver::Result result = driver.parse("main.clipl");
+    Driver::Result result = driver.Parse("main.clipl");
     if (result == Driver::Result::kOK) {
         std::cout << "PLAY: OK\n";
     } else {
         std::cout << "PLAY: ERROR\n";
         return EXIT_FAILURE;
     }
+
+    driver.ConvertTreeToDot("main.dot");
+    std::cout << "PLAY: DOT OK\n";
 
     return EXIT_SUCCESS;
 }
