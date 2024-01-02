@@ -13,7 +13,9 @@ public:
         : m_ExclusiveOrExpression(exclusiveOrExpression),
           m_AndExpression(andExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<ExclusiveOrExpression> m_ExclusiveOrExpression;

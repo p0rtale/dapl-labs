@@ -25,7 +25,9 @@ public:
           m_ShiftExpression(shiftExpression),
           m_AdditiveExpression(additiveExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     Type m_Type = Type::kBlank;

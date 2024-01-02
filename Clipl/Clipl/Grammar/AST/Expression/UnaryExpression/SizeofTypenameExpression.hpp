@@ -11,7 +11,9 @@ public:
     SizeofTypenameExpression(RefT<TypeName> typeName)
         : m_TypeName(typeName) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<TypeName> m_TypeName;

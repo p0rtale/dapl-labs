@@ -10,7 +10,9 @@ public:
     NumberPrimaryExpression(int number)
         : m_Number(number) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     int m_Number;

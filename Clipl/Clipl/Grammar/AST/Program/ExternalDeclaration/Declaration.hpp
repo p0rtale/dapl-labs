@@ -21,7 +21,9 @@ public:
           m_InitDeclarators(std::move(initDeclarators)),
           m_AssignmentExpression(assignmentExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<DeclarationSpecifiers> m_DeclarationSpecifiers;

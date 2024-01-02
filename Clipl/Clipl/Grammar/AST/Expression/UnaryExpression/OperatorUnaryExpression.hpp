@@ -14,7 +14,9 @@ public:
         : m_UnaryOperator(unaryOperator),
           m_CastExpression(castExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<UnaryOperator> m_UnaryOperator;

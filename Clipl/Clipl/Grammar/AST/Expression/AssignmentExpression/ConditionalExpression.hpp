@@ -11,7 +11,9 @@ public:
     ConditionalAssignmentExpression(RefT<ConditionalExpression> conditionalExpression)
         : m_ConditionalExpression(conditionalExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<ConditionalExpression> m_ConditionalExpression;

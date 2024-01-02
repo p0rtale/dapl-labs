@@ -271,7 +271,7 @@ function_definition
 
 declaration_specifiers
     : specifier declaration_specifiers {
-        ($2)->addSpecifier($1);
+        ($2)->AddSpecifier($1);
         $$ = $2;
     }
     | keyword_specifier_list {
@@ -283,21 +283,21 @@ declaration_specifiers
 
 specifier_qualifier_list
     : keyword_specifier specifier_qualifier_list {
-        ($2)->addKeywordSpecifier($1);
+        ($2)->AddKeywordSpecifier($1);
         $$ = $2; 
     }
     | keyword_specifier {
         $$ = CreateRef<SpecifierQualifierList>($1);
     }
     | ident_specifier specifier_qualifier_list {
-        ($2)->addIdentSpecifier($1);
+        ($2)->AddIdentSpecifier($1);
         $$ = $2; 
     }
     | ident_specifier {
         $$ = CreateRef<SpecifierQualifierList>($1);
     }
     | type_qualifier specifier_qualifier_list {
-        ($2)->addTypeQualifier($1);
+        ($2)->AddTypeQualifier($1);
         $$ = $2; 
     }
     | type_qualifier {
@@ -318,12 +318,12 @@ keyword_specifier_list
     }
     | keyword_specifier_list keyword_specifier {
         auto keywordSpecifierList = $1;
-        keywordSpecifierList->addKeywordSpecifier($2);
+        keywordSpecifierList->AddKeywordSpecifier($2);
         $$ = keywordSpecifierList;
     }
     | keyword_specifier_list specifier {
         auto keywordSpecifierList = $1;
-        keywordSpecifierList->addSpecifier($2);
+        keywordSpecifierList->AddSpecifier($2);
         $$ = keywordSpecifierList;
     };
 

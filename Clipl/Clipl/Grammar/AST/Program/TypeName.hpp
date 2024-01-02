@@ -14,7 +14,9 @@ public:
         : m_SpecifierQualifierList(specifierQualifierList),
           m_AbstractDeclarator(abstractDeclarator) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<SpecifierQualifierList> m_SpecifierQualifierList;

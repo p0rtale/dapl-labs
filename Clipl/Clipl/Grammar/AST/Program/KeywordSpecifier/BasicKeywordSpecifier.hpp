@@ -23,7 +23,9 @@ public:
     BasicKeywordSpecifier(Type type)
         : m_Type(type) {};
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     Type m_Type;

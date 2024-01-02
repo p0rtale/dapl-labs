@@ -9,7 +9,9 @@ class DirectDeclarator: public ASTNode {
 public:
     virtual ~DirectDeclarator() = default;
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 };
 
 }  // namespace ast

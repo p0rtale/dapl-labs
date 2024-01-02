@@ -17,7 +17,9 @@ public:
           m_Declarator(declarator),
           m_CompoundStatement(compoundStatement) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<DeclarationSpecifiers> m_DeclarationSpecifiers;

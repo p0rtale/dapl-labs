@@ -13,7 +13,9 @@ public:
         : m_LogicalAndExpression(logicalAndExpression),
           m_InclusiveOrExpression(inclusiveOrExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<LogicalAndExpression> m_LogicalAndExpression;

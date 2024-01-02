@@ -16,7 +16,9 @@ public:
           m_StatementTrue(statementTrue),
           m_StatementFalse(statementFalse) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<Expression> m_Expression;

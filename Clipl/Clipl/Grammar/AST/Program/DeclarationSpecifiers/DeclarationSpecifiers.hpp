@@ -9,9 +9,11 @@ class DeclarationSpecifiers: public ASTNode {
 public:
     virtual ~DeclarationSpecifiers() = default;
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
-    virtual void addSpecifier(RefT<Specifier> specifier) = 0;
+    virtual void AddSpecifier(RefT<Specifier> specifier) = 0;
 };
 
 }  // namespace ast

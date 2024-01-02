@@ -13,7 +13,9 @@ public:
         : m_DirectDeclarator(directDeclarator),
           m_ParameterTypeList(parameterTypeList) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<DirectDeclarator> m_DirectDeclarator;

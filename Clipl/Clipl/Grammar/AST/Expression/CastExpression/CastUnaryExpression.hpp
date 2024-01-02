@@ -11,7 +11,9 @@ public:
     CastUnaryExpression(RefT<UnaryExpression> unaryExpression)
         : m_UnaryExpression(unaryExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<UnaryExpression> m_UnaryExpression;

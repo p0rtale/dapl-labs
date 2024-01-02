@@ -14,7 +14,9 @@ public:
         : m_Declarator(declarator),
           m_Initializer(initializer) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<Declarator> m_Declarator;

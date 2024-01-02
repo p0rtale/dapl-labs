@@ -9,7 +9,9 @@ class PrimaryExpression: public PostfixExpression {
 public:
     virtual ~PrimaryExpression() = default;
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 };
 
 }  // namespace ast

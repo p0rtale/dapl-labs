@@ -16,7 +16,9 @@ public:
         : m_TypeQualifiers(std::move(typeQualifiers)),
           m_Tail(pointer) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     std::vector<RefT<TypeQualifier>> m_TypeQualifiers;

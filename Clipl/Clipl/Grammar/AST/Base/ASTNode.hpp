@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <Clipl/Visitor/Visitor.hpp>
+
 
 namespace ast {
 
@@ -15,8 +17,9 @@ constexpr RefT<T> CreateRef(Args&&... args) {
 
 class ASTNode {
 public:
-    // virtual void accept(Visitor* visitor) = 0;
     virtual ~ASTNode() = default;
+
+    virtual void Accept(Visitor& visitor) = 0;
 };
 
 }  // namespace ast

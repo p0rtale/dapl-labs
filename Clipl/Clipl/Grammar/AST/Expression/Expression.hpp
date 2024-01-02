@@ -13,7 +13,9 @@ public:
         : m_ExpressionHead(expression),
           m_AssignmentExpression(assignmentExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<Expression> m_ExpressionHead;

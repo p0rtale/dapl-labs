@@ -11,8 +11,9 @@ class IdentDirectDeclarator: public DirectDeclarator {
 public:
     IdentDirectDeclarator(std::string identifier)
         : m_Identifier(std::move(identifier)) {}
-
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     std::string m_Identifier;

@@ -13,7 +13,9 @@ public:
         : m_TypeName(typeName),
           m_CastExpressionTail(castExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<TypeName> m_TypeName;

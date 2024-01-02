@@ -9,7 +9,9 @@ class KeywordSpecifier: public ASTNode {
 public:
     virtual ~KeywordSpecifier() = default;
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 };
 
 }  // namespace ast

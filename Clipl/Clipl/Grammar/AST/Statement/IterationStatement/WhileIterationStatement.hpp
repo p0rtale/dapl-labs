@@ -13,7 +13,9 @@ public:
         : m_Expression(expression),
           m_Statement(statement) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<Expression> m_Expression;

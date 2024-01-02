@@ -15,7 +15,9 @@ public:
         : m_Parameters(std::move(parameters)),
           m_HaveEllipsis(haveEllipsis) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     std::vector<RefT<ParameterDeclaration>> m_Parameters;

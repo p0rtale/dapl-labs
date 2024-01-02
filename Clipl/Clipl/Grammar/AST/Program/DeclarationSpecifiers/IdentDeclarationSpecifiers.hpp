@@ -17,9 +17,11 @@ public:
         : m_Specifiers(specifiers),
           m_Ident(identSpecifier) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
-    void addSpecifier(RefT<Specifier> specifier) override {
+    void AddSpecifier(RefT<Specifier> specifier) override {
         m_Specifiers.push_back(specifier);
     }
 

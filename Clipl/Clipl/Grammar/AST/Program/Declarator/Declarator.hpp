@@ -13,7 +13,9 @@ public:
         : m_Pointer(pointer),
           m_DirectDeclarator(directDeclarator) {};
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<Pointer> m_Pointer;

@@ -11,7 +11,9 @@ public:
     DefaultLabeledStatement(RefT<Statement> statement)
         : m_Statement(statement) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<Statement> m_Statement;

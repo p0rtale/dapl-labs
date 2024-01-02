@@ -12,13 +12,15 @@ public:
     KeywordDeclarationSpecifiers(RefT<KeywordSpecifier> keywordSpecifier)
         : m_Keywords{keywordSpecifier} {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
-    void addSpecifier(RefT<Specifier> specifier) override {
+    void AddSpecifier(RefT<Specifier> specifier) override {
         m_Specifiers.push_back(specifier);
     }
 
-    void addKeywordSpecifier(RefT<KeywordSpecifier> keyword) {
+    void AddKeywordSpecifier(RefT<KeywordSpecifier> keyword) {
         m_Keywords.push_back(keyword);
     }
 

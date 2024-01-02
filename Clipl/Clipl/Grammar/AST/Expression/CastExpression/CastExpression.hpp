@@ -9,7 +9,9 @@ class CastExpression: public ASTNode {
 public:
     virtual ~CastExpression() = default;
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 };
 
 }  // namespace ast

@@ -13,7 +13,9 @@ public:
         : m_AndExpression(andExpression),
           m_EqualityExpression(equalityExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<AndExpression> m_AndExpression;

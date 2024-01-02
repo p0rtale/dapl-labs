@@ -9,7 +9,9 @@ class Initializer: public ASTNode {
 public:
     virtual ~Initializer() = default;
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 };
 
 }  // namespace ast

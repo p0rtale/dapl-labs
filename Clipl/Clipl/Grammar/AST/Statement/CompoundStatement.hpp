@@ -23,7 +23,9 @@ public:
         : m_Declarations(std::move(declarations)),
           m_Statements(std::move(statements)) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     std::vector<RefT<Declaration>> m_Declarations;

@@ -14,7 +14,9 @@ public:
         : m_DeclarationSpecifiers(declarationSpecifiers),
           m_BaseDeclarator(baseDeclarator) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<DeclarationSpecifiers> m_DeclarationSpecifiers;

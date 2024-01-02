@@ -21,17 +21,19 @@ public:
     SpecifierQualifierList(RefT<KeywordSpecifier> keywordSpecifier)
         : m_KeywordSpecifiers({keywordSpecifier}) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
-    void addTypeQualifier(RefT<TypeQualifier> typeQualifier) {
+    void AddTypeQualifier(RefT<TypeQualifier> typeQualifier) {
         m_TypeQualifiers.push_back(typeQualifier);
     }
 
-    void addIdentSpecifier(RefT<IdentSpecifier> identSpecifier) {
+    void AddIdentSpecifier(RefT<IdentSpecifier> identSpecifier) {
         m_IdentSpecifiers.push_back(identSpecifier);
     }
 
-    void addKeywordSpecifier(RefT<KeywordSpecifier> keywordSpecifier) {
+    void AddKeywordSpecifier(RefT<KeywordSpecifier> keywordSpecifier) {
         m_KeywordSpecifiers.push_back(keywordSpecifier);
     }
 

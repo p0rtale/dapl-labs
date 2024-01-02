@@ -11,7 +11,9 @@ public:
     NestedPrimaryExpression(RefT<Expression> expression)
         : m_Expression(expression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<Expression> m_Expression;

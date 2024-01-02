@@ -13,7 +13,9 @@ public:
         : m_PostfixExpression(postfixExpression),
           m_IndexExpression(indexExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<PostfixExpression> m_PostfixExpression;

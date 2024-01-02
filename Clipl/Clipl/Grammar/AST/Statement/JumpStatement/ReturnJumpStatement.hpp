@@ -11,7 +11,9 @@ public:
     ReturnJumpStatement(RefT<Expression> expression = nullptr)
         : m_Expression(expression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<Expression> m_Expression;

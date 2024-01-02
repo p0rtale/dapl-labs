@@ -12,7 +12,9 @@ public:
     InitializerList(std::vector<RefT<Initializer>> initializers)
         : m_Initializers(initializers) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     std::vector<RefT<Initializer>> m_Initializers;

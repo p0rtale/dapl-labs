@@ -16,7 +16,9 @@ public:
         : m_DirectAbstractDeclarator(directAbstractDeclarator),
           m_ArraySizeConstexpr(constantExpression) {};
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<DirectAbstractDeclarator> m_DirectAbstractDeclarator;

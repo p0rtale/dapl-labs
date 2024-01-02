@@ -11,7 +11,9 @@ public:
     StructDeclarator(RefT<Declarator> declarator)
         : m_Declarator(declarator) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<Declarator> m_Declarator;

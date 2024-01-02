@@ -9,7 +9,9 @@ class LabeledStatement: public Statement {
 public:
     virtual ~LabeledStatement() = default;
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 };
 
 }  // namespace ast

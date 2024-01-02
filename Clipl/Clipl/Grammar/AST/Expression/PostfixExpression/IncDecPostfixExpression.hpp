@@ -20,7 +20,9 @@ public:
         : m_Type(type),
           m_PostfixExpression(postfixExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     Type m_Type;

@@ -21,8 +21,10 @@ public:
         : m_Type(type),
           m_Identifier(std::move(identifier)),
           m_StructDeclarationList(structDeclarationList) {}
-
-    // void accept(Visitor *visitor) override;
+    
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     StructOrUnionType m_Type;

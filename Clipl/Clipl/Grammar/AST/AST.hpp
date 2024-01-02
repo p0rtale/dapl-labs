@@ -38,9 +38,9 @@
 #include <Clipl/Grammar/AST/Program/DirectDeclarator/ParameterDeclarator.hpp>
 
 // External declaration
+#include <Clipl/Grammar/AST/Program/ExternalDeclaration/Declaration.hpp>
 #include <Clipl/Grammar/AST/Program/ExternalDeclaration/ExternalDeclaration.hpp>
 #include <Clipl/Grammar/AST/Program/ExternalDeclaration/FunctionDefinition.hpp>
-#include <Clipl/Grammar/AST/Program/ExternalDeclaration/Declaration.hpp>
 
 // Initializer
 #include <Clipl/Grammar/AST/Program/Initializer/ExpressionInitializer.hpp>

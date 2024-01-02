@@ -13,7 +13,9 @@ public:
         : m_InclusiveOrExpression(inclusiveOrExpression),
           m_ExclusiveOrExpression(exclusiveOrExpression) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<InclusiveOrExpression> m_InclusiveOrExpression;

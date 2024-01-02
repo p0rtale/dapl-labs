@@ -11,7 +11,9 @@ public:
     NestedDirectAbstractDeclarator(RefT<AbstractDeclarator> abstractDeclarator)
         : m_AbstractDeclarator(abstractDeclarator) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     RefT<AbstractDeclarator> m_AbstractDeclarator;

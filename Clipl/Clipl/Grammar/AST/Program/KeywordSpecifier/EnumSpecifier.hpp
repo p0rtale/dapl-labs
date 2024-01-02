@@ -16,7 +16,9 @@ public:
         : m_Identifier(std::move(identifier)),
           m_EnumeratorList(enumeratorList) {}
 
-    // void accept(Visitor *visitor) override;
+    void Accept(Visitor& visitor) override {
+        visitor.Visit(*this);
+    }
 
 private:
     std::string m_Identifier;
