@@ -2,6 +2,9 @@
 
 #include <Clipl/Grammar/AST/ForwardDecl.hpp>
 
+
+namespace ast {
+
 class Visitor {
 public:
     /*
@@ -60,10 +63,10 @@ public:
     virtual void Visit(ParameterDeclaration& parameterDeclaration) = 0;
     virtual void Visit(ParameterTypeList& parameterTypeList) = 0;
     virtual void Visit(Pointer& pointer) = 0;
+    virtual void Visit(Program& program) = 0;
     virtual void Visit(SpecifierQualifierList& specifierQualifierList) = 0;
     virtual void Visit(StructDeclaration& structDeclaration) = 0;
     virtual void Visit(StructDeclarator& structDeclarator) = 0;
-    virtual void Visit(TranslationUnit& translationUnit) = 0;
     virtual void Visit(TypeName& typeName) = 0;
 
 
@@ -75,7 +78,7 @@ public:
 
     // Assignment expression
     virtual void Visit(AssignmentExpression& assignmentExpression) = 0;
-    virtual void Visit(ConditionalAssignmentExpression& conditionalExpression) = 0;
+    virtual void Visit(ConditionalAssignmentExpression& conditionalAssignmentExpression) = 0;
     virtual void Visit(UnaryAssignExpression& unaryAssignExpression) = 0;
 
     // Cast expression
@@ -151,3 +154,5 @@ public:
     virtual void Visit(ExpressionStatement& expressionStatement) = 0;
     virtual void Visit(Statement& statement) = 0;
 };
+
+}  // namespace ast
