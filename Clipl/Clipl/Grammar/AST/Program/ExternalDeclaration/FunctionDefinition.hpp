@@ -20,9 +20,9 @@ public:
     // void accept(Visitor *visitor) override;
 
 private:
-    RefT<DeclarationSpecifiers> m_DeclarationSpecifiers = nullptr;
-    RefT<Declarator> m_Declarator = nullptr;
-    RefT<CompoundStatement> m_CompoundStatement = nullptr;
+    RefT<DeclarationSpecifiers> m_DeclarationSpecifiers;
+    RefT<Declarator> m_Declarator;
+    RefT<CompoundStatement> m_CompoundStatement;
 };
 
 }  // namespace ast

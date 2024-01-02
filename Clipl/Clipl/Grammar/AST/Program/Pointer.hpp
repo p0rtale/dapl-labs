@@ -20,7 +20,7 @@ public:
 
 private:
     std::vector<RefT<TypeQualifier>> m_TypeQualifiers;
-    RefT<Pointer> m_Tail = nullptr;
+    RefT<Pointer> m_Tail;
 };
 
 }  // namespace ast
