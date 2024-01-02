@@ -20,6 +20,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<DirectAbstractDeclarator> GetDirectAbstractDeclarator() const {
+        return m_DirectAbstractDeclarator;
+    }
+
+    RefT<ConstantExpression> GetArraySizeConstexpr() {
+        return m_ArraySizeConstexpr;
+    }
+
 private:
     RefT<DirectAbstractDeclarator> m_DirectAbstractDeclarator;
     RefT<ConstantExpression> m_ArraySizeConstexpr;

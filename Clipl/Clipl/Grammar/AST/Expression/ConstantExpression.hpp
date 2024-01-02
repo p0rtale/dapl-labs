@@ -15,6 +15,10 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<ConditionalExpression> GetConditionalExpression() const {
+        return m_ConditionalExpression;
+    }
+
 private:
     RefT<ConditionalExpression> m_ConditionalExpression;
 };

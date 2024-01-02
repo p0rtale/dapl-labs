@@ -20,6 +20,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<DirectAbstractDeclarator> GetDirectAbstractDeclarator() const {
+        return m_DirectAbstractDeclarator;
+    }
+
+    RefT<ParameterTypeList> GetParameterTypeList() const {
+        return m_ParameterTypeList;
+    }
+
 private:
     RefT<DirectAbstractDeclarator> m_DirectAbstractDeclarator;
     RefT<ParameterTypeList> m_ParameterTypeList;

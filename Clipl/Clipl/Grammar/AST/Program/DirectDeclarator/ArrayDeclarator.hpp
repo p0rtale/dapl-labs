@@ -17,6 +17,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<DirectDeclarator> GetDirectDeclarator() const {
+        return m_DirectDeclarator;
+    }
+
+    RefT<ConstantExpression> GetArraySizeConstexpr() const {
+        return m_ArraySizeConstexpr;
+    }
+
 private:
     RefT<DirectDeclarator> m_DirectDeclarator;
     RefT<ConstantExpression> m_ArraySizeConstexpr;

@@ -29,6 +29,26 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case Type::kBlank: return "";
+            case Type::kPlus:  return "+";
+            case Type::kMinus: return "-";
+            default: {
+                CLIPL_ERROR("Invalid type in AdditiveExpression");
+                return "";
+            }
+        }
+    }
+
+    RefT<AdditiveExpression> GetAdditiveExpression() const {
+        return m_AdditiveExpression;
+    }
+
+    RefT<MultiplicativeExpression> GetMultiplicativeExpression() const {
+        return m_MultiplicativeExpression;
+    }
+
 private:
     Type m_Type = Type::kBlank;
 

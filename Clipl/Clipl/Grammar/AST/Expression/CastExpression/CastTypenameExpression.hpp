@@ -17,6 +17,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<TypeName> GetTypeName() const {
+        return m_TypeName;
+    }
+
+    RefT<CastExpression> GetCastExpressionTail() const {
+        return m_CastExpressionTail;
+    }
+
 private:
     RefT<TypeName> m_TypeName;
     RefT<CastExpression> m_CastExpressionTail;

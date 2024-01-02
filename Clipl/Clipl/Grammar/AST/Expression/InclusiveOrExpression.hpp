@@ -17,6 +17,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<InclusiveOrExpression> GetInclusiveOrExpression() const {
+        return m_InclusiveOrExpression;
+    }
+
+    RefT<ExclusiveOrExpression> GetExclusiveOrExpression() const {
+        return m_ExclusiveOrExpression;
+    }
+
 private:
     RefT<InclusiveOrExpression> m_InclusiveOrExpression;
     RefT<ExclusiveOrExpression> m_ExclusiveOrExpression;

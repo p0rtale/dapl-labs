@@ -16,6 +16,14 @@ public:
     void Accept(Visitor& visitor) override {
         visitor.Visit(*this);
     }
+    
+    RefT<Pointer> GetPointer() const {
+        return m_Pointer;
+    }
+
+    RefT<DirectDeclarator> GetDirectDeclarator() const {
+        return m_DirectDeclarator;
+    }
 
 private:
     RefT<Pointer> m_Pointer;

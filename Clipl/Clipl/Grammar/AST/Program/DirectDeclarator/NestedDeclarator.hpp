@@ -15,6 +15,10 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<Declarator> GetDeclarator() const {
+        return  m_Declarator;
+    }
+
 private:
     RefT<Declarator> m_Declarator;
 };

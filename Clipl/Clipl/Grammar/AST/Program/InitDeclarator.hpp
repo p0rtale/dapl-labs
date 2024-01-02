@@ -18,6 +18,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<Declarator> GetDeclarator() const {
+        return m_Declarator;
+    }
+
+    RefT<Initializer> GetInitializer() const {
+        return m_Initializer;
+    }
+
 private:
     RefT<Declarator> m_Declarator;
     RefT<Initializer> m_Initializer;

@@ -19,6 +19,14 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetIdentifier() const {
+        return m_Identifier;
+    }
+
+    RefT<Statement> GetStatement() const {
+        return m_Statement;
+    }
+
 private:
     std::string m_Identifier;
     RefT<Statement> m_Statement;

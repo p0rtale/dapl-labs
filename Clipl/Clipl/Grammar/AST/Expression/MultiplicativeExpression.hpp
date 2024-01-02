@@ -30,6 +30,27 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case Type::kBlank: return "";
+            case Type::kMult:  return "*";
+            case Type::kDiv:   return "/";
+            case Type::kMod:   return "%";
+            default: {
+                CLIPL_ERROR("Invalid type in MultiplicativeExpression");
+                return "";
+            }
+        }
+    }
+
+    RefT<MultiplicativeExpression> GetMultiplicativeExpression() const {
+        return m_MultiplicativeExpression;
+    }
+
+    RefT<CastExpression> GetCastExpression() const {
+        return m_CastExpression;
+    }
+
 private:
     Type m_Type = Type::kBlank;
 

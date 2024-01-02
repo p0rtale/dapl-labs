@@ -18,6 +18,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<DeclarationSpecifiers> GetDeclarationSpecifiers() const {
+        return m_DeclarationSpecifiers;
+    }
+
+    RefT<BaseDeclarator> GetBaseDeclarator() const {
+        return m_BaseDeclarator;
+    }
+
 private:
     RefT<DeclarationSpecifiers> m_DeclarationSpecifiers;
     RefT<BaseDeclarator> m_BaseDeclarator;

@@ -16,6 +16,10 @@ public:
         visitor.Visit(*this);
     }
 
+    std::vector<RefT<Initializer>> GetInitializers() const {
+        return m_Initializers;
+    }
+
 private:
     std::vector<RefT<Initializer>> m_Initializers;
 };

@@ -20,6 +20,17 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case Type::kConst:    return "const";
+            case Type::kVolatile: return "volatile";
+            default: {
+                CLIPL_ERROR("Invalid type in TypeQualifier");
+                return "";
+            }
+        }
+    }
+
 private:
     Type m_Type;
 };

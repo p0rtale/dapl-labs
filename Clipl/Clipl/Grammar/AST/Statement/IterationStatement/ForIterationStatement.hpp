@@ -23,6 +23,22 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<ExpressionStatement> GetInitExpressionStatement() const {
+        return m_InitExpressionStatement;
+    }
+
+    RefT<ExpressionStatement> GetCondExpressionStatement() const {
+        return m_CondExpressionStatement;
+    }
+
+    RefT<Expression> GetLoopExpression() const {
+        return m_LoopExpression;
+    }
+
+    RefT<Statement> GetStatement() const {
+        return m_Statement;
+    }
+
 private:
     RefT<ExpressionStatement> m_InitExpressionStatement;
     RefT<ExpressionStatement> m_CondExpressionStatement;

@@ -20,6 +20,14 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetIdentifier() const {
+        return m_Identifier;
+    }
+
+    std::vector<RefT<Enumerator>> GetEnumeratorList() const {
+        return m_EnumeratorList;
+    }
+
 private:
     std::string m_Identifier;
     std::vector<RefT<Enumerator>> m_EnumeratorList;

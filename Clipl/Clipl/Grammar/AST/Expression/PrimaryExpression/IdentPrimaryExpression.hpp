@@ -16,6 +16,10 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetIdentifier() const {
+        return m_Identifier;
+    }
+
 private:
     std::string m_Identifier;
 };

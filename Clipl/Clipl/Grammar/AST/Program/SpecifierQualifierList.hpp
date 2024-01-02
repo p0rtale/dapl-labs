@@ -37,6 +37,18 @@ public:
         m_KeywordSpecifiers.push_back(keywordSpecifier);
     }
 
+    std::vector<RefT<TypeQualifier>> GetTypeQualifiers() const {
+        return m_TypeQualifiers;
+    }
+
+    std::vector<RefT<IdentSpecifier>> GetIdentSpecifiers() const {
+        return m_IdentSpecifiers;
+    }
+
+    std::vector<RefT<KeywordSpecifier>> GetKeywordSpecifiers() const {
+        return m_KeywordSpecifiers;
+    }
+
 private:
     std::vector<RefT<TypeQualifier>> m_TypeQualifiers;
     std::vector<RefT<IdentSpecifier>> m_IdentSpecifiers;

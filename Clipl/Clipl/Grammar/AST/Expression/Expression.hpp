@@ -17,6 +17,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<Expression> GetExpressionHead() const {
+        return m_ExpressionHead;
+    }
+
+    RefT<AssignmentExpression> GetAssignmentExpression() const {
+        return m_AssignmentExpression;
+    }
+
 private:
     RefT<Expression> m_ExpressionHead;
     RefT<AssignmentExpression> m_AssignmentExpression;

@@ -17,6 +17,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<AndExpression> GetAndExpression() const {
+        return m_AndExpression;
+    }
+
+    RefT<EqualityExpression> GetEqualityExpression() const {
+        return m_EqualityExpression;
+    }
+
 private:
     RefT<AndExpression> m_AndExpression;
     RefT<EqualityExpression> m_EqualityExpression;

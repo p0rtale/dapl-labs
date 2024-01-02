@@ -19,6 +19,14 @@ public:
         visitor.Visit(*this);
     }
 
+    std::vector<RefT<ParameterDeclaration>> GetParameters() const {
+        return m_Parameters;
+    }
+
+    bool HaveEllipsis() const {
+        return m_HaveEllipsis;
+    }
+
 private:
     std::vector<RefT<ParameterDeclaration>> m_Parameters;
     bool m_HaveEllipsis = false;

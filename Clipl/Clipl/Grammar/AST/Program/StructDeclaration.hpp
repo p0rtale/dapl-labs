@@ -18,6 +18,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<SpecifierQualifierList> GetSpecifierQualifierList() const {
+        return m_SpecifierQualifierList;
+    }
+
+    std::vector<RefT<StructDeclarator>> GetStructDeclaratorList() const {
+        return m_StructDeclaratorList;
+    }
+
 private:
     RefT<SpecifierQualifierList> m_SpecifierQualifierList;
     std::vector<RefT<StructDeclarator>> m_StructDeclaratorList;

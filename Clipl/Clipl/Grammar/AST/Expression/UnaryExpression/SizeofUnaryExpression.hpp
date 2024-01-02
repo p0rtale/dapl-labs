@@ -14,6 +14,10 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<UnaryExpression> GetUnaryExpression() const {
+        return m_UnaryExpression;
+    }
+
 private:
     RefT<UnaryExpression> m_UnaryExpression;
 };

@@ -19,6 +19,17 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case Type::kContinue: return "continue";
+            case Type::kBreak:    return "break";
+            default: {
+                CLIPL_ERROR("Invalid type in LoopJumpStatement");
+                return "";
+            }
+        }
+    }
+
 private:
     Type m_Type;
 };

@@ -24,6 +24,21 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case Type::kPlus:  return "++";
+            case Type::kMinus: return "--";
+            default: {
+                CLIPL_ERROR("Invalid type in IncDecPostfixExpression");
+                return "";
+            }
+        }
+    }
+
+    RefT<PostfixExpression> GetPostfixExpression() const {
+        return m_PostfixExpression;
+    }
+
 private:
     Type m_Type;
 

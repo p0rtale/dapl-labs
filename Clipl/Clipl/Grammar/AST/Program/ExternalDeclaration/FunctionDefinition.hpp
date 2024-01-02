@@ -21,6 +21,18 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<DeclarationSpecifiers> GetDeclarationSpecifiers() const {
+        return m_DeclarationSpecifiers;
+    }
+
+    RefT<Declarator> GetDeclarator() const {
+        return m_Declarator;
+    }
+
+    RefT<CompoundStatement> GetCompoundStatement() const {
+        return m_CompoundStatement;
+    }
+
 private:
     RefT<DeclarationSpecifiers> m_DeclarationSpecifiers;
     RefT<Declarator> m_Declarator;

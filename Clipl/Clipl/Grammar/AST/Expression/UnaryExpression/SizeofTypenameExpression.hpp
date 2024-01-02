@@ -15,6 +15,10 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<TypeName> GetTypeName() const {
+        return m_TypeName;
+    }
+
 private:
     RefT<TypeName> m_TypeName;
 };

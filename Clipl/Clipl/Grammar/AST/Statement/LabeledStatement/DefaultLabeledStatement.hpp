@@ -15,6 +15,10 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<Statement> GetStatement() const {
+        return m_Statement;
+    }
+
 private:
     RefT<Statement> m_Statement;
 };

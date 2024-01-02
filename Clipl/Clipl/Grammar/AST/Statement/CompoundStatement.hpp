@@ -27,6 +27,14 @@ public:
         visitor.Visit(*this);
     }
 
+    std::vector<RefT<Declaration>> GetDeclarations() const {
+        return m_Declarations;
+    }
+
+    std::vector<RefT<Statement>> GetStatements() const {
+        return m_Statements;
+    }
+
 private:
     std::vector<RefT<Declaration>> m_Declarations;
     std::vector<RefT<Statement>> m_Statements;

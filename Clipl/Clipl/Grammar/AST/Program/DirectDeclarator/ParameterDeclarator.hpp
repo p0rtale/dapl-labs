@@ -17,6 +17,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<DirectDeclarator> GetDirectDeclarator() const {
+        return m_DirectDeclarator;
+    }
+
+    RefT<ParameterTypeList> GetParameterTypeList() const {
+        return m_ParameterTypeList;
+    }
+
 private:
     RefT<DirectDeclarator> m_DirectDeclarator;
     RefT<ParameterTypeList> m_ParameterTypeList;

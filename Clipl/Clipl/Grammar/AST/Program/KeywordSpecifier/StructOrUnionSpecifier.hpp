@@ -26,6 +26,25 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case StructOrUnionType::kStruct: return "struct";
+            case StructOrUnionType::kUnion:  return "union";
+            default: {
+                CLIPL_ERROR("Invalid type in StructOrUnionSpecifier");
+                return "";
+            }
+        }
+    }
+
+    std::string GetIdentifier() const {
+        return m_Identifier;
+    }
+
+    std::vector<RefT<StructDeclaration>> GetStructDeclarationList() const {
+        return m_StructDeclarationList;
+    }
+
 private:
     StructOrUnionType m_Type;
 

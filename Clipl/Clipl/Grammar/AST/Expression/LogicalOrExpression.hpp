@@ -17,6 +17,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<LogicalOrExpression> GetLogicalOrExpression() const {
+        return m_LogicalOrExpression;
+    }
+
+    RefT<LogicalAndExpression> GetLogicalAndExpression() const {
+        return m_LogicalAndExpression;
+    }
+
 private:
     RefT<LogicalOrExpression> m_LogicalOrExpression;
     RefT<LogicalAndExpression> m_LogicalAndExpression;

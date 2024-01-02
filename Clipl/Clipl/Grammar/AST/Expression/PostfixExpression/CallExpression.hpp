@@ -19,6 +19,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<PostfixExpression> GetPostfixExpression() const {
+        return m_PostfixExpression;
+    }
+
+    std::vector<RefT<AssignmentExpression>> GetArgumentExpressions() const {
+        return m_ArgumentExpressions;
+    }
+
 private:
     RefT<PostfixExpression> m_PostfixExpression;
     std::vector<RefT<AssignmentExpression>> m_ArgumentExpressions;

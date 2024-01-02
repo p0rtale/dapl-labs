@@ -17,16 +17,28 @@ public:
                           RefT<ConditionalExpression> conditionalExpression)
         : m_Condition(condition),
           m_Expression(expression),
-          m_ConditionalExpression(conditionalExpression) {}
+          m_ConditionalExpressionFalse(conditionalExpression) {}
 
     void Accept(Visitor& visitor) override {
         visitor.Visit(*this);
     }
 
+    RefT<LogicalOrExpression> GetCondition() const {
+        return m_Condition;
+    }
+
+    RefT<Expression> GetExpression() const {
+        return m_Expression;
+    }
+
+    RefT<ConditionalExpression> GetConditionalExpressionFalse() const {
+        return m_ConditionalExpressionFalse;
+    }
+
 private:
     RefT<LogicalOrExpression> m_Condition;
     RefT<Expression> m_Expression;
-    RefT<ConditionalExpression> m_ConditionalExpression;
+    RefT<ConditionalExpression> m_ConditionalExpressionFalse;
 };
 
 }  // namespace ast

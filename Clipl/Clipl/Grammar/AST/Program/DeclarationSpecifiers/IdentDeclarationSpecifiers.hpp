@@ -25,6 +25,14 @@ public:
         m_Specifiers.push_back(specifier);
     }
 
+    std::vector<RefT<Specifier>> GetSpecifiers() const {
+        return m_Specifiers;
+    }
+
+    RefT<IdentSpecifier> GetIdent() const {
+        return m_Ident;
+    }    
+
 private:
     std::vector<RefT<Specifier>> m_Specifiers;
     RefT<IdentSpecifier> m_Ident;

@@ -25,6 +25,18 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<DeclarationSpecifiers> GetDeclarationSpecifiers() const {
+        return m_DeclarationSpecifiers;
+    }
+
+    std::vector<RefT<InitDeclarator>> GetInitDeclarators() const {
+        return m_InitDeclarators;
+    }
+
+    RefT<AssignmentExpression> GetAssignmentExpression() const {
+        return m_AssignmentExpression;
+    }
+
 private:
     RefT<DeclarationSpecifiers> m_DeclarationSpecifiers;
     std::vector<RefT<InitDeclarator>> m_InitDeclarators;

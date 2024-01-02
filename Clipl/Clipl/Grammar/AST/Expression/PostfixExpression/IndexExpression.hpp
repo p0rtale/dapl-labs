@@ -9,17 +9,25 @@ namespace ast {
 class IndexExpression: public PostfixExpression {
 public:
     IndexExpression(RefT<PostfixExpression> postfixExpression,
-                    RefT<Expression> indexExpression)
+                    RefT<Expression> indexExpr)
         : m_PostfixExpression(postfixExpression),
-          m_IndexExpression(indexExpression) {}
+          m_IndexExpr(indexExpr) {}
 
     void Accept(Visitor& visitor) override {
         visitor.Visit(*this);
     }
 
+    RefT<PostfixExpression> GetPostfixExpression() const {
+        return m_PostfixExpression;
+    }
+
+    RefT<Expression> GetIndexExpr() const {
+        return m_IndexExpr;
+    }
+
 private:
     RefT<PostfixExpression> m_PostfixExpression;
-    RefT<Expression> m_IndexExpression;
+    RefT<Expression> m_IndexExpr;
 };
 
 }  // namespace ast

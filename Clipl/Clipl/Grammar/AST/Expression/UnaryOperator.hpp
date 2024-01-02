@@ -24,6 +24,21 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case Type::kAddress :   return "&";
+            case Type::kMult:       return "*";
+            case Type::kPlus:       return "+";
+            case Type::kMinus:      return "-";
+            case Type::kLogicalNot: return "~";
+            case Type::kNot:        return "!";
+            default: {
+                CLIPL_ERROR("Invalid type in UnaryOperator");
+                return "";
+            }
+        }
+    }
+
 private:
     Type m_Type;
 };

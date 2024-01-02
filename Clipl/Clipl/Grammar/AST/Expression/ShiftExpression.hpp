@@ -29,6 +29,26 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case Type::kBlank:  return "";
+            case Type::kLeft:   return "<<";
+            case Type::kRight:  return ">>";
+            default: {
+                CLIPL_ERROR("Invalid type in ShiftExpression");
+                return "";
+            }
+        }
+    }
+
+    RefT<ShiftExpression> GetShiftExpression() const {
+        return m_ShiftExpression;
+    }
+
+    RefT<AdditiveExpression> GetAdditiveExpression() const {
+        return m_AdditiveExpression;
+    }
+
 private:
     Type m_Type = Type::kBlank;
 

@@ -18,6 +18,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<UnaryOperator> GetUnaryOperator() const {
+        return m_UnaryOperator;
+    }
+
+    RefT<CastExpression> GetCastExpression() const {
+        return m_CastExpression;
+    }
+
 private:
     RefT<UnaryOperator> m_UnaryOperator;
     RefT<CastExpression> m_CastExpression;

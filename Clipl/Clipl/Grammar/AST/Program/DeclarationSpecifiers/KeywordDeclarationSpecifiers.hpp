@@ -24,6 +24,14 @@ public:
         m_Keywords.push_back(keyword);
     }
 
+    std::vector<RefT<Specifier>> GetSpecifiers() const {
+        return m_Specifiers;
+    }
+
+    std::vector<RefT<KeywordSpecifier>> GetKeywords() const {
+        return m_Keywords;
+    }
+
 private:
     std::vector<RefT<Specifier>> m_Specifiers;
     std::vector<RefT<KeywordSpecifier>> m_Keywords;

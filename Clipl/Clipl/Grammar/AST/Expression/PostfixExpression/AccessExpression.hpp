@@ -25,6 +25,25 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case Type::kDot:   return ".";
+            case Type::kArrow: return "->";
+            default: {
+                CLIPL_ERROR("Invalid type in AccessExpression");
+                return "";
+            }
+        }
+    }
+
+    RefT<PostfixExpression> GetPostfixExpression() const {
+        return m_PostfixExpression;;
+    }
+
+    std::string GetIdentifier() const {
+        return m_Identifier;
+    }
+
 private:
     Type m_Type;
 

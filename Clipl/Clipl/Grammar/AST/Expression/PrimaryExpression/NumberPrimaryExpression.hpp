@@ -14,6 +14,10 @@ public:
         visitor.Visit(*this);
     }
 
+    int GetNumber() const {
+        return m_Number;
+    }
+
 private:
     int m_Number;
 };

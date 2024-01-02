@@ -18,6 +18,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<SpecifierQualifierList> GetSpecifierQualifierList() const {
+        return m_SpecifierQualifierList;
+    }
+
+    RefT<AbstractDeclarator> GetAbstractDeclarator() const {
+        return m_AbstractDeclarator;
+    }
+
 private:
     RefT<SpecifierQualifierList> m_SpecifierQualifierList;
     RefT<AbstractDeclarator> m_AbstractDeclarator;

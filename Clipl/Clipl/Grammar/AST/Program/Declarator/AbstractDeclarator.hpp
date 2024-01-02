@@ -20,6 +20,14 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<Pointer> GetPointer() const {
+        return m_Pointer;
+    }
+
+    RefT<DirectAbstractDeclarator> GetDirectAbstractDeclarator() const {
+        return m_DirectAbstractDeclarator;
+    }
+
 private:
     RefT<Pointer> m_Pointer;
     RefT<DirectAbstractDeclarator> m_DirectAbstractDeclarator;

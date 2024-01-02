@@ -19,6 +19,14 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetIdentifier() const {
+        return m_Identifier;
+    }
+
+    RefT<ConstantExpression> GetConstantExpression() const {
+        return m_Constexpr;
+    }
+
 private:
     std::string m_Identifier;
     RefT<ConstantExpression> m_Constexpr;

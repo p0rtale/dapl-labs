@@ -15,6 +15,10 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<AssignmentExpression> GetAssignmentExpression() const {
+        return m_AssignmentExpression;
+    }
+
 private:
     RefT<AssignmentExpression> m_AssignmentExpression;
 };

@@ -29,6 +29,26 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case Type::kBlank:    return "";
+            case Type::kEqual:    return "==";
+            case Type::kNotEqual: return "!=";
+            default: {
+                CLIPL_ERROR("Invalid type in EqualityExpression");
+                return "";
+            }
+        }
+    }
+
+    RefT<EqualityExpression> GetEqualityExpression() const {
+        return m_EqualityExpression;
+    }
+
+    RefT<RelationalExpression> GetRelationalExpression() const {
+        return m_RelationalExpression;
+    }
+
 private:
     Type m_Type = Type::kBlank;
 

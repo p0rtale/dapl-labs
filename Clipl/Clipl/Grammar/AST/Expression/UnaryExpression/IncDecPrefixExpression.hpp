@@ -22,6 +22,21 @@ public:
         visitor.Visit(*this);
     }
 
+    std::string GetTypeStr() const {
+        switch (m_Type) {
+            case Type::kPlus:  return "++";
+            case Type::kMinus: return "--";
+            default: {
+                CLIPL_ERROR("Invalid type in IncDecPrefixExpression");
+                return "";
+            }
+        }
+    }
+
+    RefT<UnaryExpression> GetUnaryExpression() const {
+        return m_UnaryExpression;
+    }
+
 private:
     Type m_Type;
 

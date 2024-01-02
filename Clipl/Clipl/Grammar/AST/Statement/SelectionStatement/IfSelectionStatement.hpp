@@ -20,6 +20,18 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<Expression> GetExpression() const {
+        return m_Expression;
+    }
+     
+    RefT<Statement> GetStatementTrue() const {
+        return m_StatementTrue;
+    }
+
+    RefT<Statement> GetStatementFalse() const {
+        return m_StatementFalse;
+    }
+
 private:
     RefT<Expression> m_Expression;
     RefT<Statement> m_StatementTrue;

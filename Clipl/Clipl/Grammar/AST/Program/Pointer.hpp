@@ -14,15 +14,23 @@ public:
     Pointer(std::vector<RefT<TypeQualifier>> typeQualifiers,
             RefT<Pointer> pointer = nullptr)
         : m_TypeQualifiers(std::move(typeQualifiers)),
-          m_Tail(pointer) {}
+          m_PointerTail(pointer) {}
 
     void Accept(Visitor& visitor) override {
         visitor.Visit(*this);
     }
 
+    std::vector<RefT<TypeQualifier>> GetTypeQualifiers() const {
+        return m_TypeQualifiers;
+    }
+
+    RefT<Pointer> GetPointerTail() const {
+        return m_PointerTail;
+    }
+
 private:
     std::vector<RefT<TypeQualifier>> m_TypeQualifiers;
-    RefT<Pointer> m_Tail;
+    RefT<Pointer> m_PointerTail;
 };
 
 }  // namespace ast

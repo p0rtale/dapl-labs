@@ -20,6 +20,18 @@ public:
         visitor.Visit(*this);
     }
 
+    RefT<UnaryExpression> GetUnaryExpression() const {
+        return m_UnaryExpression;
+    }
+
+    RefT<AssignmentOperator> GetAssignmentOperator() const {
+        return m_AssignmentOperator;
+    }
+
+    RefT<AssignmentExpression> GetAssignmentExpression() const {
+        return m_AssignmentExpression;
+    }
+
 private:
     RefT<UnaryExpression> m_UnaryExpression;
     RefT<AssignmentOperator> m_AssignmentOperator;
