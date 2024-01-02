@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <memory>
 
 #include <Clipl/Grammar/AST/Expression/PostfixExpression/PostfixExpression.hpp>
 
@@ -16,7 +15,7 @@ public:
     };
 
 public:
-    IncDecPostfixExpression(std::shared_ptr<PostfixExpression> postfixExpression,
+    IncDecPostfixExpression(RefT<PostfixExpression> postfixExpression,
                             Type type)
         : m_Type(type),
           m_PostfixExpression(postfixExpression) {}
@@ -26,7 +25,7 @@ public:
 private:
     Type m_Type;
 
-    std::shared_ptr<PostfixExpression> m_PostfixExpression;
+    RefT<PostfixExpression> m_PostfixExpression;
 };
 
 }  // namespace ast

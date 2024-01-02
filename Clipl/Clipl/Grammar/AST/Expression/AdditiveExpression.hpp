@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
 #include <Clipl/Grammar/AST/Expression/MultiplicativeExpression.hpp>
 
@@ -17,11 +15,11 @@ public:
     };
 
 public:
-    AdditiveExpression(std::shared_ptr<MultiplicativeExpression> multiplicativeExpression)
+    AdditiveExpression(RefT<MultiplicativeExpression> multiplicativeExpression)
         : m_MultiplicativeExpression(multiplicativeExpression) {}
 
-    AdditiveExpression(std::shared_ptr<AdditiveExpression> additiveExpression,
-                       std::shared_ptr<MultiplicativeExpression> multiplicativeExpression,
+    AdditiveExpression(RefT<AdditiveExpression> additiveExpression,
+                       RefT<MultiplicativeExpression> multiplicativeExpression,
                        Type type)
         : m_Type(type),
           m_AdditiveExpression(additiveExpression),
@@ -32,8 +30,8 @@ public:
 private:
     Type m_Type = Type::kBlank;
 
-    std::shared_ptr<AdditiveExpression> m_AdditiveExpression;
-    std::shared_ptr<MultiplicativeExpression> m_MultiplicativeExpression;
+    RefT<AdditiveExpression> m_AdditiveExpression;
+    RefT<MultiplicativeExpression> m_MultiplicativeExpression;
 };
 
 }  // namespace ast

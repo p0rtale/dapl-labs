@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
 #include <Clipl/Grammar/AST/Expression/AdditiveExpression.hpp>
 
@@ -17,11 +15,11 @@ public:
     };
 
 public:
-    ShiftExpression(std::shared_ptr<AdditiveExpression> additiveExpression)
+    ShiftExpression(RefT<AdditiveExpression> additiveExpression)
         : m_AdditiveExpression(additiveExpression) {}
 
-    ShiftExpression(std::shared_ptr<ShiftExpression> shiftExpression,
-                    std::shared_ptr<AdditiveExpression> additiveExpression,
+    ShiftExpression(RefT<ShiftExpression> shiftExpression,
+                    RefT<AdditiveExpression> additiveExpression,
                     Type type)
         : m_Type(type),
           m_ShiftExpression(shiftExpression),
@@ -32,8 +30,8 @@ public:
 private:
     Type m_Type = Type::kBlank;
 
-    std::shared_ptr<ShiftExpression> m_ShiftExpression;
-    std::shared_ptr<AdditiveExpression> m_AdditiveExpression;
+    RefT<ShiftExpression> m_ShiftExpression;
+    RefT<AdditiveExpression> m_AdditiveExpression;
 };
 
 }  // namespace ast

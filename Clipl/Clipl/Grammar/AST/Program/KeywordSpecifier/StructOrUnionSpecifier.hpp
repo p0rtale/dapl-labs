@@ -2,7 +2,6 @@
 
 #include <string>
 #include <vector>
-#include <memory>
 
 #include <Clipl/Grammar/AST/Program/KeywordSpecifier/KeywordSpecifier.hpp>
 #include <Clipl/Grammar/AST/Program/StructDeclaration.hpp>
@@ -18,7 +17,7 @@ enum class StructOrUnionType {
 class StructOrUnionSpecifier: public KeywordSpecifier {
 public:
     StructOrUnionSpecifier(StructOrUnionType type, std::string identifier,
-                           std::vector<std::shared_ptr<StructDeclaration>> structDeclarationList = {})
+                           std::vector<RefT<StructDeclaration>> structDeclarationList = {})
         : m_Type(type),
           m_Identifier(std::move(identifier)),
           m_StructDeclarationList(structDeclarationList) {}
@@ -29,7 +28,7 @@ private:
     StructOrUnionType m_Type;
 
     std::string m_Identifier;
-    std::vector<std::shared_ptr<StructDeclaration>> m_StructDeclarationList;
+    std::vector<RefT<StructDeclaration>> m_StructDeclarationList;
 };
 
 }  // namespace ast

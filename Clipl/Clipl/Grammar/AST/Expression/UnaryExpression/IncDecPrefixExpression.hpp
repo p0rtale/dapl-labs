@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <Clipl/Grammar/AST/Expression/UnaryExpression/UnaryExpression.hpp>
 
 
@@ -15,7 +13,7 @@ public:
     };
 
 public:
-    IncDecPrefixExpression(std::shared_ptr<UnaryExpression> unaryExpression,
+    IncDecPrefixExpression(RefT<UnaryExpression> unaryExpression,
                            Type type)
         : m_Type(type),
           m_UnaryExpression(unaryExpression) {}
@@ -25,7 +23,7 @@ public:
 private:
     Type m_Type;
 
-    std::shared_ptr<UnaryExpression> m_UnaryExpression;
+    RefT<UnaryExpression> m_UnaryExpression;
 };
 
 }  // namespace ast

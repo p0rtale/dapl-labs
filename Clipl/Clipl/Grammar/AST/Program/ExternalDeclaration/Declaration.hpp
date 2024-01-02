@@ -1,8 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <memory>
-
 #include <Clipl/Grammar/AST/Program/ExternalDeclaration/ExternalDeclaration.hpp>
 #include <Clipl/Grammar/AST/Program/DeclarationSpecifiers/DeclarationSpecifiers.hpp>
 #include <Clipl/Grammar/AST/Program/InitDeclarator.hpp>
@@ -13,12 +11,12 @@ namespace ast {
 
 class Declaration: public ExternalDeclaration {
 public:
-    Declaration(std::shared_ptr<DeclarationSpecifiers> declarationSpecifiers)
+    Declaration(RefT<DeclarationSpecifiers> declarationSpecifiers)
         : m_DeclarationSpecifiers(declarationSpecifiers) {}
 
-    Declaration(std::shared_ptr<DeclarationSpecifiers> declarationSpecifiers,
-                std::vector<std::shared_ptr<InitDeclarator>> initDeclarators,
-                std::shared_ptr<AssignmentExpression> assignmentExpression = nullptr)
+    Declaration(RefT<DeclarationSpecifiers> declarationSpecifiers,
+                std::vector<RefT<InitDeclarator>> initDeclarators,
+                RefT<AssignmentExpression> assignmentExpression = nullptr)
         : m_DeclarationSpecifiers(declarationSpecifiers),
           m_InitDeclarators(std::move(initDeclarators)),
           m_AssignmentExpression(assignmentExpression) {}
@@ -26,9 +24,9 @@ public:
     // void accept(Visitor *visitor) override;
 
 private:
-    std::shared_ptr<DeclarationSpecifiers> m_DeclarationSpecifiers;
-    std::vector<std::shared_ptr<InitDeclarator>> m_InitDeclarators;
-    std::shared_ptr<AssignmentExpression> m_AssignmentExpression;
+    RefT<DeclarationSpecifiers> m_DeclarationSpecifiers;
+    std::vector<RefT<InitDeclarator>> m_InitDeclarators;
+    RefT<AssignmentExpression> m_AssignmentExpression;
 };
 
 }  // namespace ast

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
 #include <Clipl/Grammar/AST/Expression/ShiftExpression.hpp>
 
@@ -19,12 +17,12 @@ public:
     };
 
 public:
-    RelationalExpression(std::shared_ptr<ShiftExpression> shiftExpression)
+    RelationalExpression(RefT<ShiftExpression> shiftExpression)
         : m_ShiftExpression(shiftExpression) {}
 
-    RelationalExpression(std::shared_ptr<RelationalExpression> relationalExpression,
-                       std::shared_ptr<ShiftExpression> shiftExpression,
-                       Type type)
+    RelationalExpression(RefT<RelationalExpression> relationalExpression,
+                         RefT<ShiftExpression> shiftExpression,
+                         Type type)
         : m_Type(type),
           m_RelationalExpression(relationalExpression),
           m_ShiftExpression(shiftExpression) {}
@@ -34,8 +32,8 @@ public:
 private:
     Type m_Type = Type::kBlank;
 
-    std::shared_ptr<RelationalExpression> m_RelationalExpression;
-    std::shared_ptr<ShiftExpression> m_ShiftExpression;
+    RefT<RelationalExpression> m_RelationalExpression;
+    RefT<ShiftExpression> m_ShiftExpression;
 };
 
 }  // namespace ast

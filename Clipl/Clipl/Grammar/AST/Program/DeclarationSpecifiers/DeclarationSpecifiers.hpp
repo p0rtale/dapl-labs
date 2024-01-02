@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
 #include <Clipl/Grammar/AST/Program/Specifier/Specifier.hpp>
 
@@ -13,7 +11,7 @@ public:
 
     // void accept(Visitor *visitor) override;
 
-    virtual void addSpecifier(std::shared_ptr<Specifier> specifier) = 0;
+    virtual void addSpecifier(RefT<Specifier> specifier) = 0;
 };
 
 }  // namespace ast

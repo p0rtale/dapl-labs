@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
 #include <Clipl/Grammar/AST/Program/Declarator/BaseDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/DeclarationSpecifiers/DeclarationSpecifiers.hpp>
@@ -11,16 +9,16 @@ namespace ast {
 
 class ParameterDeclaration: public ASTNode {
 public:
-    ParameterDeclaration(std::shared_ptr<DeclarationSpecifiers> declarationSpecifiers,
-                         std::shared_ptr<BaseDeclarator> baseDeclarator = nullptr)
+    ParameterDeclaration(RefT<DeclarationSpecifiers> declarationSpecifiers,
+                         RefT<BaseDeclarator> baseDeclarator = nullptr)
         : m_DeclarationSpecifiers(declarationSpecifiers),
           m_BaseDeclarator(baseDeclarator) {}
 
     // void accept(Visitor *visitor) override;
 
 private:
-    std::shared_ptr<DeclarationSpecifiers> m_DeclarationSpecifiers;
-    std::shared_ptr<BaseDeclarator> m_BaseDeclarator;
+    RefT<DeclarationSpecifiers> m_DeclarationSpecifiers;
+    RefT<BaseDeclarator> m_BaseDeclarator;
 };
 
 }  // namespace ast

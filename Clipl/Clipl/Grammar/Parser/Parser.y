@@ -156,77 +156,77 @@
 %token <std::string> IDENTIFIER "identifier"
 %token <int> NUMBER "number"
 
-%nterm <std::shared_ptr<TranslationUnit>> program;
-%nterm <std::shared_ptr<TranslationUnit>> translation_unit;
-%nterm <std::shared_ptr<ExternalDeclaration>> external_declaration;
-%nterm <std::shared_ptr<FunctionDefinition>> function_definition;
-%nterm <std::shared_ptr<DeclarationSpecifiers>> declaration_specifiers;
-%nterm <std::shared_ptr<IdentDeclarationSpecifiers>> ident_specifier_list;
-%nterm <std::shared_ptr<IdentSpecifier>> ident_specifier;
-%nterm <std::shared_ptr<KeywordSpecifier>> keyword_specifier;
-%nterm <std::shared_ptr<KeywordDeclarationSpecifiers>> keyword_specifier_list;
-%nterm <std::shared_ptr<Specifier>> specifier;
-%nterm <std::vector<std::shared_ptr<Specifier>>> specifier_list;
-%nterm <std::shared_ptr<StorageClassSpecifier>> storage_class_specifier;
-%nterm <std::shared_ptr<TypeQualifier>> type_qualifier;
-%nterm <std::vector<std::shared_ptr<TypeQualifier>>> type_qualifier_list;
-%nterm <std::shared_ptr<Declarator>> declarator;
-%nterm <std::shared_ptr<Pointer>> pointer;
-%nterm <std::shared_ptr<DirectDeclarator>> direct_declarator;
-%nterm <std::shared_ptr<ParameterTypeList>> parameter_type_list;
-%nterm <std::vector<std::shared_ptr<ParameterDeclaration>>> parameter_list;
-%nterm <std::shared_ptr<ParameterDeclaration>> parameter_declaration;
-%nterm <std::shared_ptr<AbstractDeclarator>> abstract_declarator;
-%nterm <std::shared_ptr<DirectAbstractDeclarator>> direct_abstract_declarator;
-%nterm <std::shared_ptr<ConstantExpression>> constant_expression;
-%nterm <std::shared_ptr<ConditionalExpression>> conditional_expression;
-%nterm <std::shared_ptr<LogicalOrExpression>> logical_or_expression;
-%nterm <std::shared_ptr<LogicalAndExpression>> logical_and_expression;
-%nterm <std::shared_ptr<InclusiveOrExpression>> inclusive_or_expression;
-%nterm <std::shared_ptr<ExclusiveOrExpression>> exclusive_or_expression;
-%nterm <std::shared_ptr<AndExpression>> and_expression;
-%nterm <std::shared_ptr<EqualityExpression>> equality_expression;
-%nterm <std::shared_ptr<RelationalExpression>> relational_expression;
-%nterm <std::shared_ptr<ShiftExpression>> shift_expression;
-%nterm <std::shared_ptr<AdditiveExpression>> additive_expression;
-%nterm <std::shared_ptr<MultiplicativeExpression>> multiplicative_expression;
-%nterm <std::shared_ptr<CastExpression>> cast_expression;
-%nterm <std::shared_ptr<TypeName>> type_name;
-%nterm <std::shared_ptr<SpecifierQualifierList>> specifier_qualifier_list;
-%nterm <std::shared_ptr<UnaryExpression>> unary_expression;
-%nterm <std::shared_ptr<UnaryOperator>> unary_operator;
-%nterm <std::shared_ptr<PostfixExpression>> postfix_expression;
-%nterm <std::vector<std::shared_ptr<AssignmentExpression>>> argument_expression_list;
-%nterm <std::shared_ptr<PrimaryExpression>> primary_expression;
-%nterm <std::shared_ptr<Expression>> expression;
-%nterm <std::shared_ptr<AssignmentExpression>> assignment_expression;
-%nterm <std::shared_ptr<AssignmentOperator>> assignment_operator;
-%nterm <std::shared_ptr<CompoundStatement>> compound_statement;
-%nterm <std::vector<std::shared_ptr<Declaration>>> declaration_list;
-%nterm <std::shared_ptr<Declaration>> declaration;
-%nterm <std::vector<std::shared_ptr<InitDeclarator>>> init_declarator_list;
-%nterm <std::shared_ptr<InitDeclarator>> init_declarator;
-%nterm <std::vector<std::shared_ptr<Initializer>>> initializer_list;
-%nterm <std::shared_ptr<Initializer>> initializer;
-%nterm <std::vector<std::shared_ptr<Statement>>> statement_list;
-%nterm <std::shared_ptr<Statement>> statement;
-%nterm <std::shared_ptr<LabeledStatement>> labeled_statement;
-%nterm <std::shared_ptr<ExpressionStatement>> expression_statement;
-%nterm <std::shared_ptr<SelectionStatement>> selection_statement;
-%nterm <std::shared_ptr<IterationStatement>> iteration_statement;
-%nterm <std::shared_ptr<JumpStatement>> jump_statement;
+%nterm <RefT<TranslationUnit>> program;
+%nterm <RefT<TranslationUnit>> translation_unit;
+%nterm <RefT<ExternalDeclaration>> external_declaration;
+%nterm <RefT<FunctionDefinition>> function_definition;
+%nterm <RefT<DeclarationSpecifiers>> declaration_specifiers;
+%nterm <RefT<IdentDeclarationSpecifiers>> ident_specifier_list;
+%nterm <RefT<IdentSpecifier>> ident_specifier;
+%nterm <RefT<KeywordSpecifier>> keyword_specifier;
+%nterm <RefT<KeywordDeclarationSpecifiers>> keyword_specifier_list;
+%nterm <RefT<Specifier>> specifier;
+%nterm <std::vector<RefT<Specifier>>> specifier_list;
+%nterm <RefT<StorageClassSpecifier>> storage_class_specifier;
+%nterm <RefT<TypeQualifier>> type_qualifier;
+%nterm <std::vector<RefT<TypeQualifier>>> type_qualifier_list;
+%nterm <RefT<Declarator>> declarator;
+%nterm <RefT<Pointer>> pointer;
+%nterm <RefT<DirectDeclarator>> direct_declarator;
+%nterm <RefT<ParameterTypeList>> parameter_type_list;
+%nterm <std::vector<RefT<ParameterDeclaration>>> parameter_list;
+%nterm <RefT<ParameterDeclaration>> parameter_declaration;
+%nterm <RefT<AbstractDeclarator>> abstract_declarator;
+%nterm <RefT<DirectAbstractDeclarator>> direct_abstract_declarator;
+%nterm <RefT<ConstantExpression>> constant_expression;
+%nterm <RefT<ConditionalExpression>> conditional_expression;
+%nterm <RefT<LogicalOrExpression>> logical_or_expression;
+%nterm <RefT<LogicalAndExpression>> logical_and_expression;
+%nterm <RefT<InclusiveOrExpression>> inclusive_or_expression;
+%nterm <RefT<ExclusiveOrExpression>> exclusive_or_expression;
+%nterm <RefT<AndExpression>> and_expression;
+%nterm <RefT<EqualityExpression>> equality_expression;
+%nterm <RefT<RelationalExpression>> relational_expression;
+%nterm <RefT<ShiftExpression>> shift_expression;
+%nterm <RefT<AdditiveExpression>> additive_expression;
+%nterm <RefT<MultiplicativeExpression>> multiplicative_expression;
+%nterm <RefT<CastExpression>> cast_expression;
+%nterm <RefT<TypeName>> type_name;
+%nterm <RefT<SpecifierQualifierList>> specifier_qualifier_list;
+%nterm <RefT<UnaryExpression>> unary_expression;
+%nterm <RefT<UnaryOperator>> unary_operator;
+%nterm <RefT<PostfixExpression>> postfix_expression;
+%nterm <std::vector<RefT<AssignmentExpression>>> argument_expression_list;
+%nterm <RefT<PrimaryExpression>> primary_expression;
+%nterm <RefT<Expression>> expression;
+%nterm <RefT<AssignmentExpression>> assignment_expression;
+%nterm <RefT<AssignmentOperator>> assignment_operator;
+%nterm <RefT<CompoundStatement>> compound_statement;
+%nterm <std::vector<RefT<Declaration>>> declaration_list;
+%nterm <RefT<Declaration>> declaration;
+%nterm <std::vector<RefT<InitDeclarator>>> init_declarator_list;
+%nterm <RefT<InitDeclarator>> init_declarator;
+%nterm <std::vector<RefT<Initializer>>> initializer_list;
+%nterm <RefT<Initializer>> initializer;
+%nterm <std::vector<RefT<Statement>>> statement_list;
+%nterm <RefT<Statement>> statement;
+%nterm <RefT<LabeledStatement>> labeled_statement;
+%nterm <RefT<ExpressionStatement>> expression_statement;
+%nterm <RefT<SelectionStatement>> selection_statement;
+%nterm <RefT<IterationStatement>> iteration_statement;
+%nterm <RefT<JumpStatement>> jump_statement;
 
-%nterm <std::shared_ptr<Enumerator>> enumerator;
-%nterm <std::vector<std::shared_ptr<Enumerator>>> enumerator_list;
-%nterm <std::shared_ptr<EnumSpecifier>> enum_specifier;
+%nterm <RefT<Enumerator>> enumerator;
+%nterm <std::vector<RefT<Enumerator>>> enumerator_list;
+%nterm <RefT<EnumSpecifier>> enum_specifier;
 
 %nterm <StructOrUnionType> struct_or_union;
 
-%nterm <std::shared_ptr<StructOrUnionSpecifier>> struct_or_union_specifier;
-%nterm <std::shared_ptr<StructDeclaration>> struct_declaration;
-%nterm <std::vector<std::shared_ptr<StructDeclaration>>> struct_declaration_list;
-%nterm <std::shared_ptr<StructDeclarator>> struct_declarator;
-%nterm <std::vector<std::shared_ptr<StructDeclarator>>> struct_declarator_list;
+%nterm <RefT<StructOrUnionSpecifier>> struct_or_union_specifier;
+%nterm <RefT<StructDeclaration>> struct_declaration;
+%nterm <std::vector<RefT<StructDeclaration>>> struct_declaration_list;
+%nterm <RefT<StructDeclarator>> struct_declarator;
+%nterm <std::vector<RefT<StructDeclarator>>> struct_declarator_list;
 
 
 // Prints output in parsing option for debugging location terminal
@@ -244,10 +244,10 @@ program
 
 translation_unit
     : external_declaration {
-        $$ = std::make_shared<TranslationUnit>($1);
+        $$ = CreateRef<TranslationUnit>($1);
     }
     | external_declaration translation_unit {
-        $$ = std::make_shared<TranslationUnit>($1, $2);
+        $$ = CreateRef<TranslationUnit>($1, $2);
     };
 
 external_declaration
@@ -260,7 +260,7 @@ external_declaration
 
 function_definition
     : declaration_specifiers declarator compound_statement {
-        $$ = std::make_shared<FunctionDefinition>($1, $2, $3);
+        $$ = CreateRef<FunctionDefinition>($1, $2, $3);
     }
     | declaration_specifiers error compound_statement {
         // TODO: handle error
@@ -287,21 +287,21 @@ specifier_qualifier_list
         $$ = $2; 
     }
     | keyword_specifier {
-        $$ = std::make_shared<SpecifierQualifierList>($1);
+        $$ = CreateRef<SpecifierQualifierList>($1);
     }
     | ident_specifier specifier_qualifier_list {
         ($2)->addIdentSpecifier($1);
         $$ = $2; 
     }
     | ident_specifier {
-        $$ = std::make_shared<SpecifierQualifierList>($1);
+        $$ = CreateRef<SpecifierQualifierList>($1);
     }
     | type_qualifier specifier_qualifier_list {
         ($2)->addTypeQualifier($1);
         $$ = $2; 
     }
     | type_qualifier {
-        $$ = std::make_shared<SpecifierQualifierList>($1);
+        $$ = CreateRef<SpecifierQualifierList>($1);
     };
 
 specifier
@@ -314,7 +314,7 @@ specifier
 
 keyword_specifier_list
     : keyword_specifier {
-        $$ = std::make_shared<KeywordDeclarationSpecifiers>($1);
+        $$ = CreateRef<KeywordDeclarationSpecifiers>($1);
     }
     | keyword_specifier_list keyword_specifier {
         auto keywordSpecifierList = $1;
@@ -329,10 +329,10 @@ keyword_specifier_list
 
 ident_specifier_list
     : ident_specifier {
-        $$ = std::make_shared<IdentDeclarationSpecifiers>($1);
+        $$ = CreateRef<IdentDeclarationSpecifiers>($1);
     }
     | ident_specifier specifier_list {
-        $$ = std::make_shared<IdentDeclarationSpecifiers>($1, $2);  
+        $$ = CreateRef<IdentDeclarationSpecifiers>($1, $2);  
     };
 
 specifier_list
@@ -346,31 +346,31 @@ specifier_list
 
 keyword_specifier
     : "void" {
-        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kVoid);
+        $$ = CreateRef<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kVoid);
     }
     | "char" {
-        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kChar);
+        $$ = CreateRef<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kChar);
     }
     | "short" {
-        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kShort);
+        $$ = CreateRef<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kShort);
     }
     | "int" {
-        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kInt);
+        $$ = CreateRef<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kInt);
     }
     | "long" {
-        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kLong);
+        $$ = CreateRef<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kLong);
     }
     | "float" {
-        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kFloat);
+        $$ = CreateRef<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kFloat);
     }
     | "double" {
-        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kDouble);
+        $$ = CreateRef<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kDouble);
     }
     | "signed" {
-        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kSigned);
+        $$ = CreateRef<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kSigned);
     }
     | "unsigned" {
-        $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kUnsigned);
+        $$ = CreateRef<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kUnsigned);
     }
     | struct_or_union_specifier {
         $$ = $1;
@@ -381,13 +381,13 @@ keyword_specifier
 
 struct_or_union_specifier
     : struct_or_union "identifier" '{' struct_declaration_list '}' {
-        $$ = std::make_shared<StructOrUnionSpecifier>($1, std::move($2), $4);
+        $$ = CreateRef<StructOrUnionSpecifier>($1, std::move($2), $4);
     }
     | struct_or_union '{' struct_declaration_list '}' {
-        $$ = std::make_shared<StructOrUnionSpecifier>($1, "", $3);
+        $$ = CreateRef<StructOrUnionSpecifier>($1, "", $3);
     }
     | struct_or_union "identifier" {
-        $$ = std::make_shared<StructOrUnionSpecifier>($1, std::move($2));
+        $$ = CreateRef<StructOrUnionSpecifier>($1, std::move($2));
     }
     | struct_or_union "identifier" '{' error '}' {
         // TODO: handle
@@ -415,7 +415,7 @@ struct_declaration_list
 
 struct_declaration
     : specifier_qualifier_list struct_declarator_list ';' {
-        $$ = std::make_shared<StructDeclaration>($1, $2);
+        $$ = CreateRef<StructDeclaration>($1, $2);
     }
     | error ';' {
         // TODO: handle error
@@ -435,15 +435,15 @@ struct_declarator_list
 
 struct_declarator
     : declarator {
-        $$ = std::make_shared<StructDeclarator>($1);
+        $$ = CreateRef<StructDeclarator>($1);
     };
 
 enum_specifier
     : "enum" '{' enumerator_list '}' {
-        $$ = std::make_shared<EnumSpecifier>("", $3);
+        $$ = CreateRef<EnumSpecifier>("", $3);
     }
     | "enum" "identifier" '{' enumerator_list '}' {
-        $$ = std::make_shared<EnumSpecifier>($2, $4);
+        $$ = CreateRef<EnumSpecifier>($2, $4);
     }
     | "enum" '{' error '}' {
         // TODO: handle error
@@ -452,7 +452,7 @@ enum_specifier
         // TODO: handle error
     }
     | "enum" "identifier" {
-        $$ = std::make_shared<EnumSpecifier>($2);
+        $$ = CreateRef<EnumSpecifier>($2);
     };
 
 enumerator_list
@@ -469,10 +469,10 @@ enumerator_list
 
 enumerator
     : "identifier" {
-        $$ = std::make_shared<Enumerator>($1);
+        $$ = CreateRef<Enumerator>($1);
     }
     | "identifier" '=' constant_expression {
-        $$ = std::make_shared<Enumerator>($1, $3);
+        $$ = CreateRef<Enumerator>($1, $3);
     }
     | error '=' constant_expression {
         // TODO: handle error
@@ -480,21 +480,21 @@ enumerator
 
 storage_class_specifier
     : "typedef" {
-        $$ = std::make_shared<StorageClassSpecifier>(StorageClassSpecifier::Type::kTypedef);
+        $$ = CreateRef<StorageClassSpecifier>(StorageClassSpecifier::Type::kTypedef);
     }
     | "extern" {
-        $$ = std::make_shared<StorageClassSpecifier>(StorageClassSpecifier::Type::kExtern);
+        $$ = CreateRef<StorageClassSpecifier>(StorageClassSpecifier::Type::kExtern);
     }
     | "static" {
-        $$ = std::make_shared<StorageClassSpecifier>(StorageClassSpecifier::Type::kStatic);
+        $$ = CreateRef<StorageClassSpecifier>(StorageClassSpecifier::Type::kStatic);
     };
 
 type_qualifier
     : "const" {
-        $$ = std::make_shared<TypeQualifier>(TypeQualifier::Type::kConst);
+        $$ = CreateRef<TypeQualifier>(TypeQualifier::Type::kConst);
     }
     | "volatile" {
-        $$ = std::make_shared<TypeQualifier>(TypeQualifier::Type::kVolatile);
+        $$ = CreateRef<TypeQualifier>(TypeQualifier::Type::kVolatile);
     };
 
 type_qualifier_list
@@ -508,25 +508,25 @@ type_qualifier_list
 
 declarator
     : pointer direct_declarator {
-        $$ = std::make_shared<Declarator>($2, $1);
+        $$ = CreateRef<Declarator>($2, $1);
     }
     | direct_declarator {
-        $$ = std::make_shared<Declarator>($1);
+        $$ = CreateRef<Declarator>($1);
     };
 
 pointer
     : "*" {
-        $$ = std::make_shared<Pointer>();
+        $$ = CreateRef<Pointer>();
     }
     | "*" type_qualifier_list {
-        $$ = std::make_shared<Pointer>($2);
+        $$ = CreateRef<Pointer>($2);
     }
     | "*" pointer {
-        std::vector<std::shared_ptr<TypeQualifier>> typeQualifiers;
-        $$ = std::make_shared<Pointer>(typeQualifiers, $2);
+        std::vector<RefT<TypeQualifier>> typeQualifiers;
+        $$ = CreateRef<Pointer>(typeQualifiers, $2);
     }
     | "*" type_qualifier_list pointer {
-        $$ = std::make_shared<Pointer>($2, $3);
+        $$ = CreateRef<Pointer>($2, $3);
     }
     | "*" error pointer {
         // TODO: handle error
@@ -534,22 +534,22 @@ pointer
 
 direct_declarator
     : "identifier" {
-        $$ = std::make_shared<IdentDirectDeclarator>(std::move($1));
+        $$ = CreateRef<IdentDirectDeclarator>(std::move($1));
     }
     | "(" declarator ")" {
-        $$ = std::make_shared<NestedDirectDeclarator>($2);
+        $$ = CreateRef<NestedDirectDeclarator>($2);
     }
     | direct_declarator "[" constant_expression "]" {
-        $$ = std::make_shared<ArrayDirectDeclarator>($1, $3);
+        $$ = CreateRef<ArrayDirectDeclarator>($1, $3);
     }
     | direct_declarator "[" "]" {
-        $$ = std::make_shared<ArrayDirectDeclarator>($1);
+        $$ = CreateRef<ArrayDirectDeclarator>($1);
     }
     | direct_declarator "(" parameter_type_list ")" {
-        $$ = std::make_shared<ParameterDirectDeclarator>($1, $3);
+        $$ = CreateRef<ParameterDirectDeclarator>($1, $3);
     }
     | direct_declarator "(" ")" {
-        $$ = std::make_shared<ParameterDirectDeclarator>($1);
+        $$ = CreateRef<ParameterDirectDeclarator>($1);
     }
     | direct_declarator "(" error ")" {
         // TODO: handle error
@@ -563,10 +563,10 @@ direct_declarator
 
 parameter_type_list
     : parameter_list {
-        $$ = std::make_shared<ParameterTypeList>($1);
+        $$ = CreateRef<ParameterTypeList>($1);
     }
     | parameter_list "," "..." {
-        $$ = std::make_shared<ParameterTypeList>($1, /*haveEllipsis=*/true);
+        $$ = CreateRef<ParameterTypeList>($1, /*haveEllipsis=*/true);
     }
     | error "," "..." {
         // TODO: handle error
@@ -586,56 +586,56 @@ parameter_list
 
 parameter_declaration
     : declaration_specifiers declarator {
-        $$ = std::make_shared<ParameterDeclaration>($1, $2);
+        $$ = CreateRef<ParameterDeclaration>($1, $2);
     }
     | declaration_specifiers abstract_declarator {
-        $$ = std::make_shared<ParameterDeclaration>($1, $2);
+        $$ = CreateRef<ParameterDeclaration>($1, $2);
     }
     | declaration_specifiers {
-        $$ = std::make_shared<ParameterDeclaration>($1);
+        $$ = CreateRef<ParameterDeclaration>($1);
     };
 
 abstract_declarator
     : pointer {
-        $$ = std::make_shared<AbstractDeclarator>($1);
+        $$ = CreateRef<AbstractDeclarator>($1);
     }
     | direct_abstract_declarator {
-        $$ = std::make_shared<AbstractDeclarator>($1);
+        $$ = CreateRef<AbstractDeclarator>($1);
     }
     | pointer direct_abstract_declarator {
-        $$ = std::make_shared<AbstractDeclarator>($2, $1);
+        $$ = CreateRef<AbstractDeclarator>($2, $1);
     };
 
 direct_abstract_declarator
     : "(" abstract_declarator ")" {
-        $$ = std::make_shared<NestedDirectAbstractDeclarator>($2);
+        $$ = CreateRef<NestedDirectAbstractDeclarator>($2);
     }
     | "[" "]" {
-        $$ = std::make_shared<ArrayDirectAbstractDeclarator>();
+        $$ = CreateRef<ArrayDirectAbstractDeclarator>();
     }
     | "[" constant_expression "]" {
-        $$ = std::make_shared<ArrayDirectAbstractDeclarator>($2);
+        $$ = CreateRef<ArrayDirectAbstractDeclarator>($2);
     }
     | "[" error "]" {
         // TODO: handle error
     }
     | direct_abstract_declarator "[" "]" {
-        $$ = std::make_shared<ArrayDirectAbstractDeclarator>($1);
+        $$ = CreateRef<ArrayDirectAbstractDeclarator>($1);
     }
     | direct_abstract_declarator "[" constant_expression "]" {
-        $$ = std::make_shared<ArrayDirectAbstractDeclarator>($1, $3);
+        $$ = CreateRef<ArrayDirectAbstractDeclarator>($1, $3);
     }
     | "(" ")" {
-        $$ = std::make_shared<ParameterDirectAbstractDeclarator>();
+        $$ = CreateRef<ParameterDirectAbstractDeclarator>();
     }
     | "(" parameter_type_list ")" {
-        $$ = std::make_shared<ParameterDirectAbstractDeclarator>($2);
+        $$ = CreateRef<ParameterDirectAbstractDeclarator>($2);
     }
     | direct_abstract_declarator "(" ")" {
-        $$ = std::make_shared<ParameterDirectAbstractDeclarator>($1);
+        $$ = CreateRef<ParameterDirectAbstractDeclarator>($1);
     }
     | direct_abstract_declarator "(" parameter_type_list ")" {
-        $$ = std::make_shared<ParameterDirectAbstractDeclarator>($1, $3);
+        $$ = CreateRef<ParameterDirectAbstractDeclarator>($1, $3);
     }
     | direct_abstract_declarator "(" error ")" {
         // TODO: handle error
@@ -646,15 +646,15 @@ direct_abstract_declarator
 
 constant_expression
     : conditional_expression {
-        $$ = std::make_shared<ConstantExpression>($1);
+        $$ = CreateRef<ConstantExpression>($1);
     };
 
 conditional_expression
     : logical_or_expression {
-        $$ = std::make_shared<ConditionalExpression>($1);
+        $$ = CreateRef<ConditionalExpression>($1);
     }
     | logical_or_expression "?" expression ":" conditional_expression {
-        $$ = std::make_shared<ConditionalExpression>($1, $3, $5);
+        $$ = CreateRef<ConditionalExpression>($1, $3, $5);
     }
     | error "?" error ":" conditional_expression {
         // TODO: handle error
@@ -668,53 +668,53 @@ conditional_expression
 
 logical_or_expression
     : logical_and_expression {
-        $$ = std::make_shared<LogicalOrExpression>($1);
+        $$ = CreateRef<LogicalOrExpression>($1);
     }
     | logical_or_expression "||" logical_and_expression {
-        $$ = std::make_shared<LogicalOrExpression>($3, $1);
+        $$ = CreateRef<LogicalOrExpression>($3, $1);
     };
 
 logical_and_expression
     : inclusive_or_expression {
-        $$ = std::make_shared<LogicalAndExpression>($1);
+        $$ = CreateRef<LogicalAndExpression>($1);
     }
     | logical_and_expression "&&" inclusive_or_expression {
-        $$ = std::make_shared<LogicalAndExpression>($3, $1);
+        $$ = CreateRef<LogicalAndExpression>($3, $1);
     };
 
 inclusive_or_expression
     : exclusive_or_expression {
-        $$ = std::make_shared<InclusiveOrExpression>($1);
+        $$ = CreateRef<InclusiveOrExpression>($1);
     }
     | inclusive_or_expression "|" exclusive_or_expression {
-        $$ = std::make_shared<InclusiveOrExpression>($3, $1);
+        $$ = CreateRef<InclusiveOrExpression>($3, $1);
     };
 
 exclusive_or_expression
     : and_expression {
-        $$ = std::make_shared<ExclusiveOrExpression>($1);
+        $$ = CreateRef<ExclusiveOrExpression>($1);
     }
     | exclusive_or_expression "^" and_expression {
-        $$ = std::make_shared<ExclusiveOrExpression>($3, $1);
+        $$ = CreateRef<ExclusiveOrExpression>($3, $1);
     };
 
 and_expression
     : equality_expression {
-        $$ = std::make_shared<AndExpression>($1);
+        $$ = CreateRef<AndExpression>($1);
     }
     | and_expression "&" equality_expression {
-        $$ = std::make_shared<AndExpression>($3, $1);
+        $$ = CreateRef<AndExpression>($3, $1);
     };
 
 equality_expression
     : relational_expression {
-        $$ = std::make_shared<EqualityExpression>($1);
+        $$ = CreateRef<EqualityExpression>($1);
     }
     | equality_expression "==" relational_expression {
-        $$ = std::make_shared<EqualityExpression>($1, $3, EqualityExpression::Type::kEqual);
+        $$ = CreateRef<EqualityExpression>($1, $3, EqualityExpression::Type::kEqual);
     }
     | equality_expression "!=" relational_expression {
-        $$ = std::make_shared<EqualityExpression>($1, $3, EqualityExpression::Type::kNotEqual);
+        $$ = CreateRef<EqualityExpression>($1, $3, EqualityExpression::Type::kNotEqual);
     }
     | error "==" relational_expression {
         // TODO: handle error
@@ -725,19 +725,19 @@ equality_expression
 
 relational_expression
     : shift_expression {
-        $$ = std::make_shared<RelationalExpression>($1);
+        $$ = CreateRef<RelationalExpression>($1);
     }
     | relational_expression "<" shift_expression {
-        $$ = std::make_shared<RelationalExpression>($1, $3, RelationalExpression::Type::kLess);
+        $$ = CreateRef<RelationalExpression>($1, $3, RelationalExpression::Type::kLess);
     }
     | relational_expression ">" shift_expression {
-        $$ = std::make_shared<RelationalExpression>($1, $3, RelationalExpression::Type::kGreater);
+        $$ = CreateRef<RelationalExpression>($1, $3, RelationalExpression::Type::kGreater);
     }
     | relational_expression "<=" shift_expression {
-        $$ = std::make_shared<RelationalExpression>($1, $3, RelationalExpression::Type::kLessEq);
+        $$ = CreateRef<RelationalExpression>($1, $3, RelationalExpression::Type::kLessEq);
     }
     | relational_expression ">=" shift_expression {
-        $$ = std::make_shared<RelationalExpression>($1, $3, RelationalExpression::Type::kGreaterEq);
+        $$ = CreateRef<RelationalExpression>($1, $3, RelationalExpression::Type::kGreaterEq);
     }
     | error "<" shift_expression {
         // TODO: handle error
@@ -754,24 +754,24 @@ relational_expression
 
 shift_expression
     : additive_expression {
-        $$ = std::make_shared<ShiftExpression>($1);
+        $$ = CreateRef<ShiftExpression>($1);
     }
     | shift_expression "<<" additive_expression {
-        $$ = std::make_shared<ShiftExpression>($1, $3, ShiftExpression::Type::kLeft);
+        $$ = CreateRef<ShiftExpression>($1, $3, ShiftExpression::Type::kLeft);
     }
     | shift_expression ">>" additive_expression {
-        $$ = std::make_shared<ShiftExpression>($1, $3, ShiftExpression::Type::kRight);
+        $$ = CreateRef<ShiftExpression>($1, $3, ShiftExpression::Type::kRight);
     };
 
 additive_expression
     : multiplicative_expression {
-        $$ = std::make_shared<AdditiveExpression>($1);
+        $$ = CreateRef<AdditiveExpression>($1);
     }
     | additive_expression "+" multiplicative_expression {
-        $$ = std::make_shared<AdditiveExpression>($1, $3, AdditiveExpression::Type::kPlus);
+        $$ = CreateRef<AdditiveExpression>($1, $3, AdditiveExpression::Type::kPlus);
     }
     | additive_expression "-" multiplicative_expression {
-        $$ = std::make_shared<AdditiveExpression>($1, $3, AdditiveExpression::Type::kMinus);
+        $$ = CreateRef<AdditiveExpression>($1, $3, AdditiveExpression::Type::kMinus);
     }
     | error "+" multiplicative_expression {
         // TODO: handle error
@@ -782,16 +782,16 @@ additive_expression
 
 multiplicative_expression
     : cast_expression {
-        $$ = std::make_shared<MultiplicativeExpression>($1);
+        $$ = CreateRef<MultiplicativeExpression>($1);
     }
     | multiplicative_expression "*" cast_expression {
-        $$ = std::make_shared<MultiplicativeExpression>($1, $3, MultiplicativeExpression::Type::kMult);
+        $$ = CreateRef<MultiplicativeExpression>($1, $3, MultiplicativeExpression::Type::kMult);
     }
     | multiplicative_expression "/" cast_expression {
-        $$ = std::make_shared<MultiplicativeExpression>($1, $3, MultiplicativeExpression::Type::kDiv);
+        $$ = CreateRef<MultiplicativeExpression>($1, $3, MultiplicativeExpression::Type::kDiv);
     }
     | multiplicative_expression "%" cast_expression {
-        $$ = std::make_shared<MultiplicativeExpression>($1, $3, MultiplicativeExpression::Type::kMod);
+        $$ = CreateRef<MultiplicativeExpression>($1, $3, MultiplicativeExpression::Type::kMod);
     }
     | error "*" cast_expression {
         // TODO: handle error
@@ -805,18 +805,18 @@ multiplicative_expression
 
 cast_expression
     : unary_expression {
-        $$ = std::make_shared<CastUnaryExpression>($1);
+        $$ = CreateRef<CastUnaryExpression>($1);
     }
     | "(" type_name ")" cast_expression {
-        $$ = std::make_shared<CastTypenameExpression>($2, $4);
+        $$ = CreateRef<CastTypenameExpression>($2, $4);
     };
 
 type_name
     : specifier_qualifier_list {
-        $$ = std::make_shared<TypeName>($1);
+        $$ = CreateRef<TypeName>($1);
     }
     | specifier_qualifier_list abstract_declarator {
-        $$ = std::make_shared<TypeName>($1, $2);
+        $$ = CreateRef<TypeName>($1, $2);
     };
 
 unary_expression
@@ -824,39 +824,39 @@ unary_expression
         $$ = $1;
     }
     | "++" unary_expression {
-        $$ = std::make_shared<IncDecPrefixExpression>($2, IncDecPrefixExpression::Type::kPlus);
+        $$ = CreateRef<IncDecPrefixExpression>($2, IncDecPrefixExpression::Type::kPlus);
     }
     | "--" unary_expression {
-        $$ = std::make_shared<IncDecPrefixExpression>($2, IncDecPrefixExpression::Type::kMinus);
+        $$ = CreateRef<IncDecPrefixExpression>($2, IncDecPrefixExpression::Type::kMinus);
     }
     | unary_operator cast_expression {
-        $$ = std::make_shared<OperatorUnaryExpression>($1, $2);
+        $$ = CreateRef<OperatorUnaryExpression>($1, $2);
     }
     | "sizeof" unary_expression {
-        $$ = std::make_shared<SizeofUnaryExpression>($2);
+        $$ = CreateRef<SizeofUnaryExpression>($2);
     }
     | "sizeof" "(" type_name ")" {
-        $$ = std::make_shared<SizeofTypenameExpression>($3);
+        $$ = CreateRef<SizeofTypenameExpression>($3);
     };
 
 unary_operator
     : "&" {
-        $$ = std::make_shared<UnaryOperator>(UnaryOperator::Type::kAddress);
+        $$ = CreateRef<UnaryOperator>(UnaryOperator::Type::kAddress);
     }
     | "*" {
-        $$ = std::make_shared<UnaryOperator>(UnaryOperator::Type::kMult);
+        $$ = CreateRef<UnaryOperator>(UnaryOperator::Type::kMult);
     }
     | "+" {
-        $$ = std::make_shared<UnaryOperator>(UnaryOperator::Type::kPlus);
+        $$ = CreateRef<UnaryOperator>(UnaryOperator::Type::kPlus);
     }
     | "-" {
-        $$ = std::make_shared<UnaryOperator>(UnaryOperator::Type::kMinus);
+        $$ = CreateRef<UnaryOperator>(UnaryOperator::Type::kMinus);
     }
     | "~" {
-        $$ = std::make_shared<UnaryOperator>(UnaryOperator::Type::kLogicalNot);
+        $$ = CreateRef<UnaryOperator>(UnaryOperator::Type::kLogicalNot);
     }
     | "!" {
-        $$ = std::make_shared<UnaryOperator>(UnaryOperator::Type::kNot);
+        $$ = CreateRef<UnaryOperator>(UnaryOperator::Type::kNot);
     };
 
 postfix_expression
@@ -864,25 +864,25 @@ postfix_expression
         $$ = $1;
     }
     | postfix_expression "[" expression "]" {
-        $$ = std::make_shared<IndexExpression>($1, $3);
+        $$ = CreateRef<IndexExpression>($1, $3);
     }
     | postfix_expression "(" ")" {
-        $$ = std::make_shared<CallExpression>($1);
+        $$ = CreateRef<CallExpression>($1);
     }
     | postfix_expression "(" argument_expression_list ")" {
-        $$ = std::make_shared<CallExpression>($1, $3);
+        $$ = CreateRef<CallExpression>($1, $3);
     }
     | postfix_expression "." "identifier" {
-        $$ = std::make_shared<AccessExpression>($1, std::move($3), AccessExpression::Type::kDot);
+        $$ = CreateRef<AccessExpression>($1, std::move($3), AccessExpression::Type::kDot);
     }
     | postfix_expression "->" "identifier" {
-        $$ = std::make_shared<AccessExpression>($1, std::move($3), AccessExpression::Type::kArrow);
+        $$ = CreateRef<AccessExpression>($1, std::move($3), AccessExpression::Type::kArrow);
     }
     | postfix_expression "++" {
-        $$ = std::make_shared<IncDecPostfixExpression>($1, IncDecPostfixExpression::Type::kPlus);
+        $$ = CreateRef<IncDecPostfixExpression>($1, IncDecPostfixExpression::Type::kPlus);
     }
     | postfix_expression "--" {
-        $$ = std::make_shared<IncDecPostfixExpression>($1, IncDecPostfixExpression::Type::kMinus);
+        $$ = CreateRef<IncDecPostfixExpression>($1, IncDecPostfixExpression::Type::kMinus);
     };
 
 argument_expression_list
@@ -899,14 +899,14 @@ argument_expression_list
 
 primary_expression
     : "identifier" {
-        $$ = std::make_shared<IdentPrimaryExpression>(std::move($1));
+        $$ = CreateRef<IdentPrimaryExpression>(std::move($1));
     }
     | "number" {
         // TODO: real numbers
-        $$ = std::make_shared<NumberPrimaryExpression>($1);
+        $$ = CreateRef<NumberPrimaryExpression>($1);
     }
     | '(' expression ')' {
-        $$ = std::make_shared<NestedPrimaryExpression>($2);
+        $$ = CreateRef<NestedPrimaryExpression>($2);
     }
     | '(' error ')' {
         // TODO: handle error
@@ -916,67 +916,67 @@ primary_expression
 
 expression
     : assignment_expression {
-        $$ = std::make_shared<Expression>($1);
+        $$ = CreateRef<Expression>($1);
     }
     | expression "," assignment_expression {
-        $$ = std::make_shared<Expression>($3, $1);
+        $$ = CreateRef<Expression>($3, $1);
     };
 
 assignment_expression
     : conditional_expression {
-        $$ = std::make_shared<ConditionalAssignmentExpression>($1);
+        $$ = CreateRef<ConditionalAssignmentExpression>($1);
     }
     | unary_expression assignment_operator assignment_expression {
-        $$ = std::make_shared<UnaryAssignExpression>($1, $2, $3);
+        $$ = CreateRef<UnaryAssignExpression>($1, $2, $3);
     };
 
 assignment_operator
     : "=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kAssign);
     }
     | "*=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kMulAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kMulAssign);
     }
     | "/=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kDivAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kDivAssign);
     }
     | "%=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kModAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kModAssign);
     }
     | "+=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kPlusAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kPlusAssign);
     }
     | "-=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kMinusAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kMinusAssign);
     }
     | "<<=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kShiftLeftAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kShiftLeftAssign);
     }
     | ">>=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kShiftRightAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kShiftRightAssign);
     }
     | "&=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kLogicalAndAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kLogicalAndAssign);
     }
     | "^=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kXorAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kXorAssign);
     }
     | "|=" {
-        $$ = std::make_shared<AssignmentOperator>(AssignmentOperator::Type::kLogicalOrAssign);
+        $$ = CreateRef<AssignmentOperator>(AssignmentOperator::Type::kLogicalOrAssign);
     };
 
 compound_statement
     : "{" "}" {
-        $$ = std::make_shared<CompoundStatement>();
+        $$ = CreateRef<CompoundStatement>();
     }
     | "{" statement_list "}" {
-        $$ = std::make_shared<CompoundStatement>($2);
+        $$ = CreateRef<CompoundStatement>($2);
     }
     | "{" declaration_list "}" {
-        $$ = std::make_shared<CompoundStatement>($2);
+        $$ = CreateRef<CompoundStatement>($2);
     }
     | "{" declaration_list statement_list "}" {
-        $$ = std::make_shared<CompoundStatement>($2, $3);
+        $$ = CreateRef<CompoundStatement>($2, $3);
     }
     | "{" error "}" {
         // TODO: handle error
@@ -993,13 +993,13 @@ declaration_list
 
 declaration
     : declaration_specifiers ";" {
-        $$ = std::make_shared<Declaration>($1);
+        $$ = CreateRef<Declaration>($1);
     }
     | declaration_specifiers init_declarator_list ";" {
-        $$ = std::make_shared<Declaration>($1, $2);
+        $$ = CreateRef<Declaration>($1, $2);
     }
     | declaration_specifiers init_declarator_list "=" assignment_expression ";" {
-        $$ = std::make_shared<Declaration>($1, $2, $4);
+        $$ = CreateRef<Declaration>($1, $2, $4);
     }
     | declaration_specifiers error ";" {
         // TODO: handle error
@@ -1019,10 +1019,10 @@ init_declarator_list
 
 init_declarator
     : declarator "=" initializer {
-        $$ = std::make_shared<InitDeclarator>($1, $3);
+        $$ = CreateRef<InitDeclarator>($1, $3);
     }
     | declarator {
-        $$ = std::make_shared<InitDeclarator>($1);
+        $$ = CreateRef<InitDeclarator>($1);
     }
     | error "=" initializer {
         // TODO: handle error
@@ -1030,13 +1030,13 @@ init_declarator
 
 initializer
     : assignment_expression {
-        $$ = std::make_shared<ExpressionInitializer>($1);
+        $$ = CreateRef<ExpressionInitializer>($1);
     }
     | "{" initializer_list "}" {
-        $$ = std::make_shared<InitializerList>($2);
+        $$ = CreateRef<InitializerList>($2);
     }
     | "{" initializer_list "," "}" {
-        $$ = std::make_shared<InitializerList>($2);
+        $$ = CreateRef<InitializerList>($2);
     }
     | "{" error "}" {
         // TODO: handle error
@@ -1085,13 +1085,13 @@ statement
 
 labeled_statement
     : "identifier" ":" statement {
-        $$ = std::make_shared<IdentLabeledStatement>(std::move($1), $3);
+        $$ = CreateRef<IdentLabeledStatement>(std::move($1), $3);
     }
     | "case" constant_expression ":" statement {
-        $$ = std::make_shared<CaseLabeledStatement>($2, $4);
+        $$ = CreateRef<CaseLabeledStatement>($2, $4);
     }
     | "default" ":" statement {
-        $$ = std::make_shared<DefaultLabeledStatement>($3);
+        $$ = CreateRef<DefaultLabeledStatement>($3);
     };
 
 expression_statement
@@ -1099,18 +1099,18 @@ expression_statement
         // TODO: handle error
     }
     | expression ";" {
-        $$ = std::make_shared<ExpressionStatement>($1);
+        $$ = CreateRef<ExpressionStatement>($1);
     };
 
 selection_statement
     : "if" "(" expression ")" statement {
-        $$ = std::make_shared<IfSelectionStatement>($3, $5);
+        $$ = CreateRef<IfSelectionStatement>($3, $5);
     }
     | "if" "(" expression ")" statement "else" statement {
-        $$ = std::make_shared<IfSelectionStatement>($3, $5, $7);
+        $$ = CreateRef<IfSelectionStatement>($3, $5, $7);
     }
     | "switch" "(" expression ")" statement {
-        $$ = std::make_shared<SwitchSelectionStatement>($3, $5);
+        $$ = CreateRef<SwitchSelectionStatement>($3, $5);
     }
     | "if" "(" error ")" statement {
         // TODO: handle error
@@ -1124,16 +1124,16 @@ selection_statement
 
 iteration_statement
     : "while" "(" expression ")" statement {
-        $$ = std::make_shared<WhileIterationStatement>($3, $5);
+        $$ = CreateRef<WhileIterationStatement>($3, $5);
     }
     | "do" statement "while" "(" expression ")" ";" {
-        $$ = std::make_shared<DoWhileIterationStatement>($5, $2);
+        $$ = CreateRef<DoWhileIterationStatement>($5, $2);
     }
     | "for" "(" expression_statement expression_statement ")" statement {
-        $$ = std::make_shared<ForIterationStatement>($6, $3, $4);
+        $$ = CreateRef<ForIterationStatement>($6, $3, $4);
     }
     | "for" "(" expression_statement expression_statement expression ")" statement {
-        $$ = std::make_shared<ForIterationStatement>($7, $3, $4, $5);
+        $$ = CreateRef<ForIterationStatement>($7, $3, $4, $5);
     }
     | "do" error "while" "(" expression ")" ";" {
         // TODO: handle error
@@ -1147,16 +1147,16 @@ jump_statement
 
     }
     | "continue" ";" {
-        $$ = std::make_shared<LoopJumpStatement>(LoopJumpStatement::Type::kContinue);
+        $$ = CreateRef<LoopJumpStatement>(LoopJumpStatement::Type::kContinue);
     }
     | "break" ";" {
-        $$ = std::make_shared<LoopJumpStatement>(LoopJumpStatement::Type::kBreak);
+        $$ = CreateRef<LoopJumpStatement>(LoopJumpStatement::Type::kBreak);
     }
     | "return" ";" {
-        $$ = std::make_shared<ReturnJumpStatement>();
+        $$ = CreateRef<ReturnJumpStatement>();
     }
     | "return" expression ";" {
-        $$ = std::make_shared<ReturnJumpStatement>($2);
+        $$ = CreateRef<ReturnJumpStatement>($2);
     }
     | "return" error ";" {
         // TODO: handle error
@@ -1164,7 +1164,7 @@ jump_statement
 
 ident_specifier
     : "identifier" {
-        $$ = std::make_shared<IdentSpecifier>(std::move($1));
+        $$ = CreateRef<IdentSpecifier>(std::move($1));
     };
 
 %%

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <Clipl/Grammar/AST/Program/Declarator/BaseDeclarator.hpp>
 #include <Clipl/Grammar/AST/Program/Pointer.hpp>
 #include <Clipl/Grammar/AST/Program/DirectAbstractDeclarator/DirectAbstractDeclarator.hpp>
@@ -10,19 +8,19 @@ namespace ast {
 
 class AbstractDeclarator: public BaseDeclarator {
 public:
-    AbstractDeclarator(std::shared_ptr<Pointer> pointer)
+    AbstractDeclarator(RefT<Pointer> pointer)
         : m_Pointer(pointer) {}
 
-    AbstractDeclarator(std::shared_ptr<DirectAbstractDeclarator> directAbstractDeclarator,
-                       std::shared_ptr<Pointer> pointer = nullptr)
+    AbstractDeclarator(RefT<DirectAbstractDeclarator> directAbstractDeclarator,
+                       RefT<Pointer> pointer = nullptr)
         : m_Pointer(pointer),
           m_DirectAbstractDeclarator(directAbstractDeclarator) {};
 
     // void accept(Visitor *visitor) override;
 
 private:
-    std::shared_ptr<Pointer> m_Pointer;
-    std::shared_ptr<DirectAbstractDeclarator> m_DirectAbstractDeclarator;
+    RefT<Pointer> m_Pointer;
+    RefT<DirectAbstractDeclarator> m_DirectAbstractDeclarator;
 };
 
 }  // namespace ast

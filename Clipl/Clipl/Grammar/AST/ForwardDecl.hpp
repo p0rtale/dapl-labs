@@ -2,6 +2,9 @@
 
 namespace ast {
 
+template<typename T>
+using RefT = std::shared_ptr<T>;
+
 // Program
 class AbstractDeclarator;
 class ArrayDirectAbstractDeclarator;

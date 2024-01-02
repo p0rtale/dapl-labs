@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <memory>
 
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
 #include <Clipl/Grammar/AST/Expression/ConstantExpression.hpp>
@@ -12,7 +11,7 @@ namespace ast {
 class Enumerator: public ASTNode {
 public:
     Enumerator(std::string identifier,
-               std::shared_ptr<ConstantExpression> constantExpression = nullptr)
+               RefT<ConstantExpression> constantExpression = nullptr)
         : m_Identifier(std::move(identifier)),
           m_Constexpr(constantExpression) {}
 
@@ -20,7 +19,7 @@ public:
 
 private:
     std::string m_Identifier;
-    std::shared_ptr<ConstantExpression> m_Constexpr;
+    RefT<ConstantExpression> m_Constexpr;
 };
 
 }  // namespace ast

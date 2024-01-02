@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <Clipl/Grammar/AST/Program/ExternalDeclaration/ExternalDeclaration.hpp>
 #include <Clipl/Grammar/AST/Program/DeclarationSpecifiers/DeclarationSpecifiers.hpp>
 #include <Clipl/Grammar/AST/Program/Declarator/Declarator.hpp>
@@ -12,9 +10,9 @@ namespace ast {
 
 class FunctionDefinition: public ExternalDeclaration {
 public:
-    FunctionDefinition(std::shared_ptr<DeclarationSpecifiers> declarationSpecifiers,
-                       std::shared_ptr<Declarator> declarator,
-                       std::shared_ptr<CompoundStatement> compoundStatement)
+    FunctionDefinition(RefT<DeclarationSpecifiers> declarationSpecifiers,
+                       RefT<Declarator> declarator,
+                       RefT<CompoundStatement> compoundStatement)
         : m_DeclarationSpecifiers(declarationSpecifiers),
           m_Declarator(declarator),
           m_CompoundStatement(compoundStatement) {}
@@ -22,9 +20,9 @@ public:
     // void accept(Visitor *visitor) override;
 
 private:
-    std::shared_ptr<DeclarationSpecifiers> m_DeclarationSpecifiers = nullptr;
-    std::shared_ptr<Declarator> m_Declarator = nullptr;
-    std::shared_ptr<CompoundStatement> m_CompoundStatement = nullptr;
+    RefT<DeclarationSpecifiers> m_DeclarationSpecifiers = nullptr;
+    RefT<Declarator> m_Declarator = nullptr;
+    RefT<CompoundStatement> m_CompoundStatement = nullptr;
 };
 
 }  // namespace ast

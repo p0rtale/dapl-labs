@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <memory>
 
 #include <Clipl/Grammar/AST/Expression/PostfixExpression/PostfixExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/AssignmentExpression/AssignmentExpression.hpp>
@@ -11,16 +10,16 @@ namespace ast {
 
 class CallExpression: public PostfixExpression {
 public:
-    CallExpression(std::shared_ptr<PostfixExpression> postfixExpression,
-                   std::vector<std::shared_ptr<AssignmentExpression>> argumentExpressions = {})
+    CallExpression(RefT<PostfixExpression> postfixExpression,
+                   std::vector<RefT<AssignmentExpression>> argumentExpressions = {})
         : m_PostfixExpression(postfixExpression),
           m_ArgumentExpressions(argumentExpressions) {}
 
     // void accept(Visitor *visitor) override;
 
 private:
-    std::shared_ptr<PostfixExpression> m_PostfixExpression;
-    std::vector<std::shared_ptr<AssignmentExpression>> m_ArgumentExpressions;
+    RefT<PostfixExpression> m_PostfixExpression;
+    std::vector<RefT<AssignmentExpression>> m_ArgumentExpressions;
 };
 
 }  // namespace ast
