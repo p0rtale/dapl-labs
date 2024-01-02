@@ -19,7 +19,8 @@ public:
     =================================================================
     */
 
-    // Declaration specifiers
+    // =================== Declaration specifiers ===================
+
     void Visit(DeclarationSpecifiers&) override {
         // Base class
     }
@@ -29,15 +30,8 @@ public:
 
         auto specifiers = identDeclarationSpecifiers.GetSpecifiers();
         acceptNodeList(specifiers, "Specifier"); 
-        // for (size_t i = 0; i < specifiers.size(); ++i) {
-        //     m_PreviousNodeIdent = m_CurrentNodeIdent;
-        //     m_EdgeLabel = std::format("Specifier{}", i);
-        //     specifiers[i]->Accept(*this);
-        // }
 
         auto ident = identDeclarationSpecifiers.GetIdent();
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // ident->Accept(*this);
         acceptNode(ident, "Ident");
     }
     
@@ -51,7 +45,9 @@ public:
         acceptNodeList(keywords, "Keyword");              
     }
 
-    // Declarator
+
+    // ======================= Declarator ===========================
+
     void Visit(AbstractDeclarator& abstractDeclarator) override {
         printNode("abstract_declarator", "AbstractDeclarator");
 
@@ -82,7 +78,9 @@ public:
         acceptNode(directDeclarator, "DirectDeclarator");
     }
 
-    // Direct abstract declarator
+
+    // =============== Direct abstract declarator ===================
+
     void Visit(ArrayDirectAbstractDeclarator& arrayDeclarator) override {
         printNode("array_direct_abstract_declarator", "ArrayDirectAbstractDeclarator");
 
@@ -122,7 +120,9 @@ public:
         }
     }
 
-    // Direct declarator
+
+    // =================== Direct declarator ========================
+
     void Visit(ArrayDirectDeclarator& arrayDeclarator) override {
         printNode("array_direct_declarator", "ArrayDirectDeclarator");
 
@@ -164,7 +164,9 @@ public:
         }
     }
 
-    // External declaration
+
+    // ================== External declaration ======================
+
     void Visit(Declaration& declaration) override {
         printNode("declaration", "Declaration");
 
@@ -189,24 +191,17 @@ public:
 
         auto declarationSpecifiers = functionDefinition.GetDeclarationSpecifiers();
         acceptNode(declarationSpecifiers, "DeclarationSpecifiers");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "DeclarationSpecifiers";
-        // declarationSpecifiers->Accept(*this);
 
         auto declarator = functionDefinition.GetDeclarator();
         acceptNode(declarator, "Declarator");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "Declarator";
-        // declarator->Accept(*this);
 
         auto compoundStatement = functionDefinition.GetCompoundStatement();
         acceptNode(compoundStatement, "CompoundStatement");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "CompoundStatement";
-        // compoundStatement->Accept(*this);
     }
 
-    // Initializer
+
+    // ======================= Initializer ==========================
+
     void Visit(ExpressionInitializer& expressionInitializer) override {
         printNode("expression_initializer", "ExpressionInitializer");
 
@@ -225,7 +220,9 @@ public:
         acceptNodeList(initializers, "Initializer");           
     }
 
-    // Keyword specifier
+
+    // ==================== Keyword specifier =======================
+
     void Visit(BasicKeywordSpecifier& basicKeywordSpecifier) override {
         std::string typeStr = basicKeywordSpecifier.GetTypeStr();
         printNode("basic_keyword_specifier",
@@ -264,7 +261,9 @@ public:
         acceptNodeList(structDeclarationList, "StructDeclaration");                
     }
 
-    // Specifier
+
+    // ======================== Specifier ===========================
+
     void Visit(Specifier&) override {
         // Base class
     }
@@ -279,7 +278,9 @@ public:
         printNode("type_qualifier", std::format("TypeQualifier [{}]", typeStr));       
     }
 
-    // Rest
+
+    // ========================== Rest ==============================
+
     void Visit(Enumerator& enumerator) override {
         std::string identifier = enumerator.GetIdentifier();
         printNode("enumerator", std::format("Enumerator [\\\"{}\\\"]", identifier));
@@ -287,10 +288,7 @@ public:
         auto constExpression = enumerator.GetConstantExpression();
         if (constExpression) {
             acceptNode(constExpression, "ConstExpr");
-        }
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "ConstExpr";
-        // constExpression->Accept(*this);          
+        }       
     }
 
     void Visit(IdentSpecifier& identSpecifier) override {
@@ -303,17 +301,11 @@ public:
 
         auto declarator = initDeclarator.GetDeclarator();
         acceptNode(declarator, "Declarator");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "Declarator";
-        // declarator->Accept(*this);  
 
         auto initializer = initDeclarator.GetInitializer();
         if (initializer) {
             acceptNode(initializer, "Initializer");
-        }
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "Initializer";
-        // initializer->Accept(*this);           
+        }          
     }
 
     void Visit(ParameterDeclaration& parameterDeclaration) override {
@@ -321,17 +313,11 @@ public:
 
         auto declarationSpecifiers = parameterDeclaration.GetDeclarationSpecifiers();
         acceptNode(declarationSpecifiers, "DeclarationSpecifiers");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "DeclarationSpecifiers";
-        // declarationSpecifiers->Accept(*this);  
 
         auto baseDeclarator = parameterDeclaration.GetBaseDeclarator();
         if (baseDeclarator) {
             acceptNode(baseDeclarator, "BaseDeclarator");
-        }
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "BaseDeclarator";
-        // baseDeclarator->Accept(*this);          
+        }       
     }
 
     void Visit(ParameterTypeList& parameterTypeList) override {
@@ -351,19 +337,11 @@ public:
 
         auto typeQualifiers = pointer.GetTypeQualifiers();
         acceptNodeList(typeQualifiers, "TypeQualifier");
-        // for (size_t i = 0; i < typeQualifiers.size(); ++i) {
-        //     m_PreviousNodeIdent = m_CurrentNodeIdent;
-        //     m_EdgeLabel = std::format("TypeQualifier{}", i);
-        //     typeQualifiers[i]->Accept(*this);
-        // }
 
         auto pointerTail = pointer.GetPointerTail();
         if (pointerTail) {
             acceptNode(pointerTail, "PointerTail");
         }
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "PointerTail";
-        // pointerTail->Accept(*this);      
     }
 
     void Visit(Program& program) override {
@@ -382,11 +360,6 @@ public:
 
         auto externalDeclarations = program.GetExternalDeclarations();
         acceptNodeList(externalDeclarations, "ExternalDecl");
-        // for (size_t i = 0; i < externalDeclarations.size(); ++i) {
-        //     m_PreviousNodeIdent = m_CurrentNodeIdent;
-        //     m_EdgeLabel = std::format("ExternalDecl{}", i);
-        //     externalDeclarations[i]->Accept(*this);
-        // }
         spaceLevelDown();
 
         printWithSpaces("}\n");
@@ -397,27 +370,12 @@ public:
 
         auto typeQualifiers = specifierQualifierList.GetTypeQualifiers();
         acceptNodeList(typeQualifiers, "TypeQualifier");
-        // for (size_t i = 0; i < typeQualifiers.size(); ++i) {
-        //     m_PreviousNodeIdent = m_CurrentNodeIdent;
-        //     m_EdgeLabel = std::format("TypeQualifier{}", i);
-        //     typeQualifiers[i]->Accept(*this);
-        // }
 
         auto identSpecifiers = specifierQualifierList.GetIdentSpecifiers();
         acceptNodeList(identSpecifiers, "IdentSpecifier");
-        // for (size_t i = 0; i < identSpecifiers.size(); ++i) {
-        //     m_PreviousNodeIdent = m_CurrentNodeIdent;
-        //     m_EdgeLabel = std::format("IdentSpecifier{}", i);
-        //     identSpecifiers[i]->Accept(*this);
-        // }
 
         auto keywordSpecifiers = specifierQualifierList.GetKeywordSpecifiers();
         acceptNodeList(keywordSpecifiers, "KeywordSpecifier");
-        // for (size_t i = 0; i < keywordSpecifiers.size(); ++i) {
-        //     m_PreviousNodeIdent = m_CurrentNodeIdent;
-        //     m_EdgeLabel = std::format("KeywordSpecifier{}", i);
-        //     keywordSpecifiers[i]->Accept(*this);
-        // }
     }
 
     void Visit(StructDeclaration& structDeclaration) override {
@@ -425,17 +383,9 @@ public:
 
         auto specifierQualifierList = structDeclaration.GetSpecifierQualifierList();
         acceptNode(specifierQualifierList, "SpecifierQualifierList");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "SpecifierQualifierList";
-        // specifierQualifierList->Accept(*this);
 
         auto structDeclaratorList = structDeclaration.GetStructDeclaratorList();
         acceptNodeList(structDeclaratorList, "StructDeclarator");
-        // for (size_t i = 0; i < structDeclaratorList.size(); ++i) {
-        //     m_PreviousNodeIdent = m_CurrentNodeIdent;
-        //     m_EdgeLabel = std::format("StructDeclarator{}", i);
-        //     structDeclaratorList[i]->Accept(*this);
-        // }
     }
 
     void Visit(StructDeclarator& structDeclarator) override {
@@ -443,9 +393,6 @@ public:
 
         auto declarator = structDeclarator.GetDeclarator();
         acceptNode(declarator, "Declarator");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "Declarator";
-        // declarator->Accept(*this);
     }
 
     void Visit(TypeName& typeName) override {
@@ -453,17 +400,11 @@ public:
 
         auto specifierQualifierList = typeName.GetSpecifierQualifierList();
         acceptNode(specifierQualifierList, "SpecifierQualifierList");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "SpecifierQualifierList";
-        // specifierQualifierList->Accept(*this);
 
         auto abstractDeclarator = typeName.GetAbstractDeclarator();
         if (abstractDeclarator) {
             acceptNode(abstractDeclarator, "AbstractDeclarator");
         }
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "AbstractDeclarator";
-        // abstractDeclarator->Accept(*this);
     }
 
 
@@ -473,7 +414,8 @@ public:
     =================================================================
     */
 
-    // Assignment expression
+    // ================= Assignment expression ======================
+
     void Visit(AssignmentExpression&) override {
         // Base class
     }
@@ -498,7 +440,9 @@ public:
         acceptNode(assignmentExpressionRight, "AssignmentExpressionRight");
     }
 
-    // Cast expression
+
+    // ==================== Cast expression =========================
+
     void Visit(CastExpression&) override {
         // Base class
     }
@@ -520,7 +464,9 @@ public:
         acceptNode(unaryExpression, "UnaryExpression");
     }
 
-    // Postfix expression
+
+    // =================== Postfix expression =======================
+
     void Visit(AccessExpression& accessExpression) override {
         std::string typeStr = accessExpression.GetTypeStr();
         std::string identifier = accessExpression.GetIdentifier();
@@ -564,7 +510,9 @@ public:
         // Base class
     }
 
-    // Primary expression
+
+    // =================== Primary expression =======================
+
     void Visit(IdentPrimaryExpression& identPrimaryExpression) override {
         std::string ident = identPrimaryExpression.GetIdentifier();
         printNode("ident_primary_expression",
@@ -588,7 +536,9 @@ public:
         // Base class
     }
 
-    // Unary expression
+
+    // ==================== Unary expression ========================
+
     void Visit(IncDecPrefixExpression& incDecPrefixExpression) override {
         std::string typeStr = incDecPrefixExpression.GetTypeStr();
         printNode("inc_dec_prefix_expression",
@@ -626,7 +576,9 @@ public:
         // Base class
     }
 
-    // Rest
+
+    // ========================== Rest ==============================
+
     void Visit(AdditiveExpression& additiveExpression) override {
         std::string typeStr = additiveExpression.GetTypeStr();
         auto multiplicativeExpressionRight = additiveExpression.GetMultiplicativeExpression();
@@ -823,7 +775,9 @@ public:
     =================================================================
     */
 
-    // Iteration statement
+
+    // =================== Iteration statement ======================
+
     void Visit(DoWhileIterationStatement& doWhileIterationStatement) override {
         printNode("do_while_iteration_statement", "DoWhileIterationStatement");
 
@@ -866,7 +820,9 @@ public:
         acceptNode(statement, "Statement");
     }
 
-    // Jump statement
+
+    // ====================== Jump statement ========================
+
     void Visit(JumpStatement&) override {
         // Base class
     }
@@ -886,7 +842,9 @@ public:
         }
     }
 
-    // Labeled statement
+
+    // ===================== Labeled statement ======================
+
     void Visit(CaseLabeledStatement& caseLabeledStatement) override {
         printNode("case_labeled_statement", "CaseLabeledStatement");
 
@@ -917,29 +875,22 @@ public:
         // Base class
     }
 
-    // Selection statement
+    
+    // ==================== Selection statement =====================
+
     void Visit(IfSelectionStatement& ifSelectionStatement) override {
         printNode("if_selection_statement", "IfSelectionStatement");
 
         auto expression = ifSelectionStatement.GetExpression();
         acceptNode(expression, "Expression");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "Expression";
-        // expression->Accept(*this);
 
         auto statementTrue = ifSelectionStatement.GetStatementTrue();
         acceptNode(statementTrue, "StatementTrue");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "StatementTrue";
-        // statementTrue->Accept(*this);
 
         auto statementFalse = ifSelectionStatement.GetStatementFalse();
         if (statementFalse) {
             acceptNode(statementFalse, "StatementFalse");
         }
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "StatementFalse";
-        // statementFalse->Accept(*this); 
     }
 
     void Visit(SelectionStatement&) override {
@@ -956,25 +907,17 @@ public:
         acceptNode(statement, "Statement");
     }
 
-    // Rest
+
+    // =========================== Rest =============================
+
     void Visit(CompoundStatement& compoundStatement) override {
         printNode("compound_statement", "CompoundStatement");
 
         auto declarations = compoundStatement.GetDeclarations();
         acceptNodeList(declarations, "Declaration");
-        // for (size_t i = 0; i < declarations.size(); ++i) {
-        //     m_PreviousNodeIdent = m_CurrentNodeIdent;
-        //     m_EdgeLabel = std::format("Declaration{}", i);
-        //     declarations[i]->Accept(*this);
-        // }
 
         auto statements = compoundStatement.GetStatements();
         acceptNodeList(statements, "Expression");
-        // for (size_t i = 0; i < statements.size(); ++i) {
-        //     m_PreviousNodeIdent = m_CurrentNodeIdent;
-        //     m_EdgeLabel = std::format("Expression{}", i);
-        //     statements[i]->Accept(*this);
-        // }
     }
 
     void Visit(ExpressionStatement& expressionStatement) override {
@@ -982,9 +925,6 @@ public:
 
         auto expression = expressionStatement.GetExpression();
         acceptNode(expression, "Expression");
-        // m_PreviousNodeIdent = m_CurrentNodeIdent;
-        // m_EdgeLabel = "Expression";
-        // expression->Accept(*this);
     }
 
     void Visit(Statement&) override {
