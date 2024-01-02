@@ -20,8 +20,8 @@ public:
     // void accept(Visitor *visitor) override;
 
 private:
-    std::shared_ptr<ExternalDeclaration> m_ExternalDeclaration = nullptr;
-    std::shared_ptr<TranslationUnit> m_TranslationUnitTail = nullptr;
+    std::shared_ptr<ExternalDeclaration> m_ExternalDeclaration;
+    std::shared_ptr<TranslationUnit> m_TranslationUnitTail;
 };
 
 }  // namespace ast

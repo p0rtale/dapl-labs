@@ -156,7 +156,7 @@
 %token <std::string> IDENTIFIER "identifier"
 %token <int> NUMBER "number"
 
-
+%nterm <std::shared_ptr<TranslationUnit>> program;
 %nterm <std::shared_ptr<TranslationUnit>> translation_unit;
 %nterm <std::shared_ptr<ExternalDeclaration>> external_declaration;
 %nterm <std::shared_ptr<FunctionDefinition>> function_definition;
@@ -234,7 +234,13 @@
 
 %%
 
-%start translation_unit;
+%start program;
+
+program
+    : translation_unit {
+        $$ = $1;
+        driver.setAST(std::move($$));
+    }
 
 translation_unit
     : external_declaration {
