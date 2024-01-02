@@ -38,7 +38,6 @@ class SpecifierQualifierList;
 class StorageClassSpecifier;
 class StructDeclaration;
 class StructDeclarator;
-class StructDeclaratorList;
 enum class StructOrUnionType;
 class StructOrUnionSpecifier;
 class TranslationUnit;

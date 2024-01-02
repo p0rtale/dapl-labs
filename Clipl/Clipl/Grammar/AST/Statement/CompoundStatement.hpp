@@ -4,7 +4,7 @@
 #include <memory>
 
 #include <Clipl/Grammar/AST/Statement/Statement.hpp>
-#include <Clipl/Grammar/AST/Program/Declaration.hpp>
+#include <Clipl/Grammar/AST/Program/ExternalDeclaration/Declaration.hpp>
 
 
 namespace ast {

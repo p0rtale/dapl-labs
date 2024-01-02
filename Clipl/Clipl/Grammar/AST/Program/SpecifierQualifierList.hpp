@@ -4,9 +4,9 @@
 #include <memory>
 
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
-#include <Clipl/Grammar/AST/Program/KeywordSpecifier.hpp>
+#include <Clipl/Grammar/AST/Program/KeywordSpecifier/KeywordSpecifier.hpp>
 #include <Clipl/Grammar/AST/Program/IdentSpecifier.hpp>
-#include <Clipl/Grammar/AST/Program/TypeQualifier.hpp>
+#include <Clipl/Grammar/AST/Program/Specifier/TypeQualifier.hpp>
 
 
 namespace ast {

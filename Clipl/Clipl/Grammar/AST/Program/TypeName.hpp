@@ -4,7 +4,7 @@
 
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
 #include <Clipl/Grammar/AST/Program/SpecifierQualifierList.hpp>
-#include <Clipl/Grammar/AST/Program/AbstractDeclarator.hpp>
+#include <Clipl/Grammar/AST/Program/Declarator/AbstractDeclarator.hpp>
 
 
 namespace ast {

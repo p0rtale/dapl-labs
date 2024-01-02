@@ -3,8 +3,8 @@
 #include <memory>
 
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
-#include <Clipl/Grammar/AST/Program/Declarator.hpp>
-#include <Clipl/Grammar/AST/Program/Initializer.hpp>
+#include <Clipl/Grammar/AST/Program/Declarator/Declarator.hpp>
+#include <Clipl/Grammar/AST/Program/Initializer/Initializer.hpp>
 
 
 namespace ast {

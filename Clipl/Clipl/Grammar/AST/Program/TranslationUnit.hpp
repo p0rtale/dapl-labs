@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
-#include <Clipl/Grammar/AST/Program/ExternalDeclaration.hpp>
+#include <Clipl/Grammar/AST/Program/ExternalDeclaration/ExternalDeclaration.hpp>
 
 namespace ast {
 

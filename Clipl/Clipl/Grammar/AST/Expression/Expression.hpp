@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
-#include <Clipl/Grammar/AST/Expression/AssignmentExpression.hpp>
+#include <Clipl/Grammar/AST/Expression/AssignmentExpression/AssignmentExpression.hpp>
 
 
 namespace ast {

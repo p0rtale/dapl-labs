@@ -2,15 +2,15 @@
 
 #include <memory>
 
-#include <Clipl/Grammar/AST/Base/ASTNode.hpp>
 #include <Clipl/Grammar/AST/Program/Declarator/Declarator.hpp>
+#include <Clipl/Grammar/AST/Program/DirectDeclarator/DirectDeclarator.hpp>
 
 
 namespace ast {
 
-class StructDeclarator: public ASTNode {
+class NestedDirectDeclarator: public DirectDeclarator {
 public:
-    StructDeclarator(std::shared_ptr<Declarator> declarator)
+    NestedDirectDeclarator(std::shared_ptr<Declarator> declarator)
         : m_Declarator(declarator) {}
 
     // void accept(Visitor *visitor) override;
