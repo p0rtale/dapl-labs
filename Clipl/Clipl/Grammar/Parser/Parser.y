@@ -217,14 +217,16 @@
 %nterm <std::shared_ptr<JumpStatement>> jump_statement;
 
 %nterm <std::shared_ptr<Enumerator>> enumerator;
-%nterm <std::shared_ptr<EnumeratorList>> enumerator_list;
+%nterm <std::vector<std::shared_ptr<Enumerator>>> enumerator_list;
 %nterm <std::shared_ptr<EnumSpecifier>> enum_specifier;
+
+%nterm <StructOrUnionType> struct_or_union;
 
 %nterm <std::shared_ptr<StructOrUnionSpecifier>> struct_or_union_specifier;
 %nterm <std::shared_ptr<StructDeclaration>> struct_declaration;
-%nterm <std::shared_ptr<StructDeclarationList>> struct_declaration_list;
+%nterm <std::vector<std::shared_ptr<StructDeclaration>>> struct_declaration_list;
 %nterm <std::shared_ptr<StructDeclarator>> struct_declarator;
-%nterm <std::shared_ptr<StructDeclaratorList>> struct_declarator_list;
+%nterm <std::vector<std::shared_ptr<StructDeclarator>>> struct_declarator_list;
 
 
 // Prints output in parsing option for debugging location terminal
@@ -263,9 +265,8 @@ function_definition
 
 declaration_specifiers
     : specifier declaration_specifiers {
-        auto declarationSpecifiers = $2;
-        declarationSpecifiers->addSpecifier($1);
-        $$ = declarationSpecifiers;
+        ($2)->addSpecifier($1);
+        $$ = $2;
     }
     | keyword_specifier_list {
         $$ = std::static_pointer_cast<DeclarationSpecifiers>($1);
@@ -276,22 +277,25 @@ declaration_specifiers
 
 specifier_qualifier_list
     : keyword_specifier specifier_qualifier_list {
-
+        ($2)->addKeywordSpecifier($1);
+        $$ = $2; 
     }
     | keyword_specifier {
-
+        $$ = std::make_shared<SpecifierQualifierList>($1);
     }
     | ident_specifier specifier_qualifier_list {
-
+        ($2)->addIdentSpecifier($1);
+        $$ = $2; 
     }
     | ident_specifier {
-
+        $$ = std::make_shared<SpecifierQualifierList>($1);
     }
     | type_qualifier specifier_qualifier_list {
-
+        ($2)->addTypeQualifier($1);
+        $$ = $2; 
     }
     | type_qualifier {
-
+        $$ = std::make_shared<SpecifierQualifierList>($1);
     };
 
 specifier
@@ -363,23 +367,23 @@ keyword_specifier
         $$ = std::make_shared<BasicKeywordSpecifier>(BasicKeywordSpecifier::Type::kUnsigned);
     }
     | struct_or_union_specifier {
-
+        $$ = $1;
     }
     | enum_specifier {
-
+        $$ = $1;
     };
 
 struct_or_union_specifier
-    : struct_or_union IDENTIFIER '{' struct_declaration_list '}' {
-
+    : struct_or_union "identifier" '{' struct_declaration_list '}' {
+        $$ = std::make_shared<StructOrUnionSpecifier>($1, std::move($2), $4);
     }
     | struct_or_union '{' struct_declaration_list '}' {
-
+        $$ = std::make_shared<StructOrUnionSpecifier>($1, "", $3);
     }
-    | struct_or_union IDENTIFIER {
-
+    | struct_or_union "identifier" {
+        $$ = std::make_shared<StructOrUnionSpecifier>($1, std::move($2));
     }
-    | struct_or_union IDENTIFIER '{' error '}' {
+    | struct_or_union "identifier" '{' error '}' {
         // TODO: handle
     }
     | struct_or_union '{' error '}' {
@@ -388,23 +392,24 @@ struct_or_union_specifier
 
 struct_or_union
     : "struct" {
-        
+        $$ = StructOrUnionType::kStruct;
     }
     | "union" {
-
+        $$ = StructOrUnionType::kUnion;
     };
 
 struct_declaration_list
     : struct_declaration {
-
+        $$ = std::vector{$1};
     }
     | struct_declaration_list struct_declaration {
-
+        ($1).push_back($2);
+        $$ = std::move($1);
     };
 
 struct_declaration
     : specifier_qualifier_list struct_declarator_list ';' {
-
+        $$ = std::make_shared<StructDeclaration>($1, $2);
     }
     | error ';' {
         // TODO: handle error
@@ -412,10 +417,11 @@ struct_declaration
 
 struct_declarator_list
     : struct_declarator {
-
+        $$ = std::vector{$1};
     }
     | struct_declarator_list ',' struct_declarator {
-
+        ($1).push_back($3);
+        $$ = std::move($1);
     }
     | error ',' struct_declarator {
         // TODO: handle error
@@ -423,43 +429,44 @@ struct_declarator_list
 
 struct_declarator
     : declarator {
-
+        $$ = std::make_shared<StructDeclarator>($1);
     };
 
 enum_specifier
     : "enum" '{' enumerator_list '}' {
-
+        $$ = std::make_shared<EnumSpecifier>("", $3);
     }
-    | "enum" IDENTIFIER '{' enumerator_list '}' {
-
+    | "enum" "identifier" '{' enumerator_list '}' {
+        $$ = std::make_shared<EnumSpecifier>($2, $4);
     }
     | "enum" '{' error '}' {
         // TODO: handle error
     }
-    | "enum" IDENTIFIER '{' error '}' {
+    | "enum" "identifier" '{' error '}' {
         // TODO: handle error
     }
-    | "enum" IDENTIFIER {
-
+    | "enum" "identifier" {
+        $$ = std::make_shared<EnumSpecifier>($2);
     };
 
 enumerator_list
     : enumerator {
-
+        $$ = std::vector{$1};
     }
     | enumerator_list ',' enumerator {
-
+        ($1).push_back($3);
+        $$ = std::move($1);
     }
     | error ',' enumerator {
         // TODO: handle error
     };
 
 enumerator
-    : IDENTIFIER {
-
+    : "identifier" {
+        $$ = std::make_shared<Enumerator>($1);
     }
-    | IDENTIFIER '=' constant_expression {
-
+    | "identifier" '=' constant_expression {
+        $$ = std::make_shared<Enumerator>($1, $3);
     }
     | error '=' constant_expression {
         // TODO: handle error
@@ -800,10 +807,10 @@ cast_expression
 
 type_name
     : specifier_qualifier_list {
-
+        $$ = std::make_shared<TypeName>($1);
     }
     | specifier_qualifier_list abstract_declarator {
-
+        $$ = std::make_shared<TypeName>($1, $2);
     };
 
 unary_expression
