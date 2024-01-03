@@ -265,9 +265,11 @@ function_definition
     }
     | declaration_specifiers error compound_statement {
         // TODO: handle error
+        YYABORT;
     }
     | error compound_statement {
         // TODO: handle error
+        YYABORT;
     };
 
 declaration_specifiers
@@ -395,6 +397,7 @@ struct_or_union_specifier
     }
     | struct_or_union '{' error '}' {
         // TODO: handle error
+        YYABORT;
     };
 
 struct_or_union
@@ -420,6 +423,7 @@ struct_declaration
     }
     | error ';' {
         // TODO: handle error
+        YYABORT;
     };
 
 struct_declarator_list
@@ -432,6 +436,7 @@ struct_declarator_list
     }
     | error ',' struct_declarator {
         // TODO: handle error
+        YYABORT;
     };
 
 struct_declarator
@@ -448,9 +453,11 @@ enum_specifier
     }
     | "enum" '{' error '}' {
         // TODO: handle error
+        YYABORT;
     }
     | "enum" "identifier" '{' error '}' {
         // TODO: handle error
+        YYABORT;
     }
     | "enum" "identifier" {
         $$ = CreateRef<EnumSpecifier>($2);
@@ -466,6 +473,7 @@ enumerator_list
     }
     | error ',' enumerator {
         // TODO: handle error
+        YYABORT;
     };
 
 enumerator
@@ -477,6 +485,7 @@ enumerator
     }
     | error '=' constant_expression {
         // TODO: handle error
+        YYABORT;
     };
 
 storage_class_specifier
@@ -531,6 +540,7 @@ pointer
     }
     | "*" error pointer {
         // TODO: handle error
+        YYABORT;
     };
 
 direct_declarator
@@ -554,12 +564,15 @@ direct_declarator
     }
     | direct_declarator "(" error ")" {
         // TODO: handle error
+        YYABORT;
     }
     | error "(" error ")" {
         // TODO: handle error
+        YYABORT;
     }
     | "(" error ")" {
         // TODO: handle error
+        YYABORT;
     };
 
 parameter_type_list
@@ -571,6 +584,7 @@ parameter_type_list
     }
     | error "," "..." {
         // TODO: handle error
+        YYABORT;
     };
 
 parameter_list
@@ -583,6 +597,7 @@ parameter_list
     }
     | error "," parameter_declaration {
         // TODO: handle error
+        YYABORT;
     };
 
 parameter_declaration
@@ -619,6 +634,7 @@ direct_abstract_declarator
     }
     | "[" error "]" {
         // TODO: handle error
+        YYABORT;
     }
     | direct_abstract_declarator "[" "]" {
         $$ = CreateRef<ArrayDirectAbstractDeclarator>($1);
@@ -640,9 +656,11 @@ direct_abstract_declarator
     }
     | direct_abstract_declarator "(" error ")" {
         // TODO: handle error
+        YYABORT;
     }
     | direct_abstract_declarator "[" error "]" {
         // TODO: handle error
+        YYABORT;
     };
 
 constant_expression
@@ -659,12 +677,15 @@ conditional_expression
     }
     | error "?" error ":" conditional_expression {
         // TODO: handle error
+        YYABORT;
     }
     | logical_or_expression "?" error ":" conditional_expression {
         // TODO: handle error
+        YYABORT;
     }
     | error "?" expression ":" conditional_expression {
         // TODO: handle error
+        YYABORT;
     };
 
 logical_or_expression
@@ -719,9 +740,11 @@ equality_expression
     }
     | error "==" relational_expression {
         // TODO: handle error
+        YYABORT;
     }
     | error "!=" relational_expression {
         // TODO: handle error
+        YYABORT;
     };
 
 relational_expression
@@ -742,15 +765,19 @@ relational_expression
     }
     | error "<" shift_expression {
         // TODO: handle error
+        YYABORT;
     }
     | error ">" shift_expression {
         // TODO: handle error
+        YYABORT;
     }
     | error "<=" shift_expression {
         // TODO: handle error
+        YYABORT;
     }
     | error ">=" shift_expression {
         // TODO: handle error
+        YYABORT;
     };
 
 shift_expression
@@ -776,9 +803,11 @@ additive_expression
     }
     | error "+" multiplicative_expression {
         // TODO: handle error
+        YYABORT;
     }
     | error '-' multiplicative_expression {
         // TODO: handle error
+        YYABORT;
     };
 
 multiplicative_expression
@@ -796,12 +825,15 @@ multiplicative_expression
     }
     | error "*" cast_expression {
         // TODO: handle error
+        YYABORT;
     }
     | error "/" cast_expression {
         // TODO: handle error
+        YYABORT;
     }
     | error "%" cast_expression {
         // TODO: handle error
+        YYABORT;
     };
 
 cast_expression
@@ -896,6 +928,7 @@ argument_expression_list
     }
     | error "," assignment_expression {
         // TODO: handle error
+        YYABORT;
     };
 
 primary_expression
@@ -911,6 +944,7 @@ primary_expression
     }
     | '(' error ')' {
         // TODO: handle error
+        YYABORT;
     };
 //  | STRING_LITERAL
 // TODO: constants
@@ -981,6 +1015,8 @@ compound_statement
     }
     | "{" error "}" {
         // TODO: handle error
+        YYABORT;
+        $$ = CreateRef<CompoundStatement>();
     };
 
 declaration_list
@@ -1004,6 +1040,7 @@ declaration
     }
     | declaration_specifiers error ";" {
         // TODO: handle error
+        YYABORT;
     };
 
 init_declarator_list
@@ -1016,6 +1053,7 @@ init_declarator_list
     }
     | error "," init_declarator {
         // TODO: handle error
+        YYABORT;
     };
 
 init_declarator
@@ -1027,6 +1065,7 @@ init_declarator
     }
     | error "=" initializer {
         // TODO: handle error
+        YYABORT;
     };
 
 initializer
@@ -1041,6 +1080,7 @@ initializer
     }
     | "{" error "}" {
         // TODO: handle error
+        YYABORT;
     };
 
 initializer_list
@@ -1053,6 +1093,7 @@ initializer_list
     }
     | error "," initializer {
         // TODO: handle error
+        YYABORT;
     };
 
 statement_list
@@ -1098,6 +1139,7 @@ labeled_statement
 expression_statement
     : error ";" {
         // TODO: handle error
+        YYABORT;
     }
     | expression ";" {
         $$ = CreateRef<ExpressionStatement>($1);
@@ -1115,12 +1157,15 @@ selection_statement
     }
     | "if" "(" error ")" statement {
         // TODO: handle error
+        YYABORT;
     }
     | "if" "(" error ")" statement "else" statement {
         // TODO: handle error
+        YYABORT;
     }
     | "switch" "(" error ")" statement {
         // TODO: handle error
+        YYABORT;
     };
 
 iteration_statement
@@ -1138,9 +1183,11 @@ iteration_statement
     }
     | "do" error "while" "(" expression ")" ";" {
         // TODO: handle error
+        YYABORT;
     }
     | "for" "(" error ")" statement {
         // TODO: handle error
+        YYABORT;
     };
 
 jump_statement
@@ -1161,6 +1208,7 @@ jump_statement
     }
     | "return" error ";" {
         // TODO: handle error
+        YYABORT;
     };
 
 ident_specifier
