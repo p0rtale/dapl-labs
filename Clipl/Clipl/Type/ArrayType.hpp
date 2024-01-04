@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include <Clipl/Clipl/Base.hpp>
-#include <Clipl/Clipl/Type/ComplexType.hpp>
+#include <Clipl/Base.hpp>
+#include <Clipl/Type/ComplexType.hpp>
 
 
 namespace clipl::type {

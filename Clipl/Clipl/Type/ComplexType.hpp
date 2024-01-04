@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Clipl/Clipl/Type/Type.hpp>
+#include <Clipl/Type/Type.hpp>
 
 
-namespace type {
+namespace clipl::type {
 
 class ComplexType: public Type {
 public:
@@ -20,4 +20,4 @@ public:
     virtual InternalType GetInternalType() const = 0;
 };
 
-}  // namespace type
+}  // namespace clipl::type

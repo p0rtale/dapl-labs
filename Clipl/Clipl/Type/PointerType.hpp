@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Clipl/Clipl/Base.hpp>
-#include <Clipl/Clipl/Type/Type.hpp>
-#include <Clipl/Clipl/Type/BasicType.hpp>
+#include <Clipl/Base.hpp>
+#include <Clipl/Type/Type.hpp>
+#include <Clipl/Type/BasicType.hpp>
 
 
 namespace clipl::type {

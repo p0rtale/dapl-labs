@@ -2,9 +2,9 @@
 
 #include <vector>
 
-#include <Clipl/Clipl/Base.hpp>
-#include <Clipl/Clipl/Type/ComplexType.hpp>
-#include <Clipl/Clipl/Type/IntegerType.hpp>
+#include <Clipl/Base.hpp>
+#include <Clipl/Type/ComplexType.hpp>
+#include <Clipl/Type/IntegerType.hpp>
 
 
 namespace clipl::type {

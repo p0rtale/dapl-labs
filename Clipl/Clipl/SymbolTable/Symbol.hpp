@@ -8,7 +8,8 @@ namespace clipl {
 
 class Symbol {
 public:
-    Symbol(const std::string& name): m_Name(name) {}
+    Symbol() = default;
+    Symbol(std::string name): m_Name(std::move(name)) {}
     ~Symbol() = default;
 
     Symbol(const Symbol& other) = default;

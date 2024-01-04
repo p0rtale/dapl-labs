@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Clipl/Clipl/Type/Type.hpp>
+#include <Clipl/Type/Type.hpp>
 
 
 namespace clipl::type {
