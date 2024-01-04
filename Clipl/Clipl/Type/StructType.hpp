@@ -2,10 +2,11 @@
 
 #include <vector>
 
+#include <Clipl/Clipl/Base.hpp>
 #include <Clipl/Clipl/Type/ComplexType.hpp>
 
 
-namespace type {
+namespace clipl::type {
 
 class StructType: public ComplexType {
 public:
@@ -24,4 +25,4 @@ private:
     std::vector<RefT<Type>> m_Fields;
 };
 
-}  // namespace type
+}  // namespace clipl::type

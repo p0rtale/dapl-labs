@@ -2,11 +2,12 @@
 
 #include <vector>
 
+#include <Clipl/Clipl/Base.hpp>
 #include <Clipl/Clipl/Type/ComplexType.hpp>
 #include <Clipl/Clipl/Type/IntegerType.hpp>
 
 
-namespace type {
+namespace clipl::type {
 
 class UnionType: public ComplexType {
 public:
@@ -25,4 +26,4 @@ private:
     std::vector<RefT<IntegerType>> m_Constants;
 };
 
-}  // namespace type
+}  // namespace clipl::type

@@ -2,10 +2,11 @@
 
 #include <vector>
 
+#include <Clipl/Clipl/Base.hpp>
 #include <Clipl/Clipl/Type/BasicType.hpp>
 
 
-namespace type {
+namespace clipl::type {
 
 class FunctionType: public Type {
 public:
@@ -24,4 +25,4 @@ private:
     RefT<Type> m_ReturnType;
 };
 
-}  // namespace type
+}  // namespace clipl::type

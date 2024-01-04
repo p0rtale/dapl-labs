@@ -2,10 +2,11 @@
 
 #include <vector>
 
+#include <Clipl/Clipl/Base.hpp>
 #include <Clipl/Clipl/Type/ComplexType.hpp>
 
 
-namespace type {
+namespace clipl::type {
 
 class ArrayType: public ComplexType {
 public:
@@ -29,4 +30,4 @@ private:
     size_t m_Size = 0;
 };
 
-}  // namespace type
+}  // namespace clipl::type

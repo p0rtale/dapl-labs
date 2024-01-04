@@ -1,10 +1,11 @@
 #pragma once
 
+#include <Clipl/Clipl/Base.hpp>
 #include <Clipl/Clipl/Type/Type.hpp>
 #include <Clipl/Clipl/Type/BasicType.hpp>
 
 
-namespace type {
+namespace clipl::type {
 
 class PointerType: public BasicType {
 public:
@@ -23,4 +24,4 @@ private:
     RefT<Type> m_SubType;
 };
 
-}  // namespace type
+}  // namespace clipl::type

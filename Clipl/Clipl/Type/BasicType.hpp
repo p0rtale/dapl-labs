@@ -3,7 +3,7 @@
 #include <Clipl/Clipl/Type/Type.hpp>
 
 
-namespace type {
+namespace clipl::type {
 
 class BasicType: public Type {
 public:
@@ -43,4 +43,4 @@ protected:
     bool m_IsVolatile = false;
 };
 
-}  // namespace type
+}  // namespace clipl::type

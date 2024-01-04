@@ -4,7 +4,7 @@
 #include <string>
 
 
-namespace type {
+namespace clipl::type {
 
 class Type {
 public:
@@ -49,14 +49,4 @@ protected:
     bool m_IsVoid = false;
 };
 
-
-// Copy paste from ast
-template<typename T>
-using RefT = std::shared_ptr<T>;
-
-template<typename T, typename... Args>
-constexpr RefT<T> CreateRef(Args&&... args) {
-    return std::make_shared<T>(std::forward<Args>(args)...);
-}
-
-}  // namespace type
+}  // namespace clipl::type

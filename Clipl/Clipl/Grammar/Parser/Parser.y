@@ -17,6 +17,7 @@
     }
 
     #include <Clipl/Grammar/AST/ForwardDecl.hpp>
+    #include <Clipl/Base.hpp>
 
     using namespace clipl;
     using namespace ast;

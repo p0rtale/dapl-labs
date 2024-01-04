@@ -4,7 +4,7 @@
 #include <string>
 
 
-namespace ast {
+namespace clipl {
 
 class Symbol {
 public:
@@ -29,12 +29,12 @@ private:
     std::string m_Name;
 };
 
-}  // namespace ast
+}  // namespace clipl
 
 
 template<>
-struct std::hash<ast::Symbol> {
-    std::size_t operator()(const ast::Symbol& symbol) const noexcept {
+struct std::hash<clipl::Symbol> {
+    std::size_t operator()(const clipl::Symbol& symbol) const noexcept {
         return std::hash<std::string>()(symbol.GetName());
     }
 };

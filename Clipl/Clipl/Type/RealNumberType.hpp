@@ -3,7 +3,7 @@
 #include <Clipl/Clipl/Type/BasicType.hpp>
 
 
-namespace type {
+namespace clipl::type {
 
 class RealNumberType: public BasicType {
 public:
@@ -31,4 +31,4 @@ private:
     TypeSpecifier m_TypeSpecifier = TypeSpecifier::kFloat;
 };
 
-}  // namespace type
+}  // namespace clipl::type

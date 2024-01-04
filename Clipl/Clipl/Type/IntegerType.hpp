@@ -3,7 +3,7 @@
 #include <Clipl/Clipl/Type/BasicType.hpp>
 
 
-namespace type {
+namespace clipl::type {
 
 class IntegerType: public BasicType {
 public:
@@ -43,4 +43,4 @@ private:
     TypeSpecifier m_TypeSpecifier = TypeSpecifier::kInt;
 };
 
-}  // namespace type
+}  // namespace clipl::type
