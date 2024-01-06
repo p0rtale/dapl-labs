@@ -9,9 +9,11 @@
 
 namespace clipl::type {
 
-class UnionType: public ComplexType {
+class EnumType: public ComplexType {
 public:
-    UnionType(std::vector<RefT<IntegerType>> constants)
+    EnumType() = default;
+
+    EnumType(std::vector<RefT<IntegerType>> constants)
         : m_Constants(std::move(constants)) {}
 
     InternalType GetInternalType() const override {

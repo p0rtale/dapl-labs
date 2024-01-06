@@ -8,9 +8,9 @@ namespace clipl::type {
 class BasicType: public Type {
 public:
     enum class InternalType {
+        kVoid,
         kInteger,
         kRealNumber,
-        kPointer,
     };
 
 public:
@@ -22,12 +22,24 @@ public:
         return true;
     }
 
-    void SetConst() {
-        m_IsMutable = false;
+    bool IsPointerType() const override {
+        return false;
     }
 
-    bool IsMutable() const {
-        return m_IsMutable;
+    bool IsArrayType() const override {
+        return false;
+    }
+
+    bool IsFunctionType() const override {
+        return false;
+    }
+
+    void SetConst() {
+        m_IsConst = true;
+    }
+
+    bool IsConst() const {
+        return m_IsConst;
     }
 
     void SetVolatile() {
@@ -39,7 +51,7 @@ public:
     }
 
 protected:
-    bool m_IsMutable = true;
+    bool m_IsConst = false;
     bool m_IsVolatile = false;
 };
 

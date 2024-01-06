@@ -20,6 +20,9 @@ public:
     virtual ~Type() = default;
 
     virtual bool IsBasicType() const = 0;
+    virtual bool IsPointerType() const = 0;
+    virtual bool IsArrayType() const = 0;
+    virtual bool IsFunctionType() const = 0;
 
     void SetIdentifier(std::string identifier) {
         m_Identifier = identifier;
@@ -37,6 +40,14 @@ public:
         return m_Storage;
     }
 
+    void SetDefine() {
+        m_IsDefined = true;
+    }
+
+    bool IsDefined() const {
+        return m_IsDefined;
+    }
+
     bool IsVoid() const {
         return m_IsVoid;
     }
@@ -45,6 +56,8 @@ protected:
     StorageSpecifier m_Storage = StorageSpecifier::kLocal;
 
     std::string m_Identifier;
+
+    bool m_IsDefined = false;
 
     bool m_IsVoid = false;
 };

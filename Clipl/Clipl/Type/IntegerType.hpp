@@ -29,6 +29,10 @@ public:
         m_TypeSpecifier = typeSpecifier;
     }
 
+    void SetSigned() {
+        m_IsSigned = true;
+    }
+
     void SetUnsigned() {
         m_IsSigned = false;
     }

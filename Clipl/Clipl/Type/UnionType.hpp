@@ -10,6 +10,8 @@ namespace clipl::type {
 
 class UnionType: public ComplexType {
 public:
+    UnionType() = default;
+
     UnionType(std::vector<RefT<Type>> fields)
         : m_Fields(std::move(fields)) {}
 

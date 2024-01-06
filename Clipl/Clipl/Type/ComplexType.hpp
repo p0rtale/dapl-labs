@@ -8,7 +8,6 @@ namespace clipl::type {
 class ComplexType: public Type {
 public:
     enum class InternalType {
-        kArray,
         kStruct,
         kUnion,
         kEnum,
@@ -16,6 +15,22 @@ public:
 
 public:
     ComplexType() = default;
+
+    bool IsBasicType() const override {
+        return false;
+    }
+
+    bool IsPointerType() const override {
+        return false;
+    }
+
+    bool IsArrayType() const override {
+        return false;
+    }
+
+    bool IsFunctionType() const override {
+        return false;
+    }
 
     virtual InternalType GetInternalType() const = 0;
 };

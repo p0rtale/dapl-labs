@@ -3,31 +3,48 @@
 #include <vector>
 
 #include <Clipl/Base.hpp>
-#include <Clipl/Type/ComplexType.hpp>
+#include <Clipl/Type/Type.hpp>
+#include <Clipl/Type/NodeType.hpp>
 
 
 namespace clipl::type {
 
-class ArrayType: public ComplexType {
+class ArrayType: public NodeType {
 public:
-    ArrayType(std::vector<RefT<Type>> elements, size_t size)
-        : m_Elements(elements), m_Size(size) {}
+    ArrayType(RefT<ConstantExpression> size)
+        : m_Size(size) {}
 
-    InternalType GetInternalType() const override {
-        return InternalType::kArray;
+    bool IsBasicType() const override {
+        return false;
     }
 
-    size_t GetSize() const {
+    bool IsPointerType() const override {
+        return false;
+    }
+
+    bool IsArrayType() const override {
+        return true;
+    }
+
+    bool IsFunctionType() const override {
+        return false;
+    }
+
+    void AttachType(RefT<NodeType> type) override {
+        m_SubType = type;
+    }
+
+    RefT<Type> GetSubType() const {
+        return m_SubType;
+    }
+
+    RefT<ConstantExpression> GetSize() const {
         return m_Size;
     }
 
-    std::vector<RefT<Type>> GetElements() const {
-        return m_Elements;
-    }
-
 private:
-    std::vector<RefT<Type>> m_Elements;
-    size_t m_Size = 0;
+    RefT<NodeType> m_SubType;
+    RefT<ConstantExpression> m_Size;
 };
 
 }  // namespace clipl::type

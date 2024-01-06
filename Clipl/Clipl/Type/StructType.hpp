@@ -10,6 +10,8 @@ namespace clipl::type {
 
 class StructType: public ComplexType {
 public:
+    StructType() = default;
+
     StructType(std::vector<RefT<Type>> fields)
         : m_Fields(std::move(fields)) {}
 
