@@ -8,50 +8,83 @@
 #include <Clipl/Base.hpp>
 #include <Clipl/SymbolTable/Symbol.hpp> 
 #include <Clipl/Type/Type.hpp>
+#include <Clipl/SymbolTable/SymbolList.hpp>
 
 
 namespace clipl {
 
 class Scope: public std::enable_shared_from_this<Scope> {
 public:
-    Scope() = default;
+    using SymbolTypesT = std::vector<std::pair<Symbol, RefT<type::Type>>>;
 
-    void AddSymbol(Symbol symbol, RefT<type::Type> type) {
-        if (HaveSymbol(symbol)) {
-            // TODO: handle error
-            CLIPL_ERROR("Scope AddSymbol: symbol already exists [symbol=\"{}\"]",
-                        symbol.GetName());
-        }
-        m_SymbolTypes[symbol] = type;
-        m_Symbols.push_back(symbol);
+public:
+    Scope() = default; 
+
+    Scope(Symbol label): m_Label(label) {}
+
+    Symbol GetLabel() const {
+        return m_Label;
     }
 
-    std::optional<RefT<type::Type>> GetTypeBySymbol(Symbol symbol) const {
-        auto scope = shared_from_this();
-        while (!scope->IsRootScope() && !scope->HaveSymbol(symbol)) {
-            auto parentWRef = scope->GetParentScope();
-            if (auto tmpParent = parentWRef.lock()) {
-                scope = tmpParent;
-            } else {
-                // TODO: handle error
-                CLIPL_ERROR("Scope GetTypeBySymbol: parent is expired [symbol=\"{}\"]",
-                            symbol.GetName());                
-            }
+    void AddSymbol(Symbol symbol, RefT<type::Type> type, bool isDefined = false) {
+        m_Symbols.AddSymbol(symbol, type);
+        m_AllSymbolsInOrder.push_back({symbol, type});
+        if (isDefined) {
+            type->SetDefine();
         }
+    }
+
+    void AddTagSymbol(Symbol symbol, RefT<type::Type> type, bool isDefined = false) {
+        m_TagSymbols.AddSymbol(symbol, type);
+        m_AllSymbolsInOrder.push_back({symbol, type});
+        if (isDefined) {
+            type->SetDefine();
+        }
+    }
+
+    std::optional<RefT<type::Type>> FindSymbol(Symbol symbol) const {
+        auto scope = findScopeBySymbol(symbol, false);
         if (scope->HaveSymbol(symbol)) {
-            return scope->m_SymbolTypes.at(symbol);
+            return scope->m_Symbols.GetSymbol(symbol);
         }
-        return std::nullopt;        
+        return std::nullopt;
+    }
+
+    std::optional<RefT<type::Type>> FindTagSymbol(Symbol symbol) const {
+        auto scope = findScopeBySymbol(symbol, true);
+        if (scope->HaveTagSymbol(symbol)) {
+            return scope->m_TagSymbols.GetSymbol(symbol);
+        }
+        return std::nullopt;    
     }
 
     bool HaveSymbol(Symbol symbol) const {
-        auto it = m_SymbolTypes.find(symbol);
-        return (it != m_SymbolTypes.end());
+        return m_Symbols.HaveSymbol(std::move(symbol));
+    }
+
+    bool HaveTagSymbol(Symbol symbol) const {
+        return m_TagSymbols.HaveSymbol(std::move(symbol));
+    }
+
+    RefT<type::Type> GetSymbol(Symbol symbol) const {
+        return m_Symbols.GetSymbol(std::move(symbol));
+    }
+
+    RefT<type::Type> GetTagSymbol(Symbol symbol) const {
+        return m_TagSymbols.GetSymbol(std::move(symbol));
+    }
+
+    SymbolTypesT GetSymbolTypes() const {
+        return m_AllSymbolsInOrder;
     }
 
     void AddChild(RefT<Scope> child) {
         m_ChildrenScopes.push_back(child);
         child->m_ParentScope = weak_from_this();
+    }
+
+    std::vector<RefT<Scope>> GetChildrenScopes() const {
+        return m_ChildrenScopes;
     }
 
     RefT<Scope> GetChildScopeByIndex(size_t index) const {
@@ -62,16 +95,43 @@ public:
         return m_ParentScope;
     }
 
-    bool IsRootScope() const {
+    bool IsGlobalScope() const {
         return m_ParentScope.expired();
     }
 
 private:
+    bool haveSymbol(Symbol symbol, bool tag) const {
+        if (!tag) {
+            return HaveSymbol(std::move(symbol));
+        }
+        return HaveTagSymbol(std::move(symbol));
+    }   
+
+    RefT<const Scope> findScopeBySymbol(Symbol symbol, bool tag) const {
+        auto scope = shared_from_this();
+        while (!scope->IsGlobalScope() && !scope->haveSymbol(symbol, tag)) {
+            auto parentWRef = scope->GetParentScope();
+            if (auto tmpParent = parentWRef.lock()) {
+                scope = tmpParent;
+            } else {
+                // TODO: handle error
+                CLIPL_ERROR("Scope findScopeBySymbol: parent is expired [symbol=\"{}\"]",
+                            symbol.GetName());                
+            }
+        }
+        return scope;
+    }
+
+private:
+    Symbol m_Label;
+
     WRefT<Scope> m_ParentScope;
     std::vector<RefT<Scope>> m_ChildrenScopes;
 
-    std::vector<Symbol> m_Symbols;
-    std::unordered_map<Symbol, RefT<type::Type>> m_SymbolTypes;
+    SymbolTypesT m_AllSymbolsInOrder;
+
+    SymbolList m_TagSymbols;
+    SymbolList m_Symbols;
 };
 
 }  // namespace clipl
