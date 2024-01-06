@@ -247,9 +247,9 @@ translation_unit
     : external_declaration {
         $$ = std::vector{$1};
     }
-    | external_declaration translation_unit {
-        ($2).push_back($1);
-        $$ = std::move($2);
+    | translation_unit external_declaration {
+        ($1).push_back($2);
+        $$ = std::move($1);
     };
 
 external_declaration
@@ -384,19 +384,19 @@ keyword_specifier
     };
 
 struct_or_union_specifier
-    : struct_or_union "identifier" '{' struct_declaration_list '}' {
+    : struct_or_union "identifier" "{" struct_declaration_list "}" {
         $$ = CreateRef<StructOrUnionSpecifier>($1, std::move($2), $4);
     }
-    | struct_or_union '{' struct_declaration_list '}' {
+    | struct_or_union "{" struct_declaration_list "}" {
         $$ = CreateRef<StructOrUnionSpecifier>($1, "", $3);
     }
     | struct_or_union "identifier" {
         $$ = CreateRef<StructOrUnionSpecifier>($1, std::move($2));
     }
-    | struct_or_union "identifier" '{' error '}' {
+    | struct_or_union "identifier" "{" error "}" {
         // TODO: handle
     }
-    | struct_or_union '{' error '}' {
+    | struct_or_union "{" error "}" {
         // TODO: handle error
         YYABORT;
     };
@@ -419,10 +419,10 @@ struct_declaration_list
     };
 
 struct_declaration
-    : specifier_qualifier_list struct_declarator_list ';' {
+    : declaration_specifiers struct_declarator_list ";" {
         $$ = CreateRef<StructDeclaration>($1, $2);
     }
-    | error ';' {
+    | error ";" {
         // TODO: handle error
         YYABORT;
     };
@@ -431,11 +431,11 @@ struct_declarator_list
     : struct_declarator {
         $$ = std::vector{$1};
     }
-    | struct_declarator_list ',' struct_declarator {
+    | struct_declarator_list "," struct_declarator {
         ($1).push_back($3);
         $$ = std::move($1);
     }
-    | error ',' struct_declarator {
+    | error "," struct_declarator {
         // TODO: handle error
         YYABORT;
     };
@@ -446,17 +446,17 @@ struct_declarator
     };
 
 enum_specifier
-    : "enum" '{' enumerator_list '}' {
+    : "enum" "{" enumerator_list "}" {
         $$ = CreateRef<EnumSpecifier>("", $3);
     }
-    | "enum" "identifier" '{' enumerator_list '}' {
+    | "enum" "identifier" "{" enumerator_list "}" {
         $$ = CreateRef<EnumSpecifier>($2, $4);
     }
-    | "enum" '{' error '}' {
+    | "enum" "{" error "}" {
         // TODO: handle error
         YYABORT;
     }
-    | "enum" "identifier" '{' error '}' {
+    | "enum" "identifier" "{" error "}" {
         // TODO: handle error
         YYABORT;
     }
@@ -468,11 +468,11 @@ enumerator_list
     : enumerator {
         $$ = std::vector{$1};
     }
-    | enumerator_list ',' enumerator {
+    | enumerator_list "," enumerator {
         ($1).push_back($3);
         $$ = std::move($1);
     }
-    | error ',' enumerator {
+    | error "," enumerator {
         // TODO: handle error
         YYABORT;
     };
@@ -481,10 +481,10 @@ enumerator
     : "identifier" {
         $$ = CreateRef<Enumerator>($1);
     }
-    | "identifier" '=' constant_expression {
+    | "identifier" "," constant_expression {
         $$ = CreateRef<Enumerator>($1, $3);
     }
-    | error '=' constant_expression {
+    | error "=" constant_expression {
         // TODO: handle error
         YYABORT;
     };
@@ -806,7 +806,7 @@ additive_expression
         // TODO: handle error
         YYABORT;
     }
-    | error '-' multiplicative_expression {
+    | error "-" multiplicative_expression {
         // TODO: handle error
         YYABORT;
     };
@@ -940,10 +940,10 @@ primary_expression
         // TODO: real numbers
         $$ = CreateRef<NumberPrimaryExpression>($1);
     }
-    | '(' expression ')' {
+    | "(" expression ")" {
         $$ = CreateRef<NestedPrimaryExpression>($2);
     }
-    | '(' error ')' {
+    | "(" error ")" {
         // TODO: handle error
         YYABORT;
     };

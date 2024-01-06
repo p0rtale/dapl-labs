@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Clipl/Grammar/AST/Base/ASTNode.hpp>
-#include <Clipl/Grammar/AST/Program/SpecifierQualifierList.hpp>
+#include <Clipl/Grammar/AST/Program/DeclarationSpecifiers/DeclarationSpecifiers.hpp>
 #include <Clipl/Grammar/AST/Program/StructDeclarator.hpp>
 
 
@@ -9,17 +9,17 @@ namespace ast {
 
 class StructDeclaration: public ASTNode {
 public:
-    StructDeclaration(RefT<SpecifierQualifierList> specifierQualifierList,
+    StructDeclaration(RefT<DeclarationSpecifiers> declarationSpecifiers,
                       std::vector<RefT<StructDeclarator>> structDeclaratorList)
-        : m_SpecifierQualifierList(specifierQualifierList),
+        : m_DeclarationSpecifiers(declarationSpecifiers),
           m_StructDeclaratorList(structDeclaratorList) {}
 
     void Accept(Visitor& visitor) override {
         visitor.Visit(*this);
     }
 
-    RefT<SpecifierQualifierList> GetSpecifierQualifierList() const {
-        return m_SpecifierQualifierList;
+    RefT<DeclarationSpecifiers> GetDeclarationSpecifiers() const {
+        return m_DeclarationSpecifiers;
     }
 
     std::vector<RefT<StructDeclarator>> GetStructDeclaratorList() const {
@@ -27,7 +27,7 @@ public:
     }
 
 private:
-    RefT<SpecifierQualifierList> m_SpecifierQualifierList;
+    RefT<DeclarationSpecifiers> m_DeclarationSpecifiers;
     std::vector<RefT<StructDeclarator>> m_StructDeclaratorList;
 };
 

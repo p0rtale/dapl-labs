@@ -381,8 +381,8 @@ public:
     void Visit(StructDeclaration& structDeclaration) override {
         printNode("struct_declaration", "StructDeclaration");
 
-        auto specifierQualifierList = structDeclaration.GetSpecifierQualifierList();
-        acceptNode(specifierQualifierList, "SpecifierQualifierList");
+        auto declarationSpecifiers = structDeclaration.GetDeclarationSpecifiers();
+        acceptNode(declarationSpecifiers, "DeclarationSpecifiers");
 
         auto structDeclaratorList = structDeclaration.GetStructDeclaratorList();
         acceptNodeList(structDeclaratorList, "StructDeclarator");
@@ -735,8 +735,14 @@ public:
         std::string typeStr = relationalExpression.GetTypeStr();
         auto shiftExpressionRight = relationalExpression.GetShiftExpression();
         if (typeStr != "") {
-            printNode("relational_expression",
-                    std::format("RelationalExpression [{}]", typeStr));
+            std::string label = std::format("RelationalExpression [{}]", typeStr);
+
+            // Escape <, > dot symbols
+            if (typeStr[0] == '<' || typeStr[0] == '>') {
+                label = std::format("RelationalExpression [\\{}]", typeStr);
+            }
+
+            printNode("relational_expression", label);
 
             auto relationalExpressionLeft = relationalExpression.GetRelationalExpression();
             acceptNode(relationalExpressionLeft, "RelationalExpressionLeft");
@@ -774,7 +780,6 @@ public:
                                 Statement
     =================================================================
     */
-
 
     // =================== Iteration statement ======================
 
@@ -917,7 +922,7 @@ public:
         acceptNodeList(declarations, "Declaration");
 
         auto statements = compoundStatement.GetStatements();
-        acceptNodeList(statements, "Expression");
+        acceptNodeList(statements, "Statement");
     }
 
     void Visit(ExpressionStatement& expressionStatement) override {
@@ -957,11 +962,13 @@ private:
         printSpaces();
         m_OutputStream << "style=filled,\n";
         printSpaces();
-        m_OutputStream << "fillcolor=lightgrey,\n";
+        m_OutputStream << "fillcolor=\"#181818\",\n";
         printSpaces();
         m_OutputStream << std::format("label=\"{}\",\n", label);
         printSpaces();
-        m_OutputStream << "fontsize=\"15pt\"\n";
+        m_OutputStream << "fontsize=\"15pt\",\n";
+        printSpaces();
+        m_OutputStream << "fontcolor=\"#22bd74\",\n";
     }
 
     void printNode(const std::string& ident, const std::string& label) {
