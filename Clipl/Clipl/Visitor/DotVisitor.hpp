@@ -519,6 +519,12 @@ public:
                   std::format("IdentPrimaryExpression [\\\"{}\\\"]", ident));
     }
 
+    void Visit(IntegerPrimaryExpression& integerPrimaryExpression) override {
+        int integer = integerPrimaryExpression.GetInteger();
+        printNode("integer_primary_expression",
+                  std::format("IntegerPrimaryExpression [{}]", integer));
+    }
+
     void Visit(NestedPrimaryExpression& nestedPrimaryExpression) override {
         printNode("nested_primary_expression", "NestedPrimaryExpression");
 
@@ -526,16 +532,21 @@ public:
         acceptNode(expression, "Expression");
     }
 
-    void Visit(NumberPrimaryExpression& numberPrimaryExpression) override {
-        int number = numberPrimaryExpression.GetNumber();
-        printNode("number_primary_expression",
-                  std::format("NumberPrimaryExpression [{}]", number));
-    }
-
     void Visit(PrimaryExpression&) override {
         // Base class
     }
 
+    void Visit(RealNumberPrimaryExpression& realNumberPrimaryExpression) override {
+        float realNumber = realNumberPrimaryExpression.GetRealNumber();
+        printNode("real_number_primary_expression",
+                  std::format("RealNumberPrimaryExpression [{}]", realNumber));
+    }
+
+    void Visit(StringPrimaryExpression& stringPrimaryExpression) override {
+        std::string stringLiteral = stringPrimaryExpression.GetStringLiteral();
+        printNode("string_primary_expression",
+                  std::format("StringPrimaryExpression [\"{}\"]", stringLiteral));
+    }
 
     // ==================== Unary expression ========================
 

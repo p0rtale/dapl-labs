@@ -96,9 +96,11 @@
 
 // Primary expression
 #include <Clipl/Grammar/AST/Expression/PrimaryExpression/IdentPrimaryExpression.hpp>
+#include <Clipl/Grammar/AST/Expression/PrimaryExpression/IntegerPrimaryExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/PrimaryExpression/NestedPrimaryExpression.hpp>
-#include <Clipl/Grammar/AST/Expression/PrimaryExpression/NumberPrimaryExpression.hpp>
 #include <Clipl/Grammar/AST/Expression/PrimaryExpression/PrimaryExpression.hpp>
+#include <Clipl/Grammar/AST/Expression/PrimaryExpression/RealNumberPrimaryExpression.hpp>
+#include <Clipl/Grammar/AST/Expression/PrimaryExpression/StringPrimaryExpression.hpp>
 
 // Unary expression
 #include <Clipl/Grammar/AST/Expression/UnaryExpression/IncDecPrefixExpression.hpp>

@@ -5,21 +5,21 @@
 
 namespace ast {
 
-class NumberPrimaryExpression: public PrimaryExpression {
+class IntegerPrimaryExpression: public PrimaryExpression {
 public:
-    NumberPrimaryExpression(int number)
-        : m_Number(number) {}
+    IntegerPrimaryExpression(int integer)
+        : m_Integer(integer) {}
 
     void Accept(Visitor& visitor) override {
         visitor.Visit(*this);
     }
 
-    int GetNumber() const {
-        return m_Number;
+    int GetInteger() const {
+        return m_Integer;
     }
 
 private:
-    int m_Number;
+    int m_Integer;
 };
 
 }  // namespace ast

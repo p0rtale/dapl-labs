@@ -4,12 +4,16 @@
     #include <cstdlib>
     #include <string>
     #include <iostream>
+    #include <format>
 
     #include <Clipl/Grammar/Lexer/LexerInternal.hpp>
     #include <Clipl/Grammar/Parser/Parser.hpp>
     #include <Clipl/Grammar/Driver/Driver.hpp>
 
     using namespace clipl;
+
+    // Escape sequences
+    // https://learn.microsoft.com/ru-ru/cpp/c-language/escape-sequences?view=msvc-170
 %}
 
 %option noyywrap nounput noinput batch debug
@@ -19,15 +23,30 @@
 %option yyclass="Lexer"
 
 %{
-    yy::parser::symbol_type make_NUMBER(
+    yy::parser::symbol_type make_INTEGER_CONSTANT(
+        const std::string& s,
+        const yy::parser::location_type& loc
+    );
+
+    yy::parser::symbol_type make_REAL_CONSTANT(
         const std::string& s,
         const yy::parser::location_type& loc
     );
 %}
 
-id    [a-zA-Z][a-zA-Z_0-9]*
-int   [0-9]+
-blank [ \t\r]
+identifier  [a-zA-Z_][a-zA-Z_0-9]*
+
+hex_base    (0[xX])
+hex_digit   [a-fA-F0-9]
+octal_digit [0-7]
+digit       [0-9]
+no_zero     [1-9]
+exp         ([Ee][+-]?{digit}+)
+hex_exp     ([Pp][+-]?{digit}+)
+
+blank      [ \t\r]
+whitespace [ \t\n]
+escape     (\\(['"\?\\abfnrtv]|[0-7]{1,3}|x[a-fA-F0-9]+))
 
 %{
     #define YY_USER_ACTION  loc.columns(yyleng);
@@ -145,20 +164,65 @@ blank [ \t\r]
 
 "sizeof"   return yy::parser::make_SIZEOF(loc);
 
-{int}      return make_NUMBER(yytext, loc);
+(\"([^"\\\n]|{escape})*\"{whitespace}*)+   return yy::parser::make_STRING_LITERAL(yytext, loc);
 
-{id}       return yy::parser::make_IDENTIFIER(yytext, loc);
+{identifier}    return yy::parser::make_IDENTIFIER(yytext, loc);
+
+{hex_base}{hex_digit}+         return make_INTEGER_CONSTANT(yytext, loc);
+{no_zero}{digit}*              return make_INTEGER_CONSTANT(yytext, loc);
+"0"{octal_digit}*              return make_INTEGER_CONSTANT(yytext, loc);
+"'"([^'\\\n]|{escape})+"'"     return make_INTEGER_CONSTANT(yytext, loc);
+
+{digit}+{exp}                                     return make_REAL_CONSTANT(yytext, loc);
+{digit}*"."{digit}+{exp}?                         return make_REAL_CONSTANT(yytext, loc);
+{digit}+"."{exp}?                                 return make_REAL_CONSTANT(yytext, loc);
+{hex_base}{hex_digit}+{hex_exp}                   return make_REAL_CONSTANT(yytext, loc);
+{hex_base}{hex_digit}*"."{hex_digit}+{hex_exp}    return make_REAL_CONSTANT(yytext, loc);
+{hex_base}{hex_digit}+"."{hex_exp}                return make_REAL_CONSTANT(yytext, loc);
 
 .          throw yy::parser::syntax_error(loc, "invalid character: " + std::string(yytext));
 
 <<EOF>>    return yy::parser::make_END(loc);
 %%
 
-yy::parser::symbol_type make_NUMBER(const std::string &s, const yy::parser::location_type& loc) {
+yy::parser::symbol_type make_INTEGER_CONSTANT(const std::string &str,
+                                              const yy::parser::location_type& loc) {
     errno = 0;
-    long n = strtol(s.c_str(), NULL, 10);
-    if (!(INT_MIN <= n && n <= INT_MAX && errno != ERANGE)) {
-        throw yy::parser::syntax_error(loc, "integer is out of range: " + s);
+    char* endPtr = nullptr;
+    const char* integerPtr = str.c_str();
+    long integer = std::strtol(integerPtr, &endPtr, 0);
+    if (integerPtr == endPtr) {
+        throw yy::parser::syntax_error(loc, std::format("invalid integer constant \"{}\"", str));
     }
-    return yy::parser::make_NUMBER((int) n, loc);
+    if (errno == ERANGE) {
+        throw yy::parser::syntax_error(loc, std::format("integer constant \"{}\" is out of range", str));
+    }
+    if (errno != 0 && integer == 0) {
+        throw yy::parser::syntax_error(loc, std::format("invalid integer constant \"{}\"", str));
+    }
+    if (errno == 0 && *endPtr == 0) {
+        return yy::parser::make_INTEGER_CONSTANT(static_cast<int>(integer), loc);
+    }
+    throw yy::parser::syntax_error(loc, std::format("invalid integer constant \"{}\"", str));
+}
+
+yy::parser::symbol_type make_REAL_CONSTANT(const std::string &str,
+                                           const yy::parser::location_type& loc) {
+    errno = 0;
+    char* endPtr = nullptr;
+    const char* realPtr = str.c_str();
+    float real = std::strtof(realPtr, &endPtr);
+    if (realPtr == endPtr) {
+        throw yy::parser::syntax_error(loc, std::format("invalid real number constant \"{}\"", str));
+    }
+    if (errno == ERANGE) {
+        throw yy::parser::syntax_error(loc, std::format("real number constant \"{}\" is out of range", str));
+    }
+    if (errno != 0 && real == 0) {
+        throw yy::parser::syntax_error(loc, std::format("invalid real number constant \"{}\"", str));
+    }
+    if (errno == 0 && *endPtr == 0) {
+        return yy::parser::make_REAL_CONSTANT(real, loc);
+    }
+    throw yy::parser::syntax_error(loc, std::format("invalid real number constant \"{}\"", str));
 }

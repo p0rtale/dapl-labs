@@ -95,9 +95,11 @@ public:
 
     // Primary expression
     virtual void Visit(IdentPrimaryExpression& identPrimaryExpression) = 0;
+    virtual void Visit(IntegerPrimaryExpression& integerPrimaryExpression) = 0;
     virtual void Visit(NestedPrimaryExpression& nestedPrimaryExpression) = 0;
-    virtual void Visit(NumberPrimaryExpression& numberPrimaryExpression) = 0;
     virtual void Visit(PrimaryExpression& primaryExpression) = 0;
+    virtual void Visit(RealNumberPrimaryExpression& realNumberPrimaryExpression) = 0;
+    virtual void Visit(StringPrimaryExpression& stringPrimaryExpression) = 0;
 
     // Unary expression
     virtual void Visit(IncDecPrefixExpression& incDecPrefixExpression) = 0;

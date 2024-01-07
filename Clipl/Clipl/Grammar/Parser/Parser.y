@@ -155,7 +155,9 @@
 ;
 
 %token <std::string> IDENTIFIER "identifier"
-%token <int> NUMBER "number"
+%token <int> INTEGER_CONSTANT "integer_constant"
+%token <float> REAL_CONSTANT "real_constant"
+%token <std::string> STRING_LITERAL "string_literal"
 
 %nterm <RefT<Program>> program;
 %nterm <std::vector<RefT<ExternalDeclaration>>> translation_unit;
@@ -481,7 +483,7 @@ enumerator
     : "identifier" {
         $$ = CreateRef<Enumerator>($1);
     }
-    | "identifier" "," constant_expression {
+    | "identifier" "=" constant_expression {
         $$ = CreateRef<Enumerator>($1, $3);
     }
     | error "=" constant_expression {
@@ -936,9 +938,14 @@ primary_expression
     : "identifier" {
         $$ = CreateRef<IdentPrimaryExpression>(std::move($1));
     }
-    | "number" {
-        // TODO: real numbers
-        $$ = CreateRef<NumberPrimaryExpression>($1);
+    | "integer_constant" {
+        $$ = CreateRef<IntegerPrimaryExpression>($1);
+    }
+    | "real_constant" {
+        $$ = CreateRef<RealNumberPrimaryExpression>($1);
+    }
+    | "string_literal" {
+        $$ = CreateRef<StringPrimaryExpression>(std::move($1));
     }
     | "(" expression ")" {
         $$ = CreateRef<NestedPrimaryExpression>($2);
@@ -947,8 +954,6 @@ primary_expression
         // TODO: handle error
         YYABORT;
     };
-//  | STRING_LITERAL
-// TODO: constants
 
 expression
     : assignment_expression {
